@@ -1,0 +1,32 @@
+<div class="card">
+<div class="card-header">
+<h3 class="card-title">Check <%= @check.name %></h3>
+</div>
+
+<div class="card-body">
+
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Status:</strong>
+  <span class="<%= class_for_status(@check.status) %>"><strong><%= @check.status %></strong></span>
+
+</p>
+<p>
+  <strong>Active:</strong>
+  <span class="<%= class_for_active(@check.active) %>"><%= @check.active %></span>
+</p>
+
+<p>
+  <strong>Cron:</strong>
+  <%= @check.cron %>
+</p>
+
+<p>
+  <strong>URL:</strong>
+  <%= link_to @check.url, @check.url %>
+</p>
+
+<%= link_to 'Edit', edit_check_path(@check) %> |
+<%= link_to 'Back', checks_path %>
+</div>

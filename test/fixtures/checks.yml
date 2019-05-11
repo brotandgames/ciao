@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  cron: MyString
+
+two:
+  name: MyString
+  description: MyText
+  cron: MyString

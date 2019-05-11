@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Ciao</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+  <div class="container">
+  <p></p>
+            <div class="row">
+              <div class="col-12">
+              <p><h3>
+                <a href="/">ciao</a>
+                </h3>
+<p>
+  <%= link_to 'Checks', checks_path %> &nbsp; 
+  <%= link_to 'New Check', new_check_path %>
+</p>
+              </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <%= yield %>
+              </div>
+            </div>
+  </div>
+  </body>
+</html>
+
+
+

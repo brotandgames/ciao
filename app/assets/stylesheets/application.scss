@@ -1,0 +1,6 @@
+// Custom tabler variables must be set or imported *before* bootstrap and tabler.
+@import "tabler/variables";
+@import "bootstrap";
+@import "tabler";
+@import "tabler.plugins"; // optional
+@import "tabler.icons";

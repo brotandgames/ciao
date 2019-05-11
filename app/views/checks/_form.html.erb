@@ -1,0 +1,16 @@
+
+<%= simple_form_for(@check) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.input :name %>
+    <%= f.input :active, :input_html => { :checked => true } %>
+    <%= f.input :url %>
+    <%= f.input :cron %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>
