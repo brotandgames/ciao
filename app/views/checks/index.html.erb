@@ -21,12 +21,12 @@
       <tr>
         <td class="<%= class_for_active(check.active) %>"><%= check.active %></td>
         <td><%= link_to check.name, check %></td>
-        <td class="text-nowrap"><%= check.cron %></td>
+        <td class="text-nowrap"><code><%= check.cron %></code></td>
+        <td><%= link_to check.url, check.url %></td>
         <td>
-          <div><%= link_to check.url, check.url %></div>
+          <div class="<%= class_for_status(check.status) %>"><%= check.status %></div>
           <div class="small text-muted"><%= check.job %></div>
         </td>
-        <td class="<%= class_for_status(check.status) %>"><%= check.status %></td>
         <td><%= link_to 'Edit', edit_check_path(check) %></td>
         <td><%= link_to ('<i class="fe fe-trash"></i>').html_safe, check, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
