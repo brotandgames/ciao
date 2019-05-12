@@ -68,6 +68,12 @@ class ChecksController < ApplicationController
     end
   end
 
+  # GET /dashboard
+  # GET /dashboard.json
+  def dashboard
+    @checks = Check.all
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_check
