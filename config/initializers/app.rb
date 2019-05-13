@@ -6,5 +6,6 @@ NET_HTTP_ERRORS = [
   Net::HTTPHeaderSyntaxError,
   Net::ProtocolError,
   Timeout::Error,
-  SocketError
+  SocketError,
+  OpenSSL::SSL::SSLError
 ]

@@ -127,13 +127,13 @@ class ChecksController < ApplicationController
       end
     end
 
-    def unschedule_job(job)
-      job = Rufus::Scheduler.singleton.job(job)
+    def unschedule_job(job_id)
+      job = Rufus::Scheduler.singleton.job(job_id)
       if job
         job.unschedule
         Rails.logger.info "ciao-scheduler Unscheduled job '#{job.id}'"
       else
-        Rails.logger.info "ciao-scheduler Could not unschedule job '#{job}' because not found"
+        Rails.logger.info "ciao-scheduler Could not unschedule job '#{job_id}' because not found"
       end
     end
 
