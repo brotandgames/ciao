@@ -12,7 +12,6 @@
       <th>Cron</th>
       <th>Url</th>
       <th>Status</th>
-      <th>Last contact</th>
       <th>Next contact</th>
       <th></th>
     </tr>
@@ -23,22 +22,29 @@
       <tr>
         <td class="<%= class_for_active(check.active) %>"><i class="fe <%= class_for_active_checkbox(check.active) %>"></i></td>
         <td><%= link_to ('<i class="fe fe-edit"></i>').html_safe, edit_check_path(check) %></td>
-        <td><%= link_to check.name, check %></td>
-        <td class="text-nowrap"><code><%= check.cron %></code></td>
         <td>
-          <div class="<%= class_for_status(check.status) %>"><%= link_to check.url, check.url %></div>
+          <div><%= link_to check.name, check %></div>
           <div class="small text-muted">
-            Last: <%= check.last_contact_at %><br/>
+            <span class="<%= class_for_status(check.status) %>"><%= truncate(check.status, :length => 15) %></span>
+            <%= time_ago_in_words(check.last_contact_at) + " ago" if check.last_contact_at %>
+          </div>
+        </td>
+        <td class="text-nowrap">
+          <div><strong><%= check.cron %></strong></div>
+          <div class="small text-muted">
             <%= "Next: " + check.next_contact_at.to_s if check.next_contact_at %>
           </div>
         </td>
+        </td>
+        <td>
+          <div class="<%= class_for_status(check.status) %>"><%= link_to check.url, check.url %></div>
+          <div class="small text-muted"><%= "Last: " + check.last_contact_at.to_s if check.last_contact_at %></div>
+        </td>
         <td>
           <div class="<%= class_for_status(check.status) %>"><%= check.status %></div>
-          <div class="small text-muted"><%= truncate(check.job, :length => 15, omission: '') %></div>
-        </td>
-        <td>
-          <div><%= time_ago_in_words(check.last_contact_at) if check.last_contact_at %></div>
-        </td>
+          <div class="small text-muted">
+            <%= truncate(check.job, :length => 15, omission: '') %>
+          </div>
         <td>
           <div><%= distance_of_time_in_words(Time.current, check.next_contact_at) if check.next_contact_at %></div>
         </td>
