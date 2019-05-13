@@ -8,8 +8,8 @@ class Check < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where.not(active: false) }
-  scope :healthy, -> { where(status: "200") }
-  scope :failed, -> { where.not(status: "200") }
+  scope :healthy, -> { where(status: "200", active: true) }
+  scope :failed, -> { where.not(status: "200", active: true) }
 
   def self.percentage_active
     if ! self.active.empty?

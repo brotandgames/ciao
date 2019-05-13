@@ -28,7 +28,7 @@ class ChecksController < ApplicationController
 
     respond_to do |format|
       if @check.save
-        job = create_job(@check)
+        job = create_job(@check) if @check.active
         format.html { redirect_to @check, notice: 'Check was successfully created.' }
         format.json { render :show, status: :created, location: @check }
       else
@@ -43,11 +43,17 @@ class ChecksController < ApplicationController
   def update
     respond_to do |format|
       if @check.update(check_params)
-        if @check.saved_change_to_attribute?(:cron) || @check.saved_change_to_attribute?(:url)
-          job_old = Rufus::Scheduler.singleton.job(@check.job)
-          job_old.unschedule if job_old
+        if @check.saved_change_to_attribute?(:active)
+          if @check.active
+            job = create_job(@check)
+          else
+            unschedule_job(@check.job)
+            @check.update_columns(next_contact_at: nil, job: nil)
+          end
+        elsif @check.saved_change_to_attribute?(:cron) || @check.saved_change_to_attribute?(:url)
+          unschedule_job(@check.job)
           job = create_job(@check)
-          Rails.logger.info "== #{Time.now} Check '#{@check.name}' cron '#{@check.cron}' or URL '#{@check.url}' updated"
+          Rails.logger.info "ciao Check '#{@check.name}' cron '#{@check.cron}' or URL '#{@check.url}' updated"
         end
         format.html { redirect_to @check, notice: 'Check was successfully updated.' }
         format.json { render :show, status: :ok, location: @check }
@@ -69,9 +75,24 @@ class ChecksController < ApplicationController
   end
 
   # GET /dashboard
-  # GET /dashboard.json
   def dashboard
     @checks = Check.all
+  end
+
+  # GET /checks/1/job
+  # GET /checks/1/job.json
+  def job
+    @check = Check.find(params[:check_id])
+    @job = Rufus::Scheduler.singleton.job(@check.job)
+    respond_to do |format|
+      if @job
+        format.html
+        format.json { render :job, status: :ok }
+      else
+        format.html
+        format.json { render json: "Job not found.", status: :ok }
+      end
+    end
   end
 
   private
@@ -86,20 +107,34 @@ class ChecksController < ApplicationController
     end
 
     def create_job(check)
-      job =
-        Rufus::Scheduler.singleton.cron check.cron, :job => true do
-          url = URI.parse(check.url)
-          begin
-            response = Net::HTTP.get_response(url)
-            http_code = response.code
-          rescue *NET_HTTP_ERRORS => e
-            status = e.to_s
+      ActiveRecord::Base.connection_pool.with_connection do
+        job =
+          Rufus::Scheduler.singleton.cron check.cron, :job => true do
+            url = URI.parse(check.url)
+            begin
+              response = Net::HTTP.get_response(url)
+              http_code = response.code
+            rescue *NET_HTTP_ERRORS => e
+              status = e.to_s
+            end
+            status = http_code unless e
+            last_contact_at = Time.current
+            Rails.logger.info "ciao-scheduler #{last_contact_at} Checked '#{url}' and got '#{status}'"
+            check.update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
           end
-          status = http_code unless e
-          Rails.logger.info "ciao-scheduler #{Time.now} Checked '#{url}' and got '#{status}'"
-          check.update_attribute(:status, status)
+        Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
+        check.update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
       end
-      check.update_attribute(:job, job.id)
+    end
+
+    def unschedule_job(job)
+      job = Rufus::Scheduler.singleton.job(job)
+      if job
+        job.unschedule
+        Rails.logger.info "ciao-scheduler Unscheduled job '#{job.id}'"
+      else
+        Rails.logger.info "ciao-scheduler Could not unschedule job '#{job}' because not found"
+      end
     end
 
 end

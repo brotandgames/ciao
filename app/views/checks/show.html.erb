@@ -8,11 +8,6 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Status:</strong>
-  <span class="<%= class_for_status(@check.status) %>"><strong><%= @check.status %></strong></span>
-
-</p>
-<p>
   <strong>Active:</strong>
   <span class="<%= class_for_active(@check.active) %>"><%= @check.active %></span>
 </p>
@@ -26,6 +21,28 @@
   <strong>URL:</strong>
   <%= link_to @check.url, @check.url %>
 </p>
+
+<p>
+  <strong>Status:</strong>
+  <span class="<%= class_for_status(@check.status) %>"><strong><%= @check.status %></strong></span>
+
+</p>
+
+<p>
+  <strong>Last contact:</strong>
+  <span><%= @check.last_contact_at %></span>
+</p>
+
+<p>
+  <strong>Next contact:</strong>
+  <span><%= @check.next_contact_at %></span>
+</p>
+
+<p>
+  <strong>Debug:</strong> <%= link_to @check.job, check_job_path(@check) %>
+</p>
+
+
 
 <%= link_to 'Edit', edit_check_path(@check) %> |
 <%= link_to 'Back', checks_path %>

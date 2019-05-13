@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_11_231027) do
+ActiveRecord::Schema.define(version: 2019_05_13_131721) do
 
   create_table "checks", force: :cascade do |t|
     t.string "name"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2019_05_11_231027) do
     t.string "status"
     t.boolean "active"
     t.string "job"
+    t.datetime "last_contact_at"
+    t.datetime "next_contact_at"
   end
 
 end

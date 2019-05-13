@@ -7,27 +7,41 @@
 <table class="table card-table table-striped table-vcenter">
   <thead>
     <tr>
-      <th>Active</th>
+      <th colspan=2>Active</th>
       <th>Name</th>
       <th>Cron</th>
       <th>Url</th>
       <th>Status</th>
-      <th colspan="3"></th>
+      <th>Last contact</th>
+      <th>Next contact</th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @checks.each do |check| %>
       <tr>
-        <td class="<%= class_for_active(check.active) %>"><%= check.active %></td>
+        <td class="<%= class_for_active(check.active) %>"><i class="fe <%= class_for_active_checkbox(check.active) %>"></i></td>
+        <td><%= link_to ('<i class="fe fe-edit"></i>').html_safe, edit_check_path(check) %></td>
         <td><%= link_to check.name, check %></td>
         <td class="text-nowrap"><code><%= check.cron %></code></td>
-        <td><%= link_to check.url, check.url %></td>
+        <td>
+          <div class="<%= class_for_status(check.status) %>"><%= link_to check.url, check.url %></div>
+          <div class="small text-muted">
+            Last: <%= check.last_contact_at %><br/>
+            <%= "Next: " + check.next_contact_at.to_s if check.next_contact_at %>
+          </div>
+        </td>
         <td>
           <div class="<%= class_for_status(check.status) %>"><%= check.status %></div>
-          <div class="small text-muted"><%= check.job %></div>
+          <div class="small text-muted"><%= truncate(check.job, :length => 15, omission: '') %></div>
         </td>
-        <td><%= link_to 'Edit', edit_check_path(check) %></td>
+        <td>
+          <div><%= time_ago_in_words(check.last_contact_at) if check.last_contact_at %></div>
+        </td>
+        <td>
+          <div><%= distance_of_time_in_words(Time.current, check.next_contact_at) if check.next_contact_at %></div>
+        </td>
         <td><%= link_to ('<i class="fe fe-trash"></i>').html_safe, check, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
