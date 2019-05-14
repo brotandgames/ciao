@@ -90,8 +90,8 @@ class ChecksController < ApplicationController
         format.html
         format.json { render :job, status: :ok }
       else
-        format.html
-        format.json { render json: "Job not found.", status: :ok }
+        format.html { render :job, status: 404 }
+        format.json { render json: "Job not found", status: 404 }
       end
     end
   end
