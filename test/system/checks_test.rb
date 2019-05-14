@@ -14,9 +14,9 @@ class ChecksTest < ApplicationSystemTestCase
     visit checks_url
     click_on "New Check"
 
-    fill_in "Cron", with: @check.cron
-    fill_in "Description", with: @check.description
     fill_in "Name", with: @check.name
+    fill_in "Url", with: @check.url
+    fill_in "Cron", with: @check.cron
     click_on "Create Check"
 
     assert_text "Check was successfully created"
@@ -27,9 +27,9 @@ class ChecksTest < ApplicationSystemTestCase
     visit checks_url
     click_on "Edit", match: :first
 
-    fill_in "Cron", with: @check.cron
-    fill_in "Description", with: @check.description
     fill_in "Name", with: @check.name
+    fill_in "Url", with: @check.url
+    fill_in "Cron", with: @check.cron
     click_on "Update Check"
 
     assert_text "Check was successfully updated"
