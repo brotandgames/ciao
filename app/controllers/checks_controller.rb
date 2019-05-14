@@ -28,7 +28,7 @@ class ChecksController < ApplicationController
 
     respond_to do |format|
       if @check.save
-        job = create_job(@check) if @check.active
+        create_job(@check) if @check.active
         format.html { redirect_to @check, notice: 'Check was successfully created.' }
         format.json { render :show, status: :created, location: @check }
       else
