@@ -119,7 +119,7 @@ class ChecksController < ApplicationController
           end
           status = http_code unless e
           last_contact_at = Time.current
-          Rails.logger.info "ciao-scheduler #{last_contact_at} Checked '#{url}' and got '#{status}'"
+          Rails.logger.info "ciao-scheduler Checked '#{url}' at '#{last_contact_at}' and got '#{status}'"
           ActiveRecord::Base.connection_pool.with_connection do
             check.update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
           end
@@ -138,7 +138,7 @@ class ChecksController < ApplicationController
         job.unschedule
         Rails.logger.info "ciao-scheduler Unscheduled job '#{job.id}'"
       else
-        Rails.logger.info "ciao-scheduler Could not unschedule job '#{job_id}' because not found"
+        Rails.logger.info "ciao-scheduler Could not unschedule job: '#{job_id}' not found"
       end
     end
 
