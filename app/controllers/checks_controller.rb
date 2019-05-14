@@ -46,15 +46,15 @@ class ChecksController < ApplicationController
       if @check.update(check_params)
         if @check.saved_change_to_attribute?(:active)
           if @check.active
-            job = create_job(@check)
+            create_job(@check)
           else
             unschedule_job(@check.job)
             @check.update_columns(next_contact_at: nil, job: nil)
           end
         elsif @check.saved_change_to_attribute?(:cron) || @check.saved_change_to_attribute?(:url)
+          Rails.logger.info "ciao-scheduler Check '#{@check.name}' updates to cron or URL triggered job update"
           unschedule_job(@check.job)
-          job = create_job(@check)
-          Rails.logger.info "ciao Check '#{@check.name}' cron '#{@check.cron}' or URL '#{@check.url}' updated"
+          create_job(@check)
         end
         format.html { redirect_to @check, notice: 'Check was successfully updated.' }
         format.json { render :show, status: :ok, location: @check }
@@ -128,8 +128,9 @@ class ChecksController < ApplicationController
         Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
         check.update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
       else
-        Rails.logger.info "ciao-scheduler Could not create job"
+        Rails.logger.error "ciao-scheduler Could not create job"
       end
+      return job
     end
 
     def unschedule_job(job_id)
