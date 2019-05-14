@@ -107,7 +107,7 @@ class ChecksController < ApplicationController
     end
 
     def create_job(check)
-      ActiveRecord::Base.connection_pool.with_connection do
+      # ActiveRecord::Base.connection_pool.with_connection do
         job =
           Rufus::Scheduler.singleton.cron check.cron, :job => true do
             url = URI.parse(check.url)
@@ -124,7 +124,7 @@ class ChecksController < ApplicationController
           end
         Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
         check.update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
-      end
+      # end
     end
 
     def unschedule_job(job_id)
