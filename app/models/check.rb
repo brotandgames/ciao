@@ -1,15 +1,15 @@
 class Check < ApplicationRecord
 
-  validates :url, http_url: true
   validates :name, presence: true
   validates :url, presence: true
+  validates :url, http_url: true
   validates :cron, presence: true
   validates :cron, cron: true
 
   scope :active, -> { where(active: true) }
-  scope :inactive, -> { where.not(active: false) }
+  scope :inactive, -> { where(active: false) }
   scope :healthy, -> { where(status: "200", active: true) }
-  scope :failed, -> { where.not(status: "200", active: true) }
+  scope :unhealthy, -> { where.not(status: "200", active: true) }
 
   def self.percentage_active
     if ! self.active.empty?
