@@ -22,9 +22,9 @@ WORKDIR $APP_HOME
 
 RUN gem update --system && gem install bundler
 
-ADD Gemfile* $APP_HOME/
+ADD Gemfile* package.json yarn.lock $APP_HOME/
 # RUN bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
-RUN bundle install --without development:test
+RUN bundle install --without development:test --jobs 20
 
 ADD . $APP_HOME
 
