@@ -4,6 +4,7 @@ class ChecksController < ApplicationController
   # GET /checks
   # GET /checks.json
   def index
+    p ActiveRecord::Base.connection_pool.stat
     @checks = Check.all
   end
 
@@ -107,24 +108,28 @@ class ChecksController < ApplicationController
     end
 
     def create_job(check)
-      # ActiveRecord::Base.connection_pool.with_connection do
-        job =
-          Rufus::Scheduler.singleton.cron check.cron, :job => true do
-            url = URI.parse(check.url)
-            begin
-              response = Net::HTTP.get_response(url)
-              http_code = response.code
-            rescue *NET_HTTP_ERRORS => e
-              status = e.to_s
-            end
-            status = http_code unless e
-            last_contact_at = Time.current
-            Rails.logger.info "ciao-scheduler #{last_contact_at} Checked '#{url}' and got '#{status}'"
+      job =
+        Rufus::Scheduler.singleton.cron check.cron, :job => true do
+          url = URI.parse(check.url)
+          begin
+            response = Net::HTTP.get_response(url)
+            http_code = response.code
+          rescue *NET_HTTP_ERRORS => e
+            status = e.to_s
+          end
+          status = http_code unless e
+          last_contact_at = Time.current
+          Rails.logger.info "ciao-scheduler #{last_contact_at} Checked '#{url}' and got '#{status}'"
+          ActiveRecord::Base.connection_pool.with_connection do
             check.update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
           end
+        end
+      if job
         Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
         check.update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
-      # end
+      else
+        Rails.logger.info "ciao-scheduler Could not create job"
+      end
     end
 
     def unschedule_job(job_id)
