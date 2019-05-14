@@ -9,11 +9,11 @@
 
 <% if @job  %>
 <p><strong>Job id:</strong> <%= @job.id %></p>
-<p><strong>Scheduled at:</strong> <%= p @job.scheduled_at %></p>
+<p><strong>Scheduled at:</strong> <%= @job.scheduled_at %></p>
 <p><strong>Last work time:</strong> <%= @job.last_work_time %></p>
 <p><strong>Mean work time:</strong> <%= @job.mean_work_time %></p>
-<p><strong>Last time:</strong> <%= p @job.last_time %></p>
-<p><strong>Previous time:</strong> <%= p @job.previous_time %></p>
+<p><strong>Last time:</strong> <%= @job.last_time %></p>
+<p><strong>Previous time:</strong> <%= @job.previous_time %></p>
 <p><strong>Next times:</strong>
   <ul>
   	<% @job.next_times(10).each do |time|  %>
@@ -21,7 +21,7 @@
   	<% end %>
   </ul>
 </p>
-<p><strong>Threads:</strong> <%= p @job.threads.count %>
+<p><strong>Threads:</strong> <%= @job.threads.count %>
   <ul>
   	<% @job.threads do |thread|  %>
   	<li><%= thread.to_s %></li>

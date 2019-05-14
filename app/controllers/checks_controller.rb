@@ -4,7 +4,6 @@ class ChecksController < ApplicationController
   # GET /checks
   # GET /checks.json
   def index
-    p ActiveRecord::Base.connection_pool.stat
     @checks = Check.all
   end
 
@@ -83,6 +82,7 @@ class ChecksController < ApplicationController
   # GET /checks/1/job
   # GET /checks/1/job.json
   def job
+    Rails.logger.info "ciao-scheduler Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"
     @check = Check.find(params[:check_id])
     @job = Rufus::Scheduler.singleton.job(@check.job)
     respond_to do |format|
