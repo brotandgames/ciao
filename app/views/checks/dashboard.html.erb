@@ -4,7 +4,7 @@
     <div class="card">
       <div class="card-body p-3 text-center">
         <div class="text-right">
-          <%= @checks.percentage_active %>% active
+          100% valid
         </div>
         <div class="h1 m-0"><%= @checks.count %></div>
         <div class="text-muted mb-4">Checks</div>
@@ -15,11 +15,23 @@
   <div class="col-6 col-sm-4 col-lg-2">
     <div class="card">
       <div class="card-body p-3 text-center">
+        <div class="text-right <%= class_for_healthy(@checks.percentage_active) %>">
+          <%= @checks.percentage_active %>% active
+        </div>
+        <div class="h1 m-0  <%= class_for_healthy(@checks.percentage_active) %>"><%= @checks.active.count %></div>
+        <div class="text-muted mb-4">Checks active</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-6 col-sm-4 col-lg-2">
+    <div class="card">
+      <div class="card-body p-3 text-center">
         <div class="text-right <%= class_for_healthy(@checks.percentage_healthy) %>">
           <%= @checks.percentage_healthy %>% healthy
         </div>
-        <div class="h1 m-0"><%= @checks.active.count %></div>
-        <div class="text-muted mb-4">Checks active</div>
+        <div class="h1 m-0 <%= class_for_healthy(@checks.percentage_healthy) %>"><%= @checks.healthy.count %></div>
+        <div class="text-muted mb-4">Checks healthy</div>
       </div>
     </div>
   </div>
