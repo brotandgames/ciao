@@ -120,8 +120,15 @@ class ChecksController < ApplicationController
           status = http_code unless e
           last_contact_at = Time.current
           Rails.logger.info "ciao-scheduler Checked '#{url}' at '#{last_contact_at}' and got '#{status}'"
+          status_before = status_after = ""
           ActiveRecord::Base.connection_pool.with_connection do
+            status_before = check.status
             check.update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
+            status_after = check.status
+          end
+          if status_before != status_after
+            CheckMailer.with(name: check.name, status_before: status_before, status_after: status_after).change_status_mail.deliver
+            Rails.logger.info "ciao-scheduler Sent 'changed_status' notification mail"
           end
         end
       if job

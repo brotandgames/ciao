@@ -60,7 +60,8 @@ Rails.application.configure do
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
-  # E-mail will pop up in your browser instead of being sent
+  # E-mail will pop up in your browser instead of being sent using letter_opener
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
+  config.action_mailer.default_options = { from: 'from@example.com', to: 'to@example.com' }
 end
