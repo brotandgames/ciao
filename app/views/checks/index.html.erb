@@ -1,7 +1,9 @@
-<p id="notice"><%= notice %></p>
 <div class="card">
 <div class="card-header">
   <h3 class="card-title">Checks</h3>
+  <div class="card-options">
+    <span id="notice"><%= notice %></span>
+  </div>
 </div>
 <div class="table-responsive">
 <table class="table card-table table-striped table-vcenter">
@@ -25,7 +27,7 @@
         <td>
           <div><%= link_to check.name, check %></div>
           <div class="small text-muted">
-            <span class="<%= class_for_status(check.status) %>"><%= truncate(check.status, :length => 15) %></span>
+            <span class="<%= class_for_status(check.status) %>"><%= truncate(check.status, :length => 10) %></span>
             <%= time_ago_in_words(check.last_contact_at) + " ago" if check.last_contact_at %>
           </div>
         </td>
@@ -41,7 +43,7 @@
           <div class="small text-muted"><%= "Last: " + check.last_contact_at.to_s if check.last_contact_at %></div>
         </td>
         <td>
-          <div class="<%= class_for_status(check.status) %>"><%= check.status %></div>
+          <div class="<%= class_for_status(check.status) %>"><%= truncate(check.status, :length => 25) %></div>
           <div class="small text-muted">
             <%= truncate(check.job, :length => 15, omission: '') %>
           </div>

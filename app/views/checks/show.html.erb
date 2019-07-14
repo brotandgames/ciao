@@ -1,11 +1,17 @@
 <div class="card">
 <div class="card-header">
-<h3 class="card-title">Check <%= @check.name %></h3>
+  <h3 class="card-title">Check <%= @check.name %></h3>
+  <div class="card-options">
+    <span class="mr-2" id="notice"><%= notice %></span>
+    <%= link_to '<i class="fe fe-edit"></i> Edit'.html_safe, edit_check_path(@check), class: 'btn btn-info btn-sm' %>
+    <%= link_to '<i class="fe fe-trash"></i> Delete'.html_safe, @check,
+      method: :delete,
+      data: { confirm: 'Are you sure?' },
+      class: 'btn btn-danger btn-sm ml-2' %>
+  </div>
 </div>
 
 <div class="card-body">
-
-<p id="notice"><%= notice %></p>
 
 <p>
   <strong>Active:</strong>
@@ -44,6 +50,5 @@
 
 
 
-<%= link_to 'Edit', edit_check_path(@check) %> |
-<%= link_to 'Back', checks_path %>
+
 </div>
