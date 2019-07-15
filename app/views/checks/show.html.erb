@@ -3,15 +3,14 @@
     <div class="card">
       <div class="card-header">
         <h3 class="card-title">Check <%= @check.name %></h3>
-        <div class="card-options"></div>
+        <div class="card-options">
+          <%= link_to 'JSON',
+            check_path(@check, format: :json), class: 'btn btn-success btn-sm'%>
+        </div>
       </div>
       <div class="card-body">
         <p>
-          <%= link_to '<i class="fe fe-edit"></i> Edit'.html_safe, edit_check_path(@check), class: 'btn         btn-outline-info btn-sm' %>
-          <%= link_to '<i class="fe fe-trash"></i> Delete'.html_safe, @check,
-            method: :delete,
-            data: { confirm: 'Are you sure?' },
-            class: 'btn btn-outline-danger btn-sm' %>
+          <%= link_to '<i class="fe fe-edit"></i> Edit'.html_safe, edit_check_path(@check), class: 'btn btn-outline-info btn-sm' %>
           <div id="notice"><%= notice %></div>
         </p>
 
@@ -49,6 +48,13 @@
 
         <p>
           <strong>Debug:</strong> <%= link_to @check.job, check_job_path(@check) %>
+        </p>
+
+        <p>
+          <%= link_to '<i class="fe fe-trash"></i> Delete'.html_safe, @check,
+            method: :delete,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn btn-outline-danger btn-sm' %>
         </p>
       </div>
     </div>

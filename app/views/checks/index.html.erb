@@ -3,6 +3,8 @@
   <h3 class="card-title">Checks</h3>
   <div class="card-options">
     <span id="notice"><%= notice %></span>
+    <%= link_to 'JSON',
+      checks_path(format: :json), class: 'btn btn-success btn-sm'%>
   </div>
 </div>
 <div class="table-responsive">

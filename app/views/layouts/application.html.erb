@@ -31,7 +31,8 @@
         <div class="col-12">
           <%= yield %>
           <div class="small text-muted">
-            <%= link_to "ciao #{File.read(File.join(Rails.public_path, 'version'))}", 'https://ciao.run' %>
+            <%= link_to 'ciao', 'https://ciao.run' %>
+            <%= File.read(File.join(Rails.public_path, 'version')) %>
           </div>
           <p></p>
         </div>
