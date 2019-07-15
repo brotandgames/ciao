@@ -1,57 +1,56 @@
-<div class="card">
-<div class="card-header">
-  <h3 class="card-title">Check <%= @check.name %></h3>
-  <div class="card-options">
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Check <%= @check.name %></h3>
+        <div class="card-options"></div>
+      </div>
+      <div class="card-body">
+        <p>
+          <%= link_to '<i class="fe fe-edit"></i> Edit'.html_safe, edit_check_path(@check), class: 'btn         btn-outline-info btn-sm' %>
+          <%= link_to '<i class="fe fe-trash"></i> Delete'.html_safe, @check,
+            method: :delete,
+            data: { confirm: 'Are you sure?' },
+            class: 'btn btn-outline-danger btn-sm' %>
+          <div id="notice"><%= notice %></div>
+        </p>
+
+        <p>
+          <strong>Active:</strong>
+          <span class="<%= class_for_active(@check.active) %>"><%= @check.active %></span>
+        </p>
+
+        <p>
+          <strong>Cron:</strong>
+          <code><%= @check.cron %></code>
+          <%= link_to '<i class="fe fe-external-link"></i> crontab.guru'.html_safe, "https://crontab.guru/##{@check.        cron.split(' ').join('_')}", target: :_blank %>
+        </p>
+
+        <p>
+          <strong>URL:</strong>
+          <%= link_to @check.url, @check.url %>
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+          <span class="<%= class_for_status(@check.status) %>"><strong><%= @check.status %></strong></span>
+
+        </p>
+
+        <p>
+          <strong>Last contact:</strong>
+          <span><%= @check.last_contact_at %></span>
+        </p>
+
+        <p>
+          <strong>Next contact:</strong>
+          <span><%= @check.next_contact_at %></span>
+        </p>
+
+        <p>
+          <strong>Debug:</strong> <%= link_to @check.job, check_job_path(@check) %>
+        </p>
+      </div>
+    </div>
   </div>
-</div>
-
-<div class="card-body">
-<p>
-  <%= link_to '<i class="fe fe-edit"></i> Edit'.html_safe, edit_check_path(@check), class: 'btn btn-outline-info btn-sm' %>
-  <%= link_to '<i class="fe fe-trash"></i> Delete'.html_safe, @check,
-    method: :delete,
-    data: { confirm: 'Are you sure?' },
-    class: 'btn btn-outline-danger btn-sm' %>
-  <div id="notice"><%= notice %></div>
-</p>
-
-<p>
-  <strong>Active:</strong>
-  <span class="<%= class_for_active(@check.active) %>"><%= @check.active %></span>
-</p>
-
-<p>
-  <strong>Cron:</strong>
-  <code><%= @check.cron %></code>
-  <%= link_to "<i class='fe fe-external-link'></i> crontab.guru".html_safe, "https://crontab.guru/##{@check.cron.split(' ').join('_')}", target: :_blank %>
-</p>
-
-<p>
-  <strong>URL:</strong>
-  <%= link_to @check.url, @check.url %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <span class="<%= class_for_status(@check.status) %>"><strong><%= @check.status %></strong></span>
-
-</p>
-
-<p>
-  <strong>Last contact:</strong>
-  <span><%= @check.last_contact_at %></span>
-</p>
-
-<p>
-  <strong>Next contact:</strong>
-  <span><%= @check.next_contact_at %></span>
-</p>
-
-<p>
-  <strong>Debug:</strong> <%= link_to @check.job, check_job_path(@check) %>
-</p>
-
-
-
-
 </div>
