@@ -1,39 +1,42 @@
 <div class="card">
-<div class="card-header">
-<h3 class="card-title">Debug job for <%= @check.name %></h3>
-</div>
+  <div class="card-header">
+    <h3 class="card-title">Debug job for <%= @check.name %></h3>
+  </div>
+  <div class="card-body">
 
-<div class="card-body">
+    <% if @job  %>
 
-<% if @job  %>
-<p><strong>Job id:</strong> <%= @job.id %></p>
-<p><strong>Scheduled at:</strong> <%= @job.scheduled_at %></p>
-<p><strong>Last work time:</strong> <%= @job.last_work_time %></p>
-<p><strong>Mean work time:</strong> <%= @job.mean_work_time %></p>
-<p><strong>Last time:</strong> <%= @job.last_time %></p>
-<p><strong>Previous time:</strong> <%= @job.previous_time %></p>
-<p><strong>Next times:</strong>
-  <ul>
-  	<% @job.next_times(10).each do |time|  %>
-  	<li><%= time.to_s %></li>
-  	<% end %>
-  </ul>
-</p>
-<p><strong>Threads:</strong> <%= @job.threads.count %>
-  <ul>
-  	<% @job.threads do |thread|  %>
-  	<li><%= thread.to_s %></li>
-  	<% end %>
-  </ul>
-</p>
-<p><strong>Inspect</strong>
-  <p><code><%= @job.inspect %></code></p>
-</p>
+      <p><strong>Job id:</strong> <%= @job.id %></p>
+      <p><strong>Scheduled at:</strong> <%= @job.scheduled_at %></p>
+      <p><strong>Last work time:</strong> <%= @job.last_work_time %></p>
+      <p><strong>Mean work time:</strong> <%= @job.mean_work_time %></p>
+      <p><strong>Last time:</strong> <%= @job.last_time %></p>
+      <p><strong>Previous time:</strong> <%= @job.previous_time %></p>
+      <p>
+        <strong>Next times:</strong>
+        <ul>
+          <% @job.next_times(10).each do |time|  %>
+          <li><%= time.to_s %></li>
+          <% end %>
+        </ul>
+      </p>
+      <p>
+        <strong>Threads:</strong> <%= @job.threads.count %>
+        <ul>
+          <% @job.threads do |thread|  %>
+          <li><%= thread.to_s %></li>
+          <% end %>
+        </ul>
+      </p>
+      <p><strong>Inspect</strong>
+        <p><code><%= @job.inspect %></code></p>
+      </p>
 
-<% else  %>
+    <% else  %>
 
-<p>Job not found.</p>
+      <p>Job not found.</p>
 
-<% end %>
+    <% end %>
 
+  </div>
 </div>
