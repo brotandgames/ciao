@@ -32,4 +32,5 @@ ADD . $APP_HOME
 RUN SECRET_KEY_BASE=`bin/rake secret` rake assets:precompile
 
 EXPOSE 3000
-CMD ["rails", "server", "-b", "0.0.0.0"]
+
+CMD ["./start.sh"]
