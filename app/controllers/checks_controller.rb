@@ -83,6 +83,20 @@ class ChecksController < ApplicationController
     end
   end
 
+  # GET /checks/jobs/recreate
+  # GET /checks/jobs/recreate.json
+  def jobs_recreate
+    Check.active.each do |check|
+      check.unschedule_job if check.job
+      check.create_job
+    end
+    Rails.logger.info "ciao-scheduler Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"
+    respond_to do |format|
+      format.html { redirect_to checks_url, notice: 'Check jobs were successfully recreated.' }
+      format.json { render json: "Check jobs were successfully recreated.", status: 200 }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_check
