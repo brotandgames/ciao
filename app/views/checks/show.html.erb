@@ -32,8 +32,9 @@
 
         <p>
           <strong>Status:</strong>
-          <span class="<%= class_for_status(@check.status) %>"><strong><%= @check.status %></strong></span>
-
+          <span class="text-<%= class_for_status(@check.status) %>">
+            <strong><%= @check.status %></strong>
+          </span>
         </p>
 
         <p>
