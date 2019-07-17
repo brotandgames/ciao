@@ -9,7 +9,7 @@
       <div class="card-body">
       	<div id="notice"><%= notice %></div>
         <h5>
-          Recreate all scheduled and active background jobs
+          Recreate all scheduled background jobs of active checks
         </h5>
         <p>This is useful after a (re)start.</p>
         <p>
@@ -20,7 +20,7 @@
         </p>
         <p>
           <code>
-          	curl -H "Content-type: application/json" -X GET /checks/jobs/recreate.json
+            curl -X GET -H "Content-type: application/json" /checks/jobs/recreate.json
           </code>
         </p>
       </div>
