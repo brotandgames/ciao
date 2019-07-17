@@ -22,8 +22,10 @@
           <p>
             <%= link_to 'ciao', root_path, class: 'btn btn-success' %>
             <%= link_to 'Checks', checks_path, class: 'btn btn-outline-info' %>
-            <%= link_to '<i class="fe fe-plus"></i> New Check</button>'.html_safe,
+            <%= link_to '<i class="fe fe-plus"></i> New Check'.html_safe,
               new_check_path, class: 'btn btn-outline-success'%>
+            <%= link_to '<i class="fe fe-settings"></i>'.html_safe,
+              admin_checks_path, class: 'btn btn-icon btn-outline-secondary'%>
           </p>
         </div>
       </div>

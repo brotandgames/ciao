@@ -97,6 +97,10 @@ class ChecksController < ApplicationController
     end
   end
 
+  # GET /checks/admin
+  def admin
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_check

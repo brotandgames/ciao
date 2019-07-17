@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Administration</h3>
+        <div class="card-options">
+        </div>
+      </div>
+      <div class="card-body">
+      	<div id="notice"><%= notice %></div>
+        <h5>
+          Recreate all scheduled and active background jobs
+        </h5>
+        <p>This is useful after a (re)start.</p>
+        <p>
+          <%= link_to '<i class="fe fe-refresh-cw"></i> Recreate'.html_safe, jobs_recreate_checks_path, class: 'btn btn-info' %>
+        </p>
+        <p>
+          It can be also accomplished using the REST API endpoint:
+        </p>
+        <p>
+          <code>
+          	curl -H "Content-type: application/json" -X GET /checks/jobs/recreate.json
+          </code>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
