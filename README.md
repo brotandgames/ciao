@@ -4,7 +4,8 @@
 
 It uses Cron syntax to schedule the checks and comes along with a Web UI and a RESTfull JSON API.
 
-*image_dashboard*
+![ciao Checks overview](https://brotandgames.com/assets/ciao-checks.png "ciao Checks overview")
+*You can find more screenshots on the [Homepage](https://www.brotandgames.com/ciao/).*
 
 **ciao** (/tʃaʊ/) - **c**heck **i**n **a**nd **o**ut - borrowed from Italian *ciao* for greeting someone.
 
