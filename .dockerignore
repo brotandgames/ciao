@@ -10,7 +10,7 @@
 .env.staging
 
 # Ignore node_modules
-/node_modules/*
+/node_modules
 
 # Ignore bundler config.
 /.bundle
@@ -27,3 +27,6 @@ tags
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+
+# Ignore Dockerfile
+/Dockerfile

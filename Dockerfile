@@ -1,35 +1,58 @@
-FROM ruby:2.5.5
-
-RUN apt-get update -qq && apt-get install -y build-essential apt-transport-https
-
-RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
-RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
-
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash
-
-RUN apt-get update -qq && apt-get install -y libxml2-dev libxslt1-dev nodejs yarn
+FROM ruby:2.5.5-alpine
 
 # for postgres: libpq-dev
 # for capybara-webkit: libqt4-webkit libqt4-dev xvfb
+RUN apk add --no-cache \
+        sqlite-dev \
+        tzdata \
+        yarn
 
-ENV APP_HOME=/app
-ENV RACK_ENV=production
-ENV RAILS_LOG_TO_STDOUT=true
+WORKDIR /app
 
-RUN mkdir $APP_HOME
-WORKDIR $APP_HOME
+ARG RACK_ENV=production
+ENV RACK_ENV=$RACK_ENV
 
-RUN gem update --system && gem install bundler
+ADD Gemfile* /app/
+RUN set -x \
+    && apk add --no-cache --virtual .build-deps \
+        build-base \
+        libxml2-dev \
+        libxslt-dev \
+    && gem install bundler \
+    && bundle install --without development:test --jobs 20 -j"$(nproc)" --retry 3 \
+    # Remove unneeded files (cached *.gem, *.o, *.c)
+    && rm -rf \
+        /usr/local/bundle/cache/*.gem \
+        /usr/local/bundle/gems/**/*.c \
+        /usr/local/bundle/gems/**/*.o \
+    && apk del .build-deps
 
-ADD Gemfile* package.json yarn.lock $APP_HOME/
-# RUN bundle install --without development:test --path vendor/bundle --binstubs vendor/bundle/bin -j4 --deployment
-RUN bundle install --without development:test --jobs 20
+COPY package.json yarn.lock /app/
+RUN set -x \
+    && yarn install \
+    && rm -rf /tmp/*
 
-ADD . $APP_HOME
+COPY . ./
 
 # The command '/bin/sh -c rake assets:precompile' needs the RAILS_MASTER_KEY to be set!?
 # https://github.com/rails/rails/issues/32947
-RUN SECRET_KEY_BASE=`bin/rake secret` rake assets:precompile
+RUN set -x \
+    && SECRET_KEY_BASE=foo bundle exec rake assets:precompile \
+    # Remove folders not needed in resulting image
+    && rm -rf \
+        /tmp/* \
+        app/assets \
+        lib/assets \
+        node_modules \
+        spec \
+        tmp/cache \
+        vendor/assets
+
+ENV RAILS_LOG_TO_STDOUT=true
+ENV RAILS_SERVE_STATIC_FILES=true
+ENV EXECJS_RUNTIME=Disabled
+
+WORKDIR /app
 
 EXPOSE 3000
 
