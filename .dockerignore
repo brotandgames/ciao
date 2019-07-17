@@ -24,3 +24,6 @@ tags
 # Ignore .git as it's not needed with the docker built.
 .git
 .cache
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
