@@ -1,7 +1,6 @@
 FROM ruby:2.5.5-alpine
 
-# for postgres: libpq-dev
-# for capybara-webkit: libqt4-webkit libqt4-dev xvfb
+# for postgres: postgresql-dev
 RUN apk add --no-cache \
         sqlite-dev \
         tzdata \
