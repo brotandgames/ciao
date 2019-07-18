@@ -53,4 +53,6 @@ ENV EXECJS_RUNTIME=Disabled
 
 EXPOSE 3000
 
+VOLUME /app/db/sqlite
+
 CMD ["./start.sh"]
