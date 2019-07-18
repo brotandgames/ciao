@@ -1,12 +1,13 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-set -e
-self=${0##*/}
+set -euo pipefail
 
-if [[ -z "$SECRET_KEY_BASE" ]]; then
+self="$(basename "$0")"
+
+if [ -z "${SECRET_KEY_BASE:-}" ]; then
   echo "== $self WARNING: SECRET_KEY_BASE not set"
   echo "== $self It will be set to a random value using \`rake secret\`"
-  export SECRET_KEY_BASE=`rake secret`
+  export SECRET_KEY_BASE="$(rake secret)"
 fi
 
 rake db:migrate
