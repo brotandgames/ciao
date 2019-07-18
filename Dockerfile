@@ -1,4 +1,4 @@
-FROM ruby:2.5.5
+FROM ruby:2.6.3
 
 RUN apt-get update -qq && apt-get install -y build-essential apt-transport-https
 
