@@ -119,6 +119,32 @@ Delete a check
 curl -X DELETE -H "Content-type: application/json" /checks/<:id>.json
 ````
 
+## Backup & Restore
+
+State is stored in an internal SQLite database located in `db/sqlite/production.sqlite3`.
+
+*NOTE: Prior to version 1.1.0 the database was located in `db/` (missing sqlite subfolder). From 1.1.0 onwards the location is `db/sqlite/` to enable docker to use a volume.*
+
+### Backup
+
+````
+docker cp ciao:/app/db/sqlite/production.sqlite3 production.sqlite3.backup
+````
+
+### Restore
+
+````
+docker cp production.sqlite3.backup ciao:/app/db/sqlite/production.sqlite3
+docker restart ciao
+````
+
+Visit `/checks/admin` and recreate the background jobs for active checks.
+
+## Upgrade
+
+1. [Backup](#backup) the database
+2. Run container with new version
+3. [Restore](#restore) the database, restart the container and recreate jobs for active checks
 
 ## Deploy
 

@@ -7,7 +7,12 @@
 # Ignore bundler config.
 /.bundle
 
-# Ignore the default SQLite database.
+# Ignore the default SQLite database (prior to ciao 1.1.0).
+/db/*.sqlite3
+/db/*.sqlite3-journal
+
+# Ignore the SQLite database (ciao >= 1.1.0).
+# Moved to subfolder to enable docker to use a volume.
 /db/sqlite/*.sqlite3
 /db/sqlite/*.sqlite3-journal
 
