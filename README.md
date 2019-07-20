@@ -1,5 +1,7 @@
 # ciao
 
+[![Join the chat at https://gitter.im/brotandgames-ciao/community](https://badges.gitter.im/brotandgames-ciao/community.svg)](https://gitter.im/brotandgames-ciao/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **ciao** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends an e-mail on status change.
 
 It uses Cron syntax to schedule the checks and comes along with a Web UI and a RESTfull JSON API.
