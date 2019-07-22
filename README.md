@@ -75,6 +75,46 @@ RAILS_ENV=production ./start.sh
 
 Open localhost:3000 in the webbrowser.
 
+### Via Docker-compose
+
+Docker-compose.yml file
+
+````
+version: "3"
+services:
+    ciao:
+        container_name: ciao
+        ports:
+            - '8090:3000'
+        environment:
+            - SECRET_KEY_BASE="sensitive_secret_key_base"
+            - SMTP_ADDRESS=smtp.yourhost.com
+            - SMTP_EMAIL_FROM=ciao@yourhost.com
+            - SMTP_EMAIL_TO=you@yourhost.com
+            - SMTP_PORT=587
+            - SMTP_AUTHENTICATION=plain
+            - SMTP_DOMAIN=smtp.yourhost.com
+            - SMTP_ENABLE_STARTTLS_AUTO=auto
+            - SMTP_USERNAME=ciao
+            - SMTP_PASSWORD=sensitive_password
+        image: brotandgames/ciao
+        volumes:
+          - /opt/ciao/data:/app/db/sqlite/
+````
+
+Pull and run 
+
+````
+docker-compose pull
+docker-compose up -d
+````
+
+Open localhost:8090 in the webbrowser.
+
+*Notes*: 
+  - You can send emails to several addreses just by separating them with coma, for example SMTP_EMAIL_TO=a@yourhost.com,b@yourhost.com
+  - By mounting volume you can avoid using backup/restore
+
 ## REST API
 
 **GET /checks.json**
