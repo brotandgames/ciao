@@ -21,9 +21,13 @@ Open localhost:8090 in your webbrowser.
 
 ## Install
 
-You can install ciao via a predefined Docker image or using Git and installing the dependencies manually.
+You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
-Following are two examples using a predefined SECRET_KEY_BASE (will be auto-generated if you omit it) and configuration for SMTP (for sending e-mails).
+- `SECRET_KEY_BASE` will be auto-generated if you omit it
+- You can send emails to several addreses just by separating them with comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
+- By mounting a volume (Docker) you can avoid loosing data on restart or upgrade
+
+IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 
 ### Via Docker image
 
@@ -45,6 +49,42 @@ docker run \
 ````
 
 Open localhost:8090 in your webbrowser.
+
+### Via Docker-compose
+
+Create docker-compose.yml file
+
+````
+version: "3"
+services:
+  ciao:
+    image: brotandgames/ciao
+    container_name: ciao
+    ports:
+      - '8090:3000'
+    environment:
+      - SECRET_KEY_BASE="sensitive_secret_key_base"
+      - SMTP_ADDRESS=smtp.yourhost.com
+      - SMTP_EMAIL_FROM="ciao@yourhost.com"
+      - SMTP_EMAIL_TO="you@yourhost.com"
+      - SMTP_PORT=587
+      - SMTP_AUTHENTICATION=plain
+      - SMTP_DOMAIN=smtp.yourhost.com
+      - SMTP_ENABLE_STARTTLS_AUTO=auto
+      - SMTP_USERNAME=ciao
+      - SMTP_PASSWORD="sensitive_password"
+    volumes:
+      - /opt/ciao/data:/app/db/sqlite/
+````
+
+Pull and run
+
+````
+docker-compose pull
+docker-compose up -d
+````
+
+Open localhost:8090 in the webbrowser.
 
 ### Via Git clone
 
@@ -74,46 +114,6 @@ RAILS_ENV=production ./start.sh
 ````
 
 Open localhost:3000 in the webbrowser.
-
-### Via Docker-compose
-
-Docker-compose.yml file
-
-````
-version: "3"
-services:
-    ciao:
-        container_name: ciao
-        ports:
-            - '8090:3000'
-        environment:
-            - SECRET_KEY_BASE="sensitive_secret_key_base"
-            - SMTP_ADDRESS=smtp.yourhost.com
-            - SMTP_EMAIL_FROM=ciao@yourhost.com
-            - SMTP_EMAIL_TO=you@yourhost.com
-            - SMTP_PORT=587
-            - SMTP_AUTHENTICATION=plain
-            - SMTP_DOMAIN=smtp.yourhost.com
-            - SMTP_ENABLE_STARTTLS_AUTO=auto
-            - SMTP_USERNAME=ciao
-            - SMTP_PASSWORD=sensitive_password
-        image: brotandgames/ciao
-        volumes:
-          - /opt/ciao/data:/app/db/sqlite/
-````
-
-Pull and run 
-
-````
-docker-compose pull
-docker-compose up -d
-````
-
-Open localhost:8090 in the webbrowser.
-
-*Notes*: 
-  - You can send emails to several addreses just by separating them with coma, for example SMTP_EMAIL_TO=a@yourhost.com,b@yourhost.com
-  - By mounting volume you can avoid using backup/restore
 
 ## REST API
 
