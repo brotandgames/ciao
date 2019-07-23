@@ -45,7 +45,7 @@ docker run \
   -e SMTP_ENABLE_STARTTLS_AUTO=auto \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
-  -v /opt/ciao/data:/app/db/sqlite
+  -v /opt/ciao/data:/app/db/sqlite \
   brotandgames/ciao
 ````
 
