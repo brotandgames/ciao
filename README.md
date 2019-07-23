@@ -24,8 +24,8 @@ Open localhost:8090 in your webbrowser.
 You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
-- You can send emails to several addreses just by separating them with comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
-- By mounting a volume (Docker) you can avoid loosing data on restart or upgrade
+- You can send emails to several addresses by separating them with a comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
+- By mounting a Docker volume you can avoid loosing data on restart or upgrade
 
 IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 
@@ -45,6 +45,7 @@ docker run \
   -e SMTP_ENABLE_STARTTLS_AUTO=auto \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
+  -v /opt/ciao/data:/app/db/sqlite
   brotandgames/ciao
 ````
 
