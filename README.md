@@ -179,14 +179,14 @@ docker cp ciao:/app/db/sqlite/production.sqlite3 production.sqlite3.backup
 docker cp production.sqlite3.backup ciao:/app/db/sqlite/production.sqlite3
 docker restart ciao
 ````
+*Prior to version 1.2.0: visit `/checks/admin` and recreate the background jobs for active checks.*
 
-Visit `/checks/admin` and recreate the background jobs for active checks.
 
 ## Upgrade
 
 1. [Backup](#backup) the database
 2. Run container with new version
-3. [Restore](#restore) the database, restart the container and recreate jobs for active checks
+3. [Restore](#restore) the database
 
 ## Deploy
 
