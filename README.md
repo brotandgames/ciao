@@ -47,9 +47,10 @@ docker run \
   -e SMTP_PORT=587 \
   -e SMTP_DOMAIN=smtp.yourhost.com \
   -e SMTP_AUTHENTICATION=plain \
-  -e SMTP_ENABLE_STARTTLS_AUTO=auto \
+  -e SMTP_ENABLE_STARTTLS_AUTO="true" \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
+  -e SMTP_SSL="true" \
   -v /opt/ciao/data:/app/db/sqlite \
   brotandgames/ciao
 ````
@@ -76,9 +77,10 @@ services:
       - SMTP_PORT=587
       - SMTP_AUTHENTICATION=plain
       - SMTP_DOMAIN=smtp.yourhost.com
-      - SMTP_ENABLE_STARTTLS_AUTO=auto
+      - SMTP_ENABLE_STARTTLS_AUTO="true"
       - SMTP_USERNAME=ciao
       - SMTP_PASSWORD="sensitive_password"
+      - SMTP_SSL="true"
     volumes:
       - /opt/ciao/data:/app/db/sqlite/
 ````
@@ -111,9 +113,10 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_PORT=587 \
   SMTP_DOMAIN=smtp.yourhost.com \
   SMTP_AUTHENTICATION=plain \
-  SMTP_ENABLE_STARTTLS_AUTO=auto \
+  SMTP_ENABLE_STARTTLS_AUTO="true" \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password"
+  SMTP_PASSWORD="sensitive_password" \
+  SMTP_SSL="true"
 
 # Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server
 RAILS_ENV=production ./start.sh
@@ -222,9 +225,10 @@ dokku config:set --no-restart ciao \
   SMTP_PORT=587 \
   SMTP_DOMAIN=smtp.yourhost.com \
   SMTP_AUTHENTICATION=plain \
-  SMTP_ENABLE_STARTTLS_AUTO=auto \
+  SMTP_ENABLE_STARTTLS_AUTO="true" \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password"
+  SMTP_PASSWORD="sensitive_password" \
+  SMTP_SSL="true"
 ````
 
 Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.

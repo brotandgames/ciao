@@ -86,7 +86,8 @@ Rails.application.configure do
       authentication: ENV["SMTP_AUTHENTICATION"],
       enable_starttls_auto: ENV["SMTP_ENABLE_STARTTLS_AUTO"],
       user_name: ENV["SMTP_USERNAME"],
-      password: ENV["SMTP_PASSWORD"]
+      password: ENV["SMTP_PASSWORD"],
+      ssl: ActiveModel::Type::Boolean.new.cast(ENV["SMTP_SSL"])
     }
   end
 
