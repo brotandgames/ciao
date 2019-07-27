@@ -15,13 +15,6 @@ Lint/UriEscapeUnescape:
 Style/Documentation:
   Enabled: false
 
-# Offense count: 2
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'app/validators/cron_validator.rb'
-    - 'app/validators/http_url_validator.rb'
-
 # Offense count: 5
 # Cop supports --auto-correct.
 Style/IfUnlessModifier:
