@@ -3,6 +3,7 @@
 [![Latest release](https://img.shields.io/github/release/brotandgames/ciao.svg)](https://github.com/brotandgames/ciao/releases/latest)
 [![Docker pulls](https://img.shields.io/docker/pulls/brotandgames/ciao.svg)](https://store.docker.com/community/images/brotandgames/ciao)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/brotandgames/ciao/master/LICENSE)
+[![Build Status](https://travis-ci.org/brotandgames/ciao.svg?branch=master)](https://travis-ci.org/brotandgames/ciao)
 
 **[ciao](https://www.brotandgames.com/ciao/)** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends an e-mail on status change.
 
