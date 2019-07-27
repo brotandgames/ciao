@@ -32,6 +32,7 @@ class Check < ApplicationRecord
   end
 
   def create_job
+    # rubocop:disable Metrics/LineLength
     job =
       Rufus::Scheduler.singleton.cron cron, job: true do
         url = URI.parse(self.url)
@@ -62,6 +63,7 @@ class Check < ApplicationRecord
       Rails.logger.error 'ciao-scheduler Could not create job'
     end
     job
+    # rubocop:enable Metrics/LineLength
   end
 
   def unschedule_job

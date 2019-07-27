@@ -28,11 +28,15 @@ class ChecksController < ApplicationController
 
     respond_to do |format|
       if @check.save
-        format.html { redirect_to @check, notice: 'Check was successfully created.' }
+        format.html do
+          redirect_to @check, notice: 'Check was successfully created.'
+        end
         format.json { render :show, status: :created, location: @check }
       else
         format.html { render :new }
-        format.json { render json: @check.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @check.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -42,11 +46,15 @@ class ChecksController < ApplicationController
   def update
     respond_to do |format|
       if @check.update(check_params)
-        format.html { redirect_to @check, notice: 'Check was successfully updated.' }
+        format.html do
+          redirect_to @check, notice: 'Check was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @check }
       else
         format.html { render :edit }
-        format.json { render json: @check.errors, status: :unprocessable_entity }
+        format.json do
+          render json: @check.errors, status: :unprocessable_entity
+        end
       end
     end
   end
@@ -56,7 +64,9 @@ class ChecksController < ApplicationController
   def destroy
     @check.destroy
     respond_to do |format|
-      format.html { redirect_to checks_url, notice: 'Check was successfully destroyed.' }
+      format.html do
+        redirect_to checks_url, notice: 'Check was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -92,8 +102,13 @@ class ChecksController < ApplicationController
     end
     Rails.logger.info "ciao-scheduler Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"
     respond_to do |format|
-      format.html { redirect_to checks_url, notice: 'Check jobs were successfully recreated.' }
-      format.json { render json: 'Check jobs were successfully recreated.', status: 200 }
+      format.html do
+        redirect_to checks_url,
+                    notice: 'Check jobs were successfully recreated.'
+      end
+      format.json do
+        render json: 'Check jobs were successfully recreated.', status: 200
+      end
     end
   end
 

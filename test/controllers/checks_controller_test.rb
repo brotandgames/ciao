@@ -19,7 +19,13 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create check' do
     assert_difference('Check.count') do
-      post checks_url, params: { check: { cron: @check.cron, url: @check.url, name: @check.name } }
+      post checks_url, params: {
+        check: {
+          cron: @check.cron,
+          url: @check.url,
+          name: @check.name
+        }
+      }
     end
 
     assert_redirected_to check_url(Check.last)
@@ -36,7 +42,13 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update check' do
-    patch check_url(@check), params: { check: { cron: @check.cron, url: @check.url, name: @check.name } }
+    patch check_url(@check), params: {
+      check: {
+        cron: @check.cron,
+        url: @check.url,
+        name: @check.name
+      }
+    }
     assert_redirected_to check_url(@check)
   end
 

@@ -29,4 +29,10 @@ Style/IfUnlessModifier:
 # Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:
-  Max: 216
+  AllowURI: true
+  IgnoredPatterns: [".*#.*"] # ignore lines with comments
+  AllowHeredoc: true
+  Exclude:
+    - 'config/**/*'
+    - 'db/**/*'
+    - 'bin/**/*'
