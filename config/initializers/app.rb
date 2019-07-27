@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 NET_HTTP_ERRORS = [
   EOFError,
   Errno::ECONNRESET,
@@ -9,4 +11,4 @@ NET_HTTP_ERRORS = [
   Timeout::Error,
   SocketError,
   OpenSSL::SSL::SSLError
-]
+].freeze

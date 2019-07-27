@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class ChecksController < ApplicationController
-  before_action :set_check, only: [:show, :edit, :update, :destroy]
+  before_action :set_check, only: %i[show edit update destroy]
 
   # GET /checks
   # GET /checks.json
@@ -9,8 +11,7 @@ class ChecksController < ApplicationController
 
   # GET /checks/1
   # GET /checks/1.json
-  def show
-  end
+  def show; end
 
   # GET /checks/new
   def new
@@ -18,8 +19,7 @@ class ChecksController < ApplicationController
   end
 
   # GET /checks/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /checks
   # POST /checks.json
@@ -78,7 +78,7 @@ class ChecksController < ApplicationController
         format.json { render :job, status: :ok }
       else
         format.html { render :job, status: 404 }
-        format.json { render json: "Job not found", status: 404 }
+        format.json { render json: 'Job not found', status: 404 }
       end
     end
   end
@@ -93,22 +93,22 @@ class ChecksController < ApplicationController
     Rails.logger.info "ciao-scheduler Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"
     respond_to do |format|
       format.html { redirect_to checks_url, notice: 'Check jobs were successfully recreated.' }
-      format.json { render json: "Check jobs were successfully recreated.", status: 200 }
+      format.json { render json: 'Check jobs were successfully recreated.', status: 200 }
     end
   end
 
   # GET /checks/admin
-  def admin
-  end
+  def admin; end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_check
-      @check = Check.find(params[:id])
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def check_params
-      params.require(:check).permit(:name, :cron, :url, :active)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_check
+    @check = Check.find(params[:id])
+  end
+
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def check_params
+    params.require(:check).permit(:name, :cron, :url, :active)
+  end
 end

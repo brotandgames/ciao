@@ -1,23 +1,28 @@
+# frozen_string_literal: true
+
 module ChecksHelper
   def class_for_status(status)
     case status.to_i
     when 200..299
-      "success"
+      'success'
     when 300..399
-      "info"
+      'info'
     when 400..499
-      "warning"
+      'warning'
     else
-      "danger"
+      'danger'
     end
   end
+
   def class_for_active(active)
-    active ? "text-green" : "text-red"
+    active ? 'text-green' : 'text-red'
   end
+
   def class_for_active_checkbox(active)
-    active ? "fe-check" : "fe-minus"
+    active ? 'fe-check' : 'fe-minus'
   end
+
   def class_for_healthy(percent)
-    percent == 100.0 ? "text-green" : "text-red"
+    percent == 100.0 ? 'text-green' : 'text-red'
   end
 end

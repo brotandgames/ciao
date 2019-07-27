@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Check < ApplicationRecord
   after_create :create_job, if: :active?
   after_update :update_routine
@@ -10,11 +12,11 @@ class Check < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
-  scope :healthy, -> { where(status: "200", active: true) }
-  scope :unhealthy, -> { where.not(status: "200", active: true) }
+  scope :healthy, -> { where(status: '200', active: true) }
+  scope :unhealthy, -> { where.not(status: '200', active: true) }
 
   def self.percentage_active
-    if ! self.active.empty?
+    if !active.empty?
       ((active.count * 1.0 / count * 1.0) * 100.0).round(0)
     else
       0.0
@@ -22,7 +24,7 @@ class Check < ApplicationRecord
   end
 
   def self.percentage_healthy
-    if ! self.active.empty?
+    if !active.empty?
       ((healthy.count * 1.0 / active.count * 1.0) * 100.0).round(0)
     else
       0.0
@@ -31,7 +33,7 @@ class Check < ApplicationRecord
 
   def create_job
     job =
-      Rufus::Scheduler.singleton.cron self.cron, :job => true do
+      Rufus::Scheduler.singleton.cron cron, job: true do
         url = URI.parse(self.url)
         begin
           response = Net::HTTP.get_response(url)
@@ -42,24 +44,24 @@ class Check < ApplicationRecord
         status = http_code unless e
         last_contact_at = Time.current
         Rails.logger.info "ciao-scheduler Checked '#{url}' at '#{last_contact_at}' and got '#{status}'"
-        status_before = status_after = ""
+        status_before = status_after = ''
         ActiveRecord::Base.connection_pool.with_connection do
           status_before = self.status
-          self.update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
+          update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
           status_after = self.status
         end
         if status_before != status_after
-          CheckMailer.with(name: self.name, status_before: status_before, status_after: status_after).change_status_mail.deliver
+          CheckMailer.with(name: name, status_before: status_before, status_after: status_after).change_status_mail.deliver
           Rails.logger.info "ciao-scheduler Sent 'changed_status' notification mail"
         end
       end
     if job
       Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
-      self.update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
+      update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
     else
-      Rails.logger.error "ciao-scheduler Could not create job"
+      Rails.logger.error 'ciao-scheduler Could not create job'
     end
-    return job
+    job
   end
 
   def unschedule_job
@@ -74,19 +76,18 @@ class Check < ApplicationRecord
 
   private
 
-    def update_routine
-      if self.saved_change_to_attribute?(:active)
-        if self.active
-          create_job
-        else
-          unschedule_job
-          self.update_columns(next_contact_at: nil, job: nil)
-        end
-      elsif self.saved_change_to_attribute?(:cron) || self.saved_change_to_attribute?(:url)
-        Rails.logger.info "ciao-scheduler Check '#{self.name}' updates to cron or URL triggered job update"
-        unschedule_job
+  def update_routine
+    if saved_change_to_attribute?(:active)
+      if active
         create_job
+      else
+        unschedule_job
+        update_columns(next_contact_at: nil, job: nil)
       end
+    elsif saved_change_to_attribute?(:cron) || saved_change_to_attribute?(:url)
+      Rails.logger.info "ciao-scheduler Check '#{name}' updates to cron or URL triggered job update"
+      unschedule_job
+      create_job
     end
-
+  end
 end
