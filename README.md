@@ -51,6 +51,8 @@ docker run \
   -e SMTP_ENABLE_STARTTLS_AUTO=auto \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
+  -e BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
+  -e BASIC_AUTH_PASSWORD="password_for_basic_auth" \
   -v /opt/ciao/data:/app/db/sqlite \
   brotandgames/ciao
 ````
@@ -80,6 +82,8 @@ services:
       - SMTP_ENABLE_STARTTLS_AUTO=auto
       - SMTP_USERNAME=ciao
       - SMTP_PASSWORD="sensitive_password"
+      - BASIC_AUTH_USERNAME="username_for_basic_auth" # leave empty to disable basic auth
+      - BASIC_AUTH_PASSWORD="password_for_basic_auth"
     volumes:
       - /opt/ciao/data:/app/db/sqlite/
 ````
@@ -114,7 +118,9 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_AUTHENTICATION=plain \
   SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password"
+  SMTP_PASSWORD="sensitive_password" \
+  BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
+  BASIC_AUTH_PASSWORD="password_for_basic_auth"
 
 # Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server
 RAILS_ENV=production ./start.sh
@@ -225,7 +231,9 @@ dokku config:set --no-restart ciao \
   SMTP_AUTHENTICATION=plain \
   SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password"
+  SMTP_PASSWORD="sensitive_password" \
+  BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
+  BASIC_AUTH_PASSWORD="password_for_basic_auth"
 ````
 
 Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
