@@ -11,20 +11,6 @@ Lint/UriEscapeUnescape:
   Exclude:
     - 'app/validators/http_url_validator.rb'
 
-# Offense count: 19
-Style/Documentation:
-  Enabled: false
-
-# Offense count: 5
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/validators/cron_validator.rb'
-    - 'app/validators/http_url_validator.rb'
-    - 'bin/bundle'
-    - 'config/initializers/create_background_jobs.rb'
-
-# Offense count: 150
 # Cop supports --auto-correct.
 # Configuration parameters: AutoCorrect, AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
@@ -36,3 +22,11 @@ Metrics/LineLength:
     - 'config/**/*'
     - 'db/**/*'
     - 'bin/**/*'
+
+Style/Documentation:
+  Exclude:
+    - 'db/migrate/*'
+    - 'test/test_helper.rb'
+    - 'app/**/*'
+    - 'config/application.rb'
+    - 'test/**/*'

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'><h1 id="ciao">ciao</h1>
+
+<p><a href="https://github.com/brotandgames/ciao/releases/latest"><img src="https://img.shields.io/github/release/brotandgames/ciao.svg" alt="Latest release" /></a>
+<a href="https://store.docker.com/community/images/brotandgames/ciao"><img src="https://img.shields.io/docker/pulls/brotandgames/ciao.svg" alt="Docker pulls" /></a>
+<a href="https://raw.githubusercontent.com/brotandgames/ciao/master/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT" /></a></p>
+
+<p><strong><a href="https://www.brotandgames.com/ciao/">ciao</a></strong> checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends an e-mail on status change.</p>
+
+<p>It uses Cron syntax to schedule the checks and comes along with a Web UI and a RESTfull JSON API.</p>
+
+<p><img src="https://brotandgames.com/assets/ciao-checks.png" alt="ciao Checks overview" title="ciao Checks overview" />
+<em>You can find more screenshots on the <a href="https://www.brotandgames.com/ciao/">Homepage</a>.</em></p>
+
+<p><strong>ciao</strong> (/tʃaʊ/) - <strong>c</strong>heck <strong>i</strong>n <strong>a</strong>nd <strong>o</strong>ut - borrowed from Italian <em>ciao</em> for greeting someone.</p>
+
+<p><em>Motivation:</em> create an open source web application for checking URL statuses with an UI and a REST API which is easy to install and maintain (no external dependencies like Databases, Caches etc.) in public and private environments.</p>
+
+<h2 id="quickstart">Quickstart</h2>
+
+<p><code>
+docker run --name ciao -p 8090:3000 brotandgames/ciao
+</code></p>
+
+<p>Open localhost:8090 in your webbrowser.</p>
+
+<h2 id="install">Install</h2>
+
+<p>You can install ciao via the official Docker image <code>brotandgames/ciao</code> or using Git and installing the dependencies manually.</p>
+
+<ul>
+  <li><code>SECRET_KEY_BASE</code> will be auto-generated if you omit it</li>
+  <li>You can send emails to several addresses by separating them with a comma eg. <code>SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"</code></li>
+  <li>By mounting a Docker volume you can avoid loosing data on restart or upgrade</li>
+  <li>Time zone is configurable per <code>TIME_ZONE</code> variable (default: UTC) eg. <code>TIME_ZONE="Vienna"</code> - you can find all possible values by executing <code>docker run --rm brotandgames/ciao rake time:zones</code></li>
+</ul>
+
+<p>IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.</p>
+
+<h3 id="via-docker-image">Via Docker image</h3>
+
+<p><code>
+docker run \
+  --name ciao \
+  -p 8090:3000 \
+  -e SECRET_KEY_BASE="sensitive_secret_key_base" \
+  -e SMTP_ADDRESS=smtp.yourhost.com \
+  -e SMTP_EMAIL_FROM="ciao@yourhost.com" \
+  -e SMTP_EMAIL_TO="you@yourhost.com" \
+  -e SMTP_PORT=587 \
+  -e SMTP_DOMAIN=smtp.yourhost.com \
+  -e SMTP_AUTHENTICATION=plain \
+  -e SMTP_ENABLE_STARTTLS_AUTO=auto \
+  -e SMTP_USERNAME=ciao \
+  -e SMTP_PASSWORD="sensitive_password" \
+  -v /opt/ciao/data:/app/db/sqlite \
+  brotandgames/ciao
+</code></p>
+
+<p>Open localhost:8090 in your webbrowser.</p>
+
+<h3 id="via-docker-compose">Via Docker-compose</h3>
+
+<p>Create docker-compose.yml file</p>
+
+<p><code>
+version: "3"
+services:
+  ciao:
+    image: brotandgames/ciao
+    container_name: ciao
+    ports:
+      - '8090:3000'
+    environment:
+      - SECRET_KEY_BASE="sensitive_secret_key_base"
+      - SMTP_ADDRESS=smtp.yourhost.com
+      - SMTP_EMAIL_FROM="ciao@yourhost.com"
+      - SMTP_EMAIL_TO="you@yourhost.com"
+      - SMTP_PORT=587
+      - SMTP_AUTHENTICATION=plain
+      - SMTP_DOMAIN=smtp.yourhost.com
+      - SMTP_ENABLE_STARTTLS_AUTO=auto
+      - SMTP_USERNAME=ciao
+      - SMTP_PASSWORD="sensitive_password"
+    volumes:
+      - /opt/ciao/data:/app/db/sqlite/
+</code></p>
+
+<p>Pull and run</p>
+
+<p><code>
+docker-compose pull
+docker-compose up -d
+</code></p>
+
+<p>Open localhost:8090 in the webbrowser.</p>
+
+<h3 id="via-git-clone">Via Git clone</h3>
+
+<p>````
+# Clone repo
+git clone https://github.com/brotandgames/ciao</p>
+
+<p>cd ciao</p>
+
+<h1 id="install-all-dependencies-rubygems">Install all dependencies (rubygems)</h1>
+<p>RAILS_ENV=production bundle install</p>
+
+<h1 id="configure">Configure</h1>
+<p>export SECRET_KEY_BASE=”sensitive_secret_key_base” \
+  SMTP_ADDRESS=smtp.yourhost.com \
+  SMTP_EMAIL_FROM=”ciao@yourhost.com” \
+  SMTP_EMAIL_TO=”you@yourhost.com” \
+  SMTP_PORT=587 \
+  SMTP_DOMAIN=smtp.yourhost.com \
+  SMTP_AUTHENTICATION=plain \
+  SMTP_ENABLE_STARTTLS_AUTO=auto \
+  SMTP_USERNAME=ciao \
+  SMTP_PASSWORD=”sensitive_password”</p>
+
+<h1 id="run-start-script---basically-this-is-check-secretkeybase-database-initmigrate-and-rails-server">Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server</h1>
+<p>RAILS_ENV=production ./start.sh
+````</p>
+
+<p>Open localhost:3000 in the webbrowser.</p>
+
+<h2 id="rest-api">REST API</h2>
+
+<p><strong>GET /checks.json</strong></p>
+
+<p>Show collection (array) of all checks</p>
+
+<p><code>
+curl -X GET -H "Content-type: application/json" /checks.json
+</code></p>
+
+<p><strong>GET /checks/&lt;:id&gt;.json</strong></p>
+
+<p>Show a specific check</p>
+
+<p><code>
+curl -X GET -H "Content-type: application/json" /checks/&lt;:id&gt;.json
+</code></p>
+
+<p><strong>POST /checks.json</strong></p>
+
+<p>Create a check</p>
+
+<p><code>
+curl -X POST -H "Content-type: application/json" /checks.json \
+  -d '{ "name": "brotandgames.com", "active": true, "url": "https://brotandgames.com", "cron": "* * * *"}'
+</code></p>
+
+<p><strong>PATCH/PUT /checks/&lt;:id&gt;.json</strong></p>
+
+<p>Update a check</p>
+
+<p><code>
+curl -X PUT -H "Content-type: application/json" /checks/&lt;:id&gt;.json \
+  -d '{ "name": "brotandgames.com", "active": false, "url": "https://brotandgames.com", "cron": "* * * *"}'
+</code></p>
+
+<p><strong>DELETE /checks/&lt;:id&gt;.json</strong></p>
+
+<p>Delete a check</p>
+
+<p><code>
+curl -X DELETE -H "Content-type: application/json" /checks/&lt;:id&gt;.json
+</code></p>
+
+<h2 id="backup--restore">Backup &amp; Restore</h2>
+
+<p>State is stored in an internal SQLite database located in <code>db/sqlite/production.sqlite3</code>.</p>
+
+<p><em>NOTE: Prior to version 1.1.0 the database was located in <code>db/</code> (missing sqlite subfolder). From 1.1.0 onwards the location is <code>db/sqlite/</code> to enable docker to use a volume.</em></p>
+
+<h3 id="backup">Backup</h3>
+
+<p><code>
+docker cp ciao:/app/db/sqlite/production.sqlite3 production.sqlite3.backup
+</code></p>
+
+<h3 id="restore">Restore</h3>
+
+<p><code>
+docker cp production.sqlite3.backup ciao:/app/db/sqlite/production.sqlite3
+docker restart ciao
+</code>
+<em>Prior to version 1.2.0: visit <code>/checks/admin</code> and recreate the background jobs for active checks.</em></p>
+
+<h2 id="upgrade">Upgrade</h2>
+
+<ol>
+  <li><a href="#backup">Backup</a> the database</li>
+  <li>Run container with new version</li>
+  <li><a href="#restore">Restore</a> the database</li>
+</ol>
+
+<h2 id="deploy">Deploy</h2>
+
+<p>Here you’ll find instructions for deploying ciao to different platforms like Kubernetes or Dokku.</p>
+
+<p>Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.</p>
+
+<h3 id="kubernetes">Kubernetes</h3>
+
+<p>Helm Chart is in development.</p>
+
+<h3 id="dokku">Dokku</h3>
+
+<p>Create app</p>
+
+<p><code>
+dokku apps:create ciao
+</code></p>
+
+<p>Configure</p>
+
+<p><code>
+dokku config:set --no-restart ciao \
+  SECRET_KEY_BASE="sensitive_secret_key_base" \
+  SMTP_ADDRESS=smtp.yourhost.com \
+  SMTP_EMAIL_FROM="ciao@yourhost.com" \
+  SMTP_EMAIL_TO="you@yourhost.com" \
+  SMTP_PORT=587 \
+  SMTP_DOMAIN=smtp.yourhost.com \
+  SMTP_AUTHENTICATION=plain \
+  SMTP_ENABLE_STARTTLS_AUTO=auto \
+  SMTP_USERNAME=ciao \
+  SMTP_PASSWORD="sensitive_password"
+</code></p>
+
+<p>Deploy ciao using your deployment method eg. <a href="http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/">Dockerfile Deployment</a>, <a href="http://dokku.viewdocs.io/dokku/deployment/methods/images/">Docker Image Deployment</a> etc.</p>
+
+<p>Protect your ciao instance by enabling HTTP Basic auth (using <a href="https://github.com/dokku/dokku-http-auth">dokku-http-auth</a>) and installing Lets Encrypt certificates via <a href="https://github.com/dokku/dokku-letsencrypt">dokku-letsencrypt</a>.</p>
+
+<h2 id="contributing">Contributing</h2>
+
+<p>We encourage you to contribute to ciao in whatever way you like!</p>
+
+<h2 id="license">License</h2>
+
+<p>ciao is released under the <a href="https://opensource.org/licenses/MIT">MIT License</a>.</p>
+
+<h2 id="maintainer">Maintainer</h2>
+
+<p>https://github.com/brotandgames</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Sat Jul 27 12:02:25 2019 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.20 (ruby-2.6.3).
+</div>
+
+    </div>
+  </body>
+</html>

@@ -1,5 +1,15 @@
 # frozen_string_literal: true
 
+# @attr [string] name name
+# @attr [string] cron cron schedule format
+# @attr [datetime] created_at when the record was created in database
+# @attr [datetime] updated_at when the record was last updated in database
+# @attr [string] url URL to ping for healthchecking
+# @attr [string] status HTTP status 2XX..5XX
+# @attr [boolean] active is healthcheck active or not?
+# @attr [string] job rufus-scheduler's last run job ID
+# @attr [datetime] last_contact_at when the healthcheck was last run
+# @attr [datetime] next_contact_at when the healthcheck will next run
 class Check < ApplicationRecord
   after_create :create_job, if: :active?
   after_update :update_routine
