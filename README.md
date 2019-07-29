@@ -31,7 +31,8 @@ You can install ciao via the official Docker image `brotandgames/ciao` or using 
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
 - Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
-- Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones`
+- Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones` (since version 1.2.0)
+- You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` `BASIC_AUTH_PASSWORD="********"` (since version 1.3.0)
 
 IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 
@@ -225,7 +226,9 @@ dokku config:set --no-restart ciao \
   SMTP_AUTHENTICATION=plain \
   SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password"
+  SMTP_PASSWORD="sensitive_password" \
+  BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
+  BASIC_AUTH_PASSWORD="password_for_basic_auth"
 ````
 
 Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
