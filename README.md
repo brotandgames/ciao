@@ -31,7 +31,8 @@ You can install ciao via the official Docker image `brotandgames/ciao` or using 
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
 - You can send emails to several addresses by separating them with a comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
-- Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones`
+- Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones` (since version 1.2.0)
+- You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` `BASIC_AUTH_PASSWORD="********"` (since version 1.3.0)
 
 IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 
@@ -51,8 +52,6 @@ docker run \
   -e SMTP_ENABLE_STARTTLS_AUTO=auto \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
-  -e BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
-  -e BASIC_AUTH_PASSWORD="password_for_basic_auth" \
   -v /opt/ciao/data:/app/db/sqlite \
   brotandgames/ciao
 ````
@@ -82,8 +81,6 @@ services:
       - SMTP_ENABLE_STARTTLS_AUTO=auto
       - SMTP_USERNAME=ciao
       - SMTP_PASSWORD="sensitive_password"
-      - BASIC_AUTH_USERNAME="username_for_basic_auth" # leave empty to disable basic auth
-      - BASIC_AUTH_PASSWORD="password_for_basic_auth"
     volumes:
       - /opt/ciao/data:/app/db/sqlite/
 ````
@@ -118,9 +115,7 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_AUTHENTICATION=plain \
   SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password" \
-  BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
-  BASIC_AUTH_PASSWORD="password_for_basic_auth"
+  SMTP_PASSWORD="sensitive_password"
 
 # Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server
 RAILS_ENV=production ./start.sh
