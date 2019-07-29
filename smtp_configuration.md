@@ -17,13 +17,14 @@ SMTP_SSL=true
 
 ## Notes
 
-* You can send emails to several addresses by separating them with a comma eg. SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"
+* When `SMTP_ADDRESS` variable is not set no e-mail notifications are sent
+* You can send emails to several addresses by separating them with a comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
 
 ## Example configurations
 
 ### Gmail
 
-Don’t forget to change you@gmail.com to your email address and sensitive_password to your own password.
+Don’t forget to change `you@gmail.com` to your email address and `sensitive_password` to your own password.
 
 If you encounter authentication errors, ensure you have allowed less secure apps to access the account.
 
