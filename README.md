@@ -29,7 +29,7 @@ Open localhost:8090 in your webbrowser.
 You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
-- You can send emails to several addresses by separating them with a comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
+- Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
 - Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones`
 
@@ -48,10 +48,9 @@ docker run \
   -e SMTP_PORT=587 \
   -e SMTP_DOMAIN=smtp.yourhost.com \
   -e SMTP_AUTHENTICATION=plain \
-  -e SMTP_ENABLE_STARTTLS_AUTO="true" \
+  -e SMTP_ENABLE_STARTTLS_AUTO=auto \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
-  -e SMTP_SSL="true" \
   -v /opt/ciao/data:/app/db/sqlite \
   brotandgames/ciao
 ````
@@ -78,10 +77,9 @@ services:
       - SMTP_PORT=587
       - SMTP_AUTHENTICATION=plain
       - SMTP_DOMAIN=smtp.yourhost.com
-      - SMTP_ENABLE_STARTTLS_AUTO="true"
+      - SMTP_ENABLE_STARTTLS_AUTO=auto
       - SMTP_USERNAME=ciao
       - SMTP_PASSWORD="sensitive_password"
-      - SMTP_SSL="true"
     volumes:
       - /opt/ciao/data:/app/db/sqlite/
 ````
@@ -114,10 +112,9 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_PORT=587 \
   SMTP_DOMAIN=smtp.yourhost.com \
   SMTP_AUTHENTICATION=plain \
-  SMTP_ENABLE_STARTTLS_AUTO="true" \
+  SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password" \
-  SMTP_SSL="true"
+  SMTP_PASSWORD="sensitive_password"
 
 # Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server
 RAILS_ENV=production ./start.sh
@@ -226,10 +223,9 @@ dokku config:set --no-restart ciao \
   SMTP_PORT=587 \
   SMTP_DOMAIN=smtp.yourhost.com \
   SMTP_AUTHENTICATION=plain \
-  SMTP_ENABLE_STARTTLS_AUTO="true" \
+  SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password" \
-  SMTP_SSL="true"
+  SMTP_PASSWORD="sensitive_password"
 ````
 
 Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
