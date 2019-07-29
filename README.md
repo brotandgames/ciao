@@ -267,7 +267,7 @@ spec:
             cpu: 400m
         envFrom:
         - secretRef:
-            name: rails
+            name: ciao
 ---
 apiVersion: v1
 kind: Service
