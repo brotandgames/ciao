@@ -29,7 +29,7 @@ Open localhost:8090 in your webbrowser.
 You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
-- You can send emails to several addresses by separating them with a comma eg. `SMTP_EMAIL_TO="a@yourhost.com,b@yourhost.com"`
+- Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
 - Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones`
 
