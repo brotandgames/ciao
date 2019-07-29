@@ -210,7 +210,12 @@ Helm Chart is in development.
 
 #### Via kubectl
 
-The following code snippent will create Kubernetes namespace, deployment, service and secrets.
+The following code snippent will create a Kubernetes
+
+* Namespace `monitoring`,
+* Secret `ciao`,
+* Deployment `ciao` and
+* Service `ciao`.
 
 `kubectl apply -f k8s.yaml`
 
