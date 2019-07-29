@@ -204,8 +204,92 @@ Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if y
 
 ### Kubernetes
 
+## Via Helm
+
 Helm Chart is in development.
 
+## Via kubectl
+
+The following code snippent will create Kubernetes namespace, deployment, service and secrets.
+
+`kubectl apply -f k8s.yaml`
+
+````
+# K8s.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ciao
+  namespace: monitoring
+data:
+  # all values should be base64 encoded
+  # so some_secret would be c29tZV9zZWNyZXQ=
+  SECRET_KEY_BASE: some_secret
+  SMTP_ADDRESS: smtp_address
+  SMTP_EMAIL_FROM: noreply@somedomain.com
+  SMTP_EMAIL_TO: monitoring@somedomain.com
+  SMTP_PORT: 465
+  SMTP_DOMAIN: mail.somedomain.com
+  SMTP_AUTHENTICATION: plain
+  SMTP_ENABLE_STARTTLS_AUTO: auto
+  SMTP_USERNAME: smtp_some_username
+  SMTP_PASSWORD: smtp_some_password
+  SMTP_SSL: true
+  BASIC_AUTH_USERNAME: auth_some_username
+  BASIC_AUTH_PASSWORD: auth_some_password
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: ciao
+  namespace: monitoring
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ciao
+    spec:
+      containers:
+      - image: brotandgames/ciao:latest
+        imagePullPolicy: IfNotPresent
+        name: ciao
+        volumeMounts: # Emit if you do not have persistent volumes
+        - mountPath: /app/db/sqlite/
+          name: persistent-volume
+          subPath: ciao
+        ports:
+        - containerPort: 3000
+        resources:
+          requests:
+            memory: 256Mi
+            cpu: 200m
+          limits:
+            memory: 512Mi
+            cpu: 400m
+        envFrom:
+        - secretRef:
+            name: ciao
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ciao
+  namespace: monitoring
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    app: ciao
+````
 
 ### Dokku
 
