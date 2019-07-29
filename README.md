@@ -204,18 +204,18 @@ Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if y
 
 ### Kubernetes
 
-## Via Helm
+#### Via Helm
 
 Helm Chart is in development.
 
-## Via kubectl
+#### Via kubectl
 
 The following code snippent will create Kubernetes namespace, deployment, service and secrets.
 
 `kubectl apply -f k8s.yaml`
 
 ````
-# K8s.yaml
+# k8s.yaml
 apiVersion: v1
 kind: Namespace
 metadata:
