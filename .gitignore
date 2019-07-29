@@ -39,3 +39,7 @@
 yarn-debug.log*
 .yarn-integrity
 .DS_Store
+
+# yard generated
+doc
+.yardoc
