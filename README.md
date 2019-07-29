@@ -217,7 +217,7 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: rails
+  name: ciao
   namespace: monitoring
 data:
   # all values should be base64 encoded
