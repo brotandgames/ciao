@@ -5,7 +5,7 @@
 # @attr [datetime] created_at when the record was created in database
 # @attr [datetime] updated_at when the record was last updated in database
 # @attr [string] url URL to ping for healthchecking
-# @attr [string] status HTTP status 2XX..5XX
+# @attr [string] status this is either the HTTP status code 1XX..5XX or an error e
 # @attr [boolean] active is healthcheck active or not?
 # @attr [string] job rufus-scheduler's last run job ID
 # @attr [datetime] last_contact_at when the healthcheck was last run

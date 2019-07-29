@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module ChecksHelper
-  # Converts the HTTP status to the corresponding CSS class
-  # to control HTML element classes based on HTTP status
-  # @param status [Integer] the HTTP response status, `2XX..5XX`
+  # Converts the status to the corresponding CSS class
+  # to control HTML element classes based on status
+  # @param status [String] this is either the HTTP status code or an error, `1XX..5XX` or `e`
   # @return [String] the CSS class for the corresponding HTTP status
   def class_for_status(status)
     case status.to_i
