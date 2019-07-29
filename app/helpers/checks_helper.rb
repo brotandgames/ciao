@@ -1,23 +1,44 @@
+# frozen_string_literal: true
+
 module ChecksHelper
+  # Converts the status to the corresponding CSS class
+  # to control HTML element classes based on status
+  # @param status [String] this is either the HTTP status code or an error, `1XX..5XX` or `e`
+  # @return [String] the CSS class for the corresponding HTTP status
   def class_for_status(status)
     case status.to_i
     when 200..299
-      "success"
+      'success'
     when 300..399
-      "info"
+      'info'
     when 400..499
-      "warning"
+      'warning'
     else
-      "danger"
+      'danger'
     end
   end
+
+  # Converts the healthcheck's active flag to CSS class
+  # to control HTML element color
+  # @param active [Boolean] the healthcheck's active flag, `true` or `false`
+  # @return [String] the corresponding color (CSS class)
   def class_for_active(active)
-    active ? "text-green" : "text-red"
+    active ? 'text-green' : 'text-red'
   end
+
+  # Converts the healthcheck's active flag to CSS class
+  # to control checkbox icon
+  # @param active [Boolean] the healthcheck's active flag, `true` or `false`
+  # @return [String] the corresponding checkbox icon (CSS class)
   def class_for_active_checkbox(active)
-    active ? "fe-check" : "fe-minus"
+    active ? 'fe-check' : 'fe-minus'
   end
+
+  # Converts the healthy percentage to CSS class
+  # to control healthy/unhealthy colors
+  # @param percent [Float] the healthy percentage
+  # @return [String] the corresponding color (CSS class)
   def class_for_healthy(percent)
-    percent == 100.0 ? "text-green" : "text-red"
+    percent == 100.0 ? 'text-green' : 'text-red'
   end
 end

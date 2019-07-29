@@ -1,0 +1,16 @@
+inherit_from: .rubocop_todo.yml
+
+Metrics/AbcSize:
+  Max: 40
+
+Metrics/BlockLength:
+  Max: 300
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 35
+
+Metrics/PerceivedComplexity:
+  Max: 10
