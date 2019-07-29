@@ -226,9 +226,7 @@ dokku config:set --no-restart ciao \
   SMTP_AUTHENTICATION=plain \
   SMTP_ENABLE_STARTTLS_AUTO=auto \
   SMTP_USERNAME=ciao \
-  SMTP_PASSWORD="sensitive_password" \
-  BASIC_AUTH_USERNAME="username_for_basic_auth" \ # leave empty to disable basic auth
-  BASIC_AUTH_PASSWORD="password_for_basic_auth"
+  SMTP_PASSWORD="sensitive_password"
 ````
 
 Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
