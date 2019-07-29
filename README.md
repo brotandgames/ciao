@@ -28,6 +28,8 @@ Open localhost:8090 in your webbrowser.
 
 You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
+ciao is configured via ENVIRONMENT variables.
+
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
 - Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
