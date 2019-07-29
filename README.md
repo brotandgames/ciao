@@ -206,7 +206,7 @@ Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if y
 
 Helm Chart is in development.
 
-The following code snippent will create Kubernetes namespace, deployment, service and secrets. You will need to publicly expose the deployed service using an Ingress or proxy local traffic to the deployed service.
+The following code snippent will create Kubernetes namespace, deployment, service and secrets.
 
 ````
 apiVersion: v1
@@ -279,7 +279,7 @@ spec:
     - port: 80
       targetPort: 3000
       protocol: TCP
-  type: NodePort
+  type: ClusterIP
   selector:
     app: ciao
 ````
