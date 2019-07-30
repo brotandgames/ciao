@@ -1,6 +1,6 @@
 # Webhook Configuration
 
-*Note: this feature is not released yet - see #1 for updates.*
+> New as of 1.4.0
 
 You can configure as many webhooks as you like. Each webhook consists of 2 ENV variables:
 

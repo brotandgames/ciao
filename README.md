@@ -33,7 +33,7 @@ ciao is configured via ENVIRONMENT variables.
 
 - `SECRET_KEY_BASE` will be auto-generated if you omit it
 - Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
-- Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc.
+- Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc. (since version 1.4.0)
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
 - Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones` (since version 1.2.0)
 - You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` `BASIC_AUTH_PASSWORD="********"` (since version 1.3.0)
