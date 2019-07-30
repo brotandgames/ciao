@@ -61,6 +61,7 @@ class Check < ApplicationRecord
           status_after = self.status
         end
         if status_before != status_after
+          Rails.logger.info "ciao-scheduler Check '#{name}': Status changed from '#{status_before}' to '#{status_after}'"
           NOTIFICATIONS.each do |notification|
             notification.notify(
               name: name,
@@ -70,7 +71,6 @@ class Check < ApplicationRecord
               check_url: Rails.application.routes.url_helpers.check_path(self)
             )
           end
-          Rails.logger.info "ciao-scheduler Executed 'changed_status' notification mail and webhooks"
         end
       end
     if job
