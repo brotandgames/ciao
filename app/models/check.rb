@@ -42,7 +42,6 @@ class Check < ApplicationRecord
   end
 
   def create_job
-    # rubocop:disable Metrics/LineLength
     job =
       Rufus::Scheduler.singleton.cron cron, job: true do
         url = URI.parse(self.url)
@@ -62,8 +61,16 @@ class Check < ApplicationRecord
           status_after = self.status
         end
         if status_before != status_after
-          CheckMailer.with(name: name, status_before: status_before, status_after: status_after).change_status_mail.deliver
-          Rails.logger.info "ciao-scheduler Sent 'changed_status' notification mail"
+          Rails.logger.info "ciao-scheduler Check '#{name}': Status changed from '#{status_before}' to '#{status_after}'"
+          NOTIFICATIONS.each do |notification|
+            notification.notify(
+              name: name,
+              status_before: status_before,
+              status_after: status_after,
+              url: url,
+              check_url: Rails.application.routes.url_helpers.check_path(self)
+            )
+          end
         end
       end
     if job
@@ -73,7 +80,6 @@ class Check < ApplicationRecord
       Rails.logger.error 'ciao-scheduler Could not create job'
     end
     job
-    # rubocop:enable Metrics/LineLength
   end
 
   def unschedule_job
