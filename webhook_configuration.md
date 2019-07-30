@@ -7,7 +7,7 @@ You can configure as many webhooks as you like. Each webhook consists of 2 ENV v
 * `WEBHOOK_ENDPOINT_$NAME`
 * `WEBHOOK_PAYLOAD_$NAME`
 
-`$NAME` can be any word (A..Z).
+`$NAME` can be any word `[A-Z0-9_]` and must be unique as it is used as an identifier.
 
 like:
 
