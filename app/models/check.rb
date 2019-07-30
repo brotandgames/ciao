@@ -63,7 +63,8 @@ class Check < ApplicationRecord
         end
         if status_before != status_after
           CheckMailer.with(name: name, status_before: status_before, status_after: status_after).change_status_mail.deliver
-          Rails.logger.info "ciao-scheduler Sent 'changed_status' notification mail"
+          NOTIFICATIONS.each { |notification| notification.notify(name: name, status_before: status_before, status_after: status_after) }
+          Rails.logger.info "ciao-scheduler Executed 'changed_status' notification mail and webhooks"
         end
       end
     if job

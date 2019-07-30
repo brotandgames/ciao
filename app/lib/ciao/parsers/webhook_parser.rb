@@ -6,24 +6,24 @@ module Ciao
       WEBHOOKS_ENDPOINT_PREFIX = 'CIAO_WEBHOOK_ENDPOINT_'
       WEBHOOKS_PAYLOAD_PREFIX = 'CIAO_WEBHOOK_PAYLOAD_'
 
-      WEBHOOKS_PAYLOAD_FORMAT = "#{WEBHOOKS_PAYLOAD_PREFIX}%d"
-      WEBHOOKS_ENDPOINT_FORMAT = "#{WEBHOOKS_ENDPOINT_PREFIX}%d"
+      WEBHOOKS_PAYLOAD_FORMAT = "#{WEBHOOKS_PAYLOAD_PREFIX}%s"
+      WEBHOOKS_ENDPOINT_FORMAT = "#{WEBHOOKS_ENDPOINT_PREFIX}%s"
 
-      WEBHOOKS_FORMAT_REGEX = /^#{WEBHOOKS_ENDPOINT_PREFIX}(?<sequence>[0-9]+)$/.freeze
+      WEBHOOKS_FORMAT_REGEX = /^#{WEBHOOKS_ENDPOINT_PREFIX}(?<name>[A-Z0-9_]+)$/.freeze
 
       # rubocop:disable Style/ClassVars
       def self.webhooks
-        @@sequences ||= sequences.map do |sequence|
+        @@names ||= names.map do |name|
           {
-            endpoint: ENV.fetch(WEBHOOKS_ENDPOINT_FORMAT % sequence, ''),
-            payload: ENV.fetch(WEBHOOKS_PAYLOAD_FORMAT % sequence, '')
+            endpoint: ENV.fetch(WEBHOOKS_ENDPOINT_FORMAT % name, ''),
+            payload: ENV.fetch(WEBHOOKS_PAYLOAD_FORMAT % name, '')
           }
         end
       end
       # rubocop:enable Style/ClassVars
 
-      def self.sequences
-        matches.map { |match| match[:sequence] }
+      def self.names
+        matches.map { |match| match[:name] }
       end
 
       def self.matches

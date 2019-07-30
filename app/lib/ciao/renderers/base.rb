@@ -3,12 +3,11 @@
 module Ciao
   module Renderers
     class Base
-      def initialize(_template, _data)
-        raise NotImplementedError,
-              'You can not initiate an instance of Ciao::Renderers::Base'
+      def initialize(template)
+        @template = template
       end
 
-      def render
+      def render(_data)
         raise NotImplementedError,
               'You can not call Ciao::Renderers::Base#render directly'
       end
