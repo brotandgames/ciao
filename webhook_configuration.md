@@ -23,7 +23,7 @@ CIAO_WEBHOOK_PAYLOAD_SLACK='"{foo=bar}"'
 etc.
 ````
 
-`CIAO_WEBHOOK_ENDPOINT_$NAME` ENV variable has to be a valid JSON one-liner wrapped in single quotes like `'{"name":"__name__", "status_before":"__status_before__", "status_after":"__status_after__"}'`.
+`CIAO_WEBHOOK_ENDPOINT_$NAME` ENV variable has to be a valid JSON one-liner wrapped in single quotes like `'{"name":"__name__", "status_before":"__status_before__", "status_after":"__status_after__", "check_url":"__check_url__", "url":"__url__"}'`.
 
 ## Example configurations
 

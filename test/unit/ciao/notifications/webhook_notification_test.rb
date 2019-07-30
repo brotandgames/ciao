@@ -30,7 +30,7 @@ module Ciao
 
         notification = Ciao::Notifications::WebhookNotification.new(
           'https://foo.bar',
-          '{"name": "__check_name__"}',
+          '{"name": "__name__"}',
           Ciao::Renderers::ReplaceRenderer
         )
         response = notification.notify(name: 'bar')

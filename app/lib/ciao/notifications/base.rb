@@ -3,8 +3,8 @@
 module Ciao
   module Notifications
     class Base
-      def initialize(endpoint,
-                     payload_template,
+      def initialize(endpoint = nil,
+                     payload_template = nil,
                      payload_renderer_cls = Ciao::Renderers::ReplaceRenderer)
         @endpoint = endpoint
         @payload_renderer = payload_renderer_cls.new(payload_template)

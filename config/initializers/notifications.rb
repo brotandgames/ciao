@@ -15,3 +15,5 @@ NOTIFICATIONS = Ciao::Parsers::WebhookParser.webhooks.map do |webhook|
     Ciao::Renderers::ReplaceRenderer
   )
 end
+
+NOTIFICATIONS << Ciao::Notifications::MailNotification.new if ENV['SMTP_ADDRESS'].present?

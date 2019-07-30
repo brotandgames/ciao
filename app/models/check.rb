@@ -61,8 +61,15 @@ class Check < ApplicationRecord
           status_after = self.status
         end
         if status_before != status_after
-          CheckMailer.with(name: name, status_before: status_before, status_after: status_after).change_status_mail.deliver
-          NOTIFICATIONS.each { |notification| notification.notify(name: name, status_before: status_before, status_after: status_after) }
+          NOTIFICATIONS.each do |notification|
+            notification.notify(
+              name: name,
+              status_before: status_before,
+              status_after: status_after,
+              url: url,
+              check_url: Rails.application.routes.url_helpers.check_path(self)
+            )
+          end
           Rails.logger.info "ciao-scheduler Executed 'changed_status' notification mail and webhooks"
         end
       end
