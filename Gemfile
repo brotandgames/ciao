@@ -62,7 +62,7 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'bootstrap', '~> 4.3.1'
+gem 'prometheus-client'
 gem 'rufus-scheduler'
 gem 'simple_form'
 gem 'tabler-rubygem'
-gem 'prometheus-client'
