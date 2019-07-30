@@ -28,7 +28,7 @@ m = Module.new do
     bundler_version = nil
     update_index = nil
     ARGV.each_with_index do |a, i|
-      if update_index && update_index.succ == i && a =~ Gem::Version::ANCHORED_VERSION_PATTERN
+      if update_index && update_index.succ == i && a =~ Gem::Version::ANCHORED_VERSION_PATTERN # rubocop:disable Style/IfUnlessModifier
         bundler_version = a
       end
       next unless a =~ /\A--bundler(?:[= ](#{Gem::Version::VERSION_PATTERN}))?\z/
@@ -79,7 +79,7 @@ m = Module.new do
   end
 
   def activate_bundler(bundler_version)
-    if Gem::Version.correct?(bundler_version) && Gem::Version.new(bundler_version).release < Gem::Version.new('2.0')
+    if Gem::Version.correct?(bundler_version) && Gem::Version.new(bundler_version).release < Gem::Version.new('2.0') # rubocop:disable Style/IfUnlessModifier
       bundler_version = '< 2'
     end
     gem_error = activation_error_handling do

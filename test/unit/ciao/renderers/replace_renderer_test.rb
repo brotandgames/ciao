@@ -13,12 +13,10 @@ module Ciao
 
       test '#render replaces webhook placeholders' do
         renderer = ReplaceRenderer.new(
-          '{"name": "__check_name__", "status_after":"__status_after__", "status_before":"__status_before__"}' # rubocop:disable Metrics/LineLength
+          '{"name": "__check_name__", "status_after":"__status_after__", "status_before":"__status_before__"}'
         )
-        # rubocop:disable Metrics/LineLength
         assert_equal '{"name": "foo", "status_after":"500", "status_before":"200"}',
                      renderer.render(name: 'foo', status_after: '500', status_before: '200')
-        # rubocop:enable Metrics/LineLength
       end
     end
   end
