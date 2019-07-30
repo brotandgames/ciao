@@ -12,7 +12,7 @@ module Ciao
 
       def notify(_payload_data = {})
         raise NotImplementedError,
-              'You can not call Ciao::Notifications::Base#notiy directly'
+              'You can not call Ciao::Notifications::Base#notify directly'
       end
     end
   end
