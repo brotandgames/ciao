@@ -25,9 +25,7 @@ docker run --name ciao -p 8090:3000 brotandgames/ciao
 
 Open localhost:8090 in your webbrowser.
 
-## Install
-
-You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
+## Configuration
 
 ciao is configured via ENVIRONMENT variables.
 
@@ -35,7 +33,12 @@ ciao is configured via ENVIRONMENT variables.
 - Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - By mounting a Docker volume you can avoid loosing data on restart or upgrade
 - Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones` (since version 1.2.0)
-- You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` `BASIC_AUTH_PASSWORD="********"` (since version 1.3.0)
+- You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` `BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.3.0)
+- You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLE=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"`
+
+## Install
+
+You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
 IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 

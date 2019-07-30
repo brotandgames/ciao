@@ -127,8 +127,11 @@ GEM
     parser (2.6.3.0)
       ast (~> 2.4.0)
     popper_js (1.14.5)
+    prometheus-client (0.9.0)
+      quantile (~> 0.2.1)
     public_suffix (3.0.3)
     puma (3.12.1)
+    quantile (0.2.1)
     raabro (1.1.6)
     rack (2.0.7)
     rack-proxy (0.6.5)
@@ -261,6 +264,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   letter_opener
   listen (>= 3.0.5, < 3.2)
+  prometheus-client
   puma (~> 3.11)
   rails (~> 6.0.0.rc1)
   rubocop
@@ -283,4 +287,4 @@ RUBY VERSION
    ruby 2.6.3p62
 
 BUNDLED WITH
-   2.0.1
+   2.0.2
