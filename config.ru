@@ -8,10 +8,8 @@ prometheus_enabled = ENV.fetch('PROMETHEUS_ENABLED', 'false')
 
 if prometheus_enabled == 'true'
   require 'prometheus/middleware/collector'
-  # TODO: require 'prometheus/middleware/exporter'
 
   rackapp = Rack::Builder.app do
-    # rubocop:disable Metrics/LineLength
     use Prometheus::Middleware::Collector
     if ENV['PROMETHEUS_BASIC_AUTH_USERNAME'].present?
       map '/metrics' do
@@ -27,7 +25,6 @@ if prometheus_enabled == 'true'
       use Yabeda::Prometheus::Exporter
     end
     run Rails.application
-    # rubocop:enable Metrics/LineLength
   end
   run rackapp
 else
