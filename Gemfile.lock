@@ -82,6 +82,7 @@ GEM
       rake (< 13.0)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
+    dry-initializer (3.0.1)
     erubi (1.8.0)
     et-orbi (1.2.1)
       tzinfo
@@ -250,6 +251,14 @@ GEM
     websocket-extensions (0.1.3)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yabeda (0.1.3)
+      concurrent-ruby
+      dry-initializer
+    yabeda-prometheus (0.1.4)
+      yabeda
+    yabeda-rails (0.1.3)
+      rails
+      yabeda
     yard (0.9.20)
     zeitwerk (2.1.6)
 
@@ -281,6 +290,8 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webdrivers
   webpacker (~> 4.0)
+  yabeda-prometheus
+  yabeda-rails
   yard
 
 RUBY VERSION

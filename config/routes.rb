@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # mount Yabeda::Prometheus::Exporter => "/metrics"
+
   root to: 'checks#dashboard'
   resources :checks do
     get 'job', to: 'checks#job'

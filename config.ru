@@ -4,11 +4,11 @@
 
 require_relative 'config/environment'
 
-ENV['PROMETHEUS_ENABLED'] ||= 'false'
+prometheus_enabled = ENV.fetch('PROMETHEUS_ENABLED', 'false')
 
-if ENV['PROMETHEUS_ENABLED'] == 'true'
+if prometheus_enabled == 'true'
   require 'prometheus/middleware/collector'
-  require 'prometheus/middleware/exporter'
+  # TODO: require 'prometheus/middleware/exporter'
 
   rackapp = Rack::Builder.app do
     # rubocop:disable Metrics/LineLength
@@ -20,11 +20,11 @@ if ENV['PROMETHEUS_ENABLED'] == 'true'
             Rack::Utils.secure_compare(ENV['PROMETHEUS_BASIC_AUTH_PASSWORD'], password)
         end
         use Rack::Deflater
-        use Prometheus::Middleware::Exporter, path: ''
+        use Yabeda::Prometheus::Exporter, path: ''
         run ->(_) { [500, { 'Content-Type' => 'text/html' }, ['Ciao Prometheus Metrics unreachable.']] }
       end
     else
-      use Prometheus::Middleware::Exporter
+      use Yabeda::Prometheus::Exporter
     end
     run Rails.application
     # rubocop:enable Metrics/LineLength
