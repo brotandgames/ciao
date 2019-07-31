@@ -8,9 +8,9 @@
       </div>
       <div class="card-body">
       	<div id="notice"><%= notice %></div>
-        <h5>
+        <h4>
           Recreate all scheduled background jobs of active checks
-        </h5>
+        </h4>
         <p>This is useful after a (re)start.</p>
         <p>
           <%= link_to '<i class="fe fe-refresh-cw"></i> Recreate'.html_safe, jobs_recreate_checks_path, class: 'btn btn-info' %>
@@ -23,6 +23,34 @@
             curl -X GET -H "Content-type: application/json" /checks/jobs/recreate.json
           </code>
         </p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Debugging information</h3>
+        <div class="card-options">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>
+          <span class="badge badge-dark %>">
+          Configuration
+          </span>
+        </p>
+        <p><strong>Time zone:</strong> <code><%= ENV.fetch('TIME_ZONE', 'not configured') %></code></p>
+        <p><strong>Notifications SMTP:</strong> <code><%= ENV.fetch('SMTP_ADDRESS', 'not configured') %></code></p>
+        <p><strong>Notifications Webhooks:</strong> <code><%= Ciao::Parsers::WebhookParser.names %></code>
+        <p><strong>Notifications count:</strong> <code><%= NOTIFICATIONS.length %></code></p>
+        </p>
+        <p><strong>HTTP Basic auth username:</strong> <code><%= ENV.fetch('BASIC_AUTH_USERNAME', 'not configured') %></code></p>
+        <p><strong>Prometheus enabled:</strong> <code><%= ENV.fetch('PROMETHEUS_ENABLED', 'not configured') %></code></p>
+        <p><strong>Prometheus HTTP Basic auth username:</strong> <code><%= ENV.fetch('PROMETHEUS_BASIC_AUTH_USERNAME', 'not configured') %></code></p>
+        <p>
+          <span class="badge badge-dark %>">
+          Database
+          </span>
+        </p>
+        <p><strong>Dabase conn. pool stat.:</strong> <code><%= ActiveRecord::Base.connection_pool.stat %></code></p>
       </div>
     </div>
   </div>

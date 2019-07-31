@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/brotandgames/ciao.svg?branch=master)](https://travis-ci.org/brotandgames/ciao)
 [![Gitter chat](https://badges.gitter.im/brotandgames/ciao.png)](https://gitter.im/brotandgames/ciao)
 
-**[ciao](https://www.brotandgames.com/ciao/)** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends an e-mail on status change.
+**[ciao](https://www.brotandgames.com/ciao/)** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends a notification on status change via E-Mail or Webhooks.
 
 It uses Cron syntax to schedule the checks and comes along with a Web UI and a RESTfull JSON API.
 
@@ -25,18 +25,22 @@ docker run --name ciao -p 8090:3000 brotandgames/ciao
 
 Open localhost:8090 in your webbrowser.
 
+## Configuration
+
+ciao is configured via ENVIRONMENT variables following the [12-factor app methodology](https://12factor.net/config).
+
+- `SECRET_KEY_BASE` will be auto-generated if you omit it
+- Time zone is configurable per `TIME_ZONE` variable (default: `UTC`) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones` (since version 1.2.0)
+- Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
+- Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc. (since version 1.4.0)
+- You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` and `BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.3.0)
+- You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLE=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.5.0)
+
 ## Install
 
 You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
 
-ciao is configured via ENVIRONMENT variables.
-
-- `SECRET_KEY_BASE` will be auto-generated if you omit it
-- Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
-- Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc. (since version 1.4.0)
-- By mounting a Docker volume you can avoid loosing data on restart or upgrade
-- Time zone is configurable per `TIME_ZONE` variable (default: UTC) eg. `TIME_ZONE="Vienna"` - you can find all possible values by executing `docker run --rm brotandgames/ciao rake time:zones` (since version 1.2.0)
-- You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` `BASIC_AUTH_PASSWORD="********"` (since version 1.3.0)
+By mounting a Docker volume you can avoid loosing data on restart or upgrade.
 
 IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 
@@ -202,7 +206,9 @@ docker restart ciao
 
 Here you'll find instructions for deploying ciao to different platforms like Kubernetes or Dokku.
 
-Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
+By mounting a Docker or Kubernetes volume you can avoid loosing data on restart or upgrade.
+
+IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certificates if you serve ciao publicly.
 
 ### Kubernetes
 
