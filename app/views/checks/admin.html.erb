@@ -23,14 +23,20 @@
             curl -X GET -H "Content-type: application/json" /checks/jobs/recreate.json
           </code>
         </p>
-        <hr />
-        <h4>
-          Debugging information
-        </h4>
-        <p>Here you'll find useful information for debugging purposes.</p>
-        <h5>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Debugging information</h3>
+        <div class="card-options">
+        </div>
+      </div>
+      <div class="card-body">
+        <p>
+          <span class="badge badge-dark %>">
           Configuration
-        </h5>
+          </span>
+        </p>
         <p><strong>Time zone:</strong> <code><%= ENV.fetch('TIME_ZONE', 'not configured') %></code></p>
         <p><strong>Notifications SMTP:</strong> <code><%= ENV.fetch('SMTP_ADDRESS', 'not configured') %></code></p>
         <p><strong>Notifications Webhooks:</strong> <code><%= Ciao::Parsers::WebhookParser.names %></code>
@@ -39,6 +45,12 @@
         <p><strong>HTTP Basic auth username:</strong> <code><%= ENV.fetch('BASIC_AUTH_USERNAME', 'not configured') %></code></p>
         <p><strong>Prometheus enabled:</strong> <code><%= ENV.fetch('PROMETHEUS_ENABLED', 'not configured') %></code></p>
         <p><strong>Prometheus HTTP Basic auth username:</strong> <code><%= ENV.fetch('PROMETHEUS_BASIC_AUTH_USERNAME', 'not configured') %></code></p>
+        <p>
+          <span class="badge badge-dark %>">
+          Database
+          </span>
+        </p>
+        <p><strong>Dabase conn. pool stat.:</strong> <code><%= ActiveRecord::Base.connection_pool.stat %></code></p>
       </div>
     </div>
   </div>
