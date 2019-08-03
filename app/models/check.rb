@@ -46,7 +46,11 @@ class Check < ApplicationRecord
       Rufus::Scheduler.singleton.cron cron, job: true do
         url = URI.parse(self.url)
         begin
-          response = Net::HTTP.get_response(url)
+          http = Net::HTTP.new(url.hostname, url.port)
+          http.use_ssl = url.scheme == 'https'
+          disable_ssl_verify_mode = ActiveModel::Type::Boolean.new.cast(ENV.fetch('CIAO_DISABLE_SSL_VERIFICATION', false))
+          http.verify_mode = disable_ssl_verify_mode ? OpenSSL::SSL::VERIFY_NONE : OpenSSL::SSL::VERIFY_PEER
+          response = http.request(url)
           http_code = response.code
         rescue *NET_HTTP_ERRORS => e
           status = e.to_s
