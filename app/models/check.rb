@@ -22,8 +22,14 @@ class Check < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
-  scope :healthy, -> { where(status: '200', active: true) }
-  scope :unhealthy, -> { where.not(status: '200', active: true) }
+  scope :healthy, -> { where('status LIKE ? AND active = ?', '2%', true) }
+  scope :unhealthy, -> { where.not('status LIKE ? AND active = ?', '2%', true) }
+  scope :status_1xx, -> { where('status LIKE ? AND active = ?', '1%', true) }
+  scope :status_2xx, -> { where('status LIKE ? AND active = ?', '2%', true) }
+  scope :status_3xx, -> { where('status LIKE ? AND active = ?', '3%', true) }
+  scope :status_4xx, -> { where('status LIKE ? AND active = ?', '4%', true) }
+  scope :status_5xx, -> { where('status LIKE ? AND active = ?', '5%', true) }
+  scope :status_err, -> { where.not('status LIKE ? OR status LIKE ? OR status LIKE ? OR status LIKE ? OR status LIKE ?', '1%', '2%', '3%', '4%', '5%') }
 
   def self.percentage_active
     if !active.empty?

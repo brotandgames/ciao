@@ -7,6 +7,8 @@ module ChecksHelper
   # @return [String] the CSS class for the corresponding HTTP status
   def class_for_status(status)
     case status.to_i
+    when 100..199
+      'secondary'
     when 200..299
       'success'
     when 300..399

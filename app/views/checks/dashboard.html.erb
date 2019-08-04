@@ -37,3 +37,53 @@
   </div>
 
 </div>
+
+<div class="row row-cards">
+  <div class="col-12 col-sm-8 col-lg-6">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="card-title">Active checks</h2>
+      </div>
+      <table class="table card-table table-vcenter">
+        <tbody>
+          <tr>
+            <td class="text-<%= class_for_status('100') %>">Status 1xx</td>
+            <td class="text-right">
+               <span class="stamp stamp-sm bg-<%= class_for_status('100') %>"><%= @checks.status_1xx.count %></span>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-<%= class_for_status('200') %>">Status 2xx</td>
+            <td class="text-right">
+              <span class="stamp stamp-sm bg-<%= class_for_status('200') %>"><%= @checks.status_2xx.count %></span>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-<%= class_for_status('300') %>">Status 3xx</td>
+            <td class="text-right">
+              <span class="stamp stamp-sm bg-<%= class_for_status('300') %>"><%= @checks.status_3xx.count %></span>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-<%= class_for_status('400') %>">Status 4xx</td>
+            <td class="text-right">
+              <span class="stamp stamp-sm bg-<%= class_for_status('400') %>"><%= @checks.status_4xx.count %></span>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-<%= class_for_status('500') %>">Status 5xx</td>
+            <td class="text-right">
+              <span class="stamp stamp-sm bg-<%= class_for_status('500') %>"><%= @checks.status_5xx.count %></span>
+            </td>
+          </tr>
+          <tr>
+            <td class="text-<%= class_for_status('err') %>">Status error</td>
+            <td class="text-right">
+              <span class="stamp stamp-sm bg-<%= class_for_status('err') %>"><%= @checks.status_err.count %></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
