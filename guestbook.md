@@ -2,15 +2,15 @@
 
 Do you remember the guestbook times? *missing running gifs*
 
-Listed here are some voices from the internet collected (copied & pasted) by the creator *@brotandgames*.
+Listed here are some voices from the internet collected (copied & pasted) by the creator *@brotandgames* and maybe the first Guestbook via Pull Request.
 
-If you find yourself here, replace `*_user` by `@your-github-handle` and open a PR.
+## From the internet
+
+Listed here are some quotes from the internet.
+
+If you find yourself here, replace `*_user` by `@you` and open a PR.
 
 Also, if you want add something, open a PR.
-
-## Props
-
-Listed here are the props. If you want add something, open a PR.
 
 ### Hacker News
 
@@ -42,18 +42,17 @@ Extracted from the [Issues](https://github.com/brotandgames/ciao/issues?utf8=%E2
 
 > Very good work! *GitHub_user*
 
-## Blames
+## Guestbook via Pull Request
 
-Listed here are tha blames. If you want add something, open a PR.
+Open a PR and add something like this:
 
-*(creator *@brotandgames* didn't register any blames yet, blame on him)*
-
+`> Your opionion about ciao. (@you)`
 
 ## WTFAQ?
 
 **Q1** Guestbook? What's this?
 
-**A1** Something you missed.
+**A1** Leave you opionion about ciao via a PR - something you missed.
 
 **Q2** WTF is WTFAQ?
 
