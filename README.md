@@ -341,6 +341,10 @@ We encourage you to contribute to ciao in whatever way you like!
 
 ciao is released under the [MIT License](https://opensource.org/licenses/MIT).
 
+## Guestbook
+
+Why not reinvent the [guestbook](guestbook.md)?
+
 ## Maintainer
 
 https://github.com/brotandgames
