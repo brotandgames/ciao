@@ -3,6 +3,9 @@
 # Declare variables to be passed into your templates.
 
 # Ciao is not designed to be horizontally scalable
+# due to architecture decisions (no external dependencies):
+# * in-memory (background) job scheduler: rufus-scheduler
+# * internal database: sqlite
 # replicaCount must be 1
 replicaCount: 1
 
