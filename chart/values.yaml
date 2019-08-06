@@ -1,0 +1,72 @@
+# Default values for ciao.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Ciao is not designed to be horizontally scalable
+# replicaCount must be 1
+replicaCount: 1
+
+image:
+  repository: brotandgames/ciao
+  tag: latest
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+env: {}
+  # All ciao configuration options are adjustable via ENV vars.
+  # Ref: https://github.com/brotandgames/ciao#configuration
+  #
+  # Examples:
+  # SECRET_KEY_BASE: "sensitive_secret_key_base"
+  # SMTP_ADDRESS: smtp.yourhost.com
+  # SMTP_EMAIL_FROM: "ciao@yourhost.com"
+  # SMTP_EMAIL_TO: "you@yourhost.com"
+  # SMTP_PORT: 587
+  # SMTP_AUTHENTICATION: plain
+  # SMTP_DOMAIN: smtp.yourhost.com
+  # SMTP_ENABLE_STARTTLS_AUTO: auto
+  # SMTP_USERNAME: ciao
+  # SMTP_PASSWORD: "sensitive_password"
+  #
+  # Check Reference for a full list of configuration variables.
+  # Mind the ': ' instead of '=' when setting a variable and
+  # don't forget to remove '{}'.
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: ciao.local
+      paths: []
+
+  tls: []
+  #  - secretName: ciao-tls
+  #    hosts:
+  #      - ciao.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

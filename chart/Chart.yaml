@@ -1,0 +1,17 @@
+apiVersion: v1
+name: ciao
+description: "Ciao - HTTP checks & tests (private & public) monitoring"
+version: 0.1.0
+appVersion: "latest"
+home: https://brotandgames.com/ciao/
+icon:
+keywords:
+  - ciao
+  - http
+  - checks
+  - monitoring
+sources:
+  - https://github.com/brotandgames/ciao
+maintainers:
+  - name: "Brot & Games"
+    email: github_username@gmail.com

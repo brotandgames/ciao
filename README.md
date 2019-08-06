@@ -34,7 +34,7 @@ ciao is configured via ENVIRONMENT variables following the [12-factor app method
 - Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc. (since version 1.4.0)
 - You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` and `BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.3.0)
-- You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLE=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.5.0)
+- You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLED=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.5.0)
 
 ## Install
 
@@ -214,7 +214,45 @@ IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certif
 
 #### Via Helm
 
-Helm Chart is in development.
+Install ciao via Helm Chart from the official repository.
+
+Source is located in `./chart` and released to https://releases.brotandgames.com/helm-charts.
+
+1. Use `helm repo add` command to add the Helm chart repository that contains charts to install ciao.
+
+````
+helm repo add brotandgames https://releases.brotandgames.com/helm-charts
+
+# helm search brotandgames
+# should output something like this
+# NAME              CHART VERSION APP VERSION DESCRIPTION
+# brotandgames/ciao 0.1.0         latest      Install ciao - HTTP checks & tests (private & public) mon...
+````
+
+2. Install ciao via `helm upgrade --install`
+
+Quickstart (without configuring)
+
+````
+helm upgrade --install --namespace your-namespace your-release-name brotandgames/ciao
+````
+
+With [configuration](#configuration)
+
+````
+helm upgrade --install --namespace your-namespace your-release-name brotandgames/ciao \
+--set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
+--set env.SMTP_ADDRESS=smtp.yourhost.com \
+--set env.SMTP_EMAIL_FROM="ciao@yourhost.com" \
+--set env.SMTP_EMAIL_TO="you@yourhost.com" \
+--set env.SMTP_PORT=587 \
+--set env.SMTP_DOMAIN=smtp.yourhost.com \
+--set env.SMTP_AUTHENTICATION=plain \
+--set env.SMTP_ENABLE_STARTTLS_AUTO=auto \
+--set env.SMTP_USERNAME=ciao \
+--set env.SMTP_PASSWORD="sensitive_password"
+````
+
 
 #### Via kubectl
 
@@ -306,13 +344,13 @@ spec:
 
 ### Dokku
 
-Create app
+1. Create app
 
 ````
 dokku apps:create ciao
 ````
 
-Configure
+2. Configure
 
 ````
 dokku config:set --no-restart ciao \
@@ -328,9 +366,9 @@ dokku config:set --no-restart ciao \
   SMTP_PASSWORD="sensitive_password"
 ````
 
-Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
+3. Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
 
-Protect your ciao instance by enabling HTTP Basic auth (using [dokku-http-auth](https://github.com/dokku/dokku-http-auth)) and installing Lets Encrypt certificates via [dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt).
+4. Protect your ciao instance by enabling HTTP Basic auth (using [dokku-http-auth](https://github.com/dokku/dokku-http-auth)) and installing Lets Encrypt certificates via [dokku-letsencrypt](https://github.com/dokku/dokku-letsencrypt).
 
 
 ## Contributing
