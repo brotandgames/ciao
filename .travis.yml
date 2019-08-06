@@ -9,3 +9,4 @@ script:
   - yarn install --check-files
   - bundle exec rubocop
   - bundle exec rake
+  - cd scripts/chart && ./ci.sh

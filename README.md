@@ -226,7 +226,7 @@ helm repo add brotandgames https://releases.brotandgames.com/helm-charts
 # helm search brotandgames
 # should output something like this
 # NAME              CHART VERSION APP VERSION DESCRIPTION
-# brotandgames/ciao 0.1.0         latest      Install ciao - HTTP checks & tests (private & public) mon...
+# brotandgames/ciao 0.1.0         latest      Ciao - HTTP checks & tests (private & public) monitoring
 ````
 
 2. Install ciao via `helm upgrade --install`
@@ -252,7 +252,6 @@ helm upgrade --install --namespace your-namespace your-release-name brotandgames
 --set env.SMTP_USERNAME=ciao \
 --set env.SMTP_PASSWORD="sensitive_password"
 ````
-
 
 #### Via kubectl
 
