@@ -3,12 +3,12 @@
 set -e
 
 self=${0##*/}
-dependencies=helm,mc
+ci_dependencies=helm
 
 echo "== $self"
 
 # Check dependencies
-for d in $(echo $dependencies | tr "," "\n"); do
+for d in $(echo $ci_dependencies | tr "," "\n"); do
   command -v $d >/dev/null 2>&1 || { echo >&2 "== $self requires $d but it's not installed."; exit 1; }
 done
 

@@ -1,5 +1,12 @@
 . ./ci.sh
 
+cd_dependencies=mc
+
+# Check dependencies
+for d in $(echo $cd_dependencies | tr "," "\n"); do
+  command -v $d >/dev/null 2>&1 || { echo >&2 "== $self requires $d but it's not installed."; exit 1; }
+done
+
 echo "== $self Get current index.yaml from $CHART_HELM_REPO"
 curl -f -H 'Cache-Control: max-age=0,no-cache' "$CHART_HELM_REPO/index.yaml" -o /tmp/chart/repo_index.yaml || true
 
