@@ -1,6 +1,10 @@
+#!/usr/bin/env bash
+
 . ./ci.sh
 
 cd_dependencies=mc
+
+CHART_HELM_REPO=https://releases.brotandgames.com/helm-charts
 
 # Check dependencies
 for d in $(echo $cd_dependencies | tr "," "\n"); do

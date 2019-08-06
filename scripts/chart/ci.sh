@@ -13,7 +13,6 @@ for d in $(echo $ci_dependencies | tr "," "\n"); do
 done
 
 CHART_NAME=ciao
-CHART_HELM_REPO=https://releases.brotandgames.com/helm-charts
 
 cd $(dirname $0)/..
 
@@ -23,6 +22,10 @@ cp -Rf ../chart /tmp/chart/$CHART_NAME
 
 echo "== $self Chart validate"
 helm lint /tmp/chart/$CHART_NAME
+
+echo "== $self Helm init"
+echo "== $self Check: https://github.com/helm/helm/issues/1732"
+helm init --client-only
 
 echo "== $self Chart package"
 helm package -d /tmp/chart /tmp/chart/$CHART_NAME
