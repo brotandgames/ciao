@@ -241,16 +241,16 @@ With [configuration](#configuration)
 
 ````
 helm upgrade --install --namespace your-namespace your-release-name brotandgames/ciao \
---set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
---set env.SMTP_ADDRESS=smtp.yourhost.com \
---set env.SMTP_EMAIL_FROM="ciao@yourhost.com" \
---set env.SMTP_EMAIL_TO="you@yourhost.com" \
---set env.SMTP_PORT=587 \
---set env.SMTP_DOMAIN=smtp.yourhost.com \
---set env.SMTP_AUTHENTICATION=plain \
---set env.SMTP_ENABLE_STARTTLS_AUTO=auto \
---set env.SMTP_USERNAME=ciao \
---set env.SMTP_PASSWORD="sensitive_password"
+  --set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
+  --set env.SMTP_ADDRESS=smtp.yourhost.com \
+  --set env.SMTP_EMAIL_FROM="ciao@yourhost.com" \
+  --set env.SMTP_EMAIL_TO="you@yourhost.com" \
+  --set env.SMTP_PORT=587 \
+  --set env.SMTP_DOMAIN=smtp.yourhost.com \
+  --set env.SMTP_AUTHENTICATION=plain \
+  --set env.SMTP_ENABLE_STARTTLS_AUTO=auto \
+  --set env.SMTP_USERNAME=ciao \
+  --set env.SMTP_PASSWORD="sensitive_password"
 ````
 
 #### Via kubectl
