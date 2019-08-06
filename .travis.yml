@@ -4,7 +4,10 @@ cache: bundler
 rvm:
   - 2.6.3
 before_install:
-  - gem install bundler -v 2.0.1
+  - gem install bundler -v 2.0.2
+  - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
+  - chmod 700 get_helm.sh
+  - sudo ./get_helm.sh
 script:
   - yarn install --check-files
   - bundle exec rubocop
