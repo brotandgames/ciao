@@ -18,11 +18,9 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# All ciao configuration options are adjustable via ENV vars.
+# Ref: https://github.com/brotandgames/ciao#configuration
 env: {}
-  # All ciao configuration options are adjustable via ENV vars.
-  # Ref: https://github.com/brotandgames/ciao#configuration
-  #
-  # Examples:
   # SECRET_KEY_BASE: "sensitive_secret_key_base"
   # SMTP_ADDRESS: smtp.yourhost.com
   # SMTP_EMAIL_FROM: "ciao@yourhost.com"
@@ -37,6 +35,34 @@ env: {}
   # Check Reference for a full list of configuration variables.
   # Mind the ': ' instead of '=' when setting a variable and
   # don't forget to remove '{}'.
+
+# Enable persistence using Persistent Volume Claims
+# Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+persistence:
+  enabled: false
+
+  # A manually managed Persistent Volume and Claim
+  # Requires persistence.enabled: true
+  # If defined, PVC must be created manually before volume will be bound
+  # existingClaim:
+
+  # ciao data Persistent Volume Storage Class
+  # If defined, storageClassName: <storageClass>
+  # If set to "-", storageClassName: "", which disables dynamic provisioning
+  # If undefined (the default) or set to null, no storageClassName spec is
+  #   set, choosing the default provisioner.  (gp2 on AWS, standard on
+  #   GKE, AWS & OpenStack)
+  #
+  # Storage class of PV to bind. By default it looks for standard storage class.
+  # If the PV uses a different storage class, specify that here.
+  # storageClass: standard
+  # VolumeName: ""
+  accessMode: ReadWriteOnce
+  size: 1Gi
+
+  # If subPath is set mount a sub folder of a volume instead of the root of the volume.
+  # This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
+  subPath: ""
 
 service:
   type: ClusterIP
