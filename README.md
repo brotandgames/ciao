@@ -5,6 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/brotandgames/ciao/master/LICENSE)
 [![Build Status](https://travis-ci.org/brotandgames/ciao.svg?branch=master)](https://travis-ci.org/brotandgames/ciao)
 [![Gitter chat](https://badges.gitter.im/brotandgames/ciao.png)](https://gitter.im/brotandgames/ciao)
+[![Website link](https://brotandgames.com/assets/ciao-link-website.svg)](https://brotandgames.com/ciao/)
 
 **[ciao](https://www.brotandgames.com/ciao/)** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends a notification on status change via E-Mail or Webhooks.
 
@@ -16,6 +17,8 @@ It uses Cron syntax to schedule the checks and comes along with a Web UI and a R
 **ciao** (/tʃaʊ/) - **c**heck **i**n **a**nd **o**ut - borrowed from Italian *ciao* for greeting someone.
 
 *Motivation:* create an open source web application for checking URL statuses with an UI and a REST API which is easy to install and maintain (no external dependencies like Databases, Caches etc.) in public and private environments.
+
+Follow [@brotandgames](https://www.twitter.com/brotandgames) on Twitter to get the latest News like Releases. Use [#ciaohttp](https://twitter.com/hashtag/ciaohttp) Hashtag for ciao related stuff.
 
 ## Quickstart
 
