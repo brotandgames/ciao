@@ -28,6 +28,21 @@ docker run --name ciao -p 8090:3000 brotandgames/ciao
 
 Open localhost:8090 in your webbrowser.
 
+## Features
+
+* Check HTTP/S endpoints in an interval
+* Use Cron syntax like `* * * * *` (every minute), `*/15 * * * *` (every 15 minutes), `@hourly` or `@daily` etc.
+* Web UI
+* [RESTfull JSON API](#rest-api)
+* Get a notification on status change via [E-Mail](smtp_configuration.md) eg. Gmail, Sendgrid, MailChimp or [Webhooks](webhook_configuration.md) eg. RocketChat, Slack etc. (optional)
+* Configuration via ENVIRONMENT variables (suitable for most runtimes)
+* Expose Prometheus Metrics endpoint `/metrics` with information to digest by tools like Grafana (optional)
+* Protect with HTTP Basic auth on application basis (optional, only recommended in combination with TLS)
+* Instructions for [installing](#install)/[deploying](#deploy) in/to different Platforms
+* [Docker Image](#via-docker-image)
+* [Helm Chart](#via-helm)
+
+
 ## Configuration
 
 ciao is configured via ENVIRONMENT variables following the [12-factor app methodology](https://12factor.net/config).
