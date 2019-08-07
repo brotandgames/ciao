@@ -61,3 +61,12 @@ CIAO_WEBHOOK_ENDPOINT_OFFICE_365="https://outlook.office.com/webhook/****/Incomi
 # Payload
 CIAO_WEBHOOK_PAYLOAD_OFFICE_365='{ "@context": "https://schema.org/extensions", "@type": "MessageCard", "themeColor": "0072C6", "title": "MySystem (__name__) status change", "text": "Status changed from (__status_before__) to (__status_after__)", "potentialAction": [ { "@type": "OpenUri", "name": "Learn More", "targets": [ { "os": "default", "uri": "__check_url__" } ] } ] }'
 ```
+
+### Telegram
+```
+# Endpoint
+CIAO_WEBHOOK_ENDPOINT_TELEGRAM="https://api.telegram.org/bot****/sendMessage"
+
+# Payload
+CIAO_WEBHOOK_PAYLOAD_TELEGRAM='{ "chat_id": ****, "disable_web_page_preview":1, "text": "[__name__] Status changed from (__status_before__) to (__status_after__)"}'
+```
