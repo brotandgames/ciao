@@ -4,10 +4,28 @@
       <div class="card-header">
         <h3 class="card-title">Administration</h3>
         <div class="card-options">
+           <span id="notice"><%= notice %></span>
+           <%= link_to 'Documentation',
+             'https://github.com/brotandgames/ciao', class: 'btn btn-info btn-sm ml-1'%>
         </div>
       </div>
       <div class="card-body">
-      	<div id="notice"><%= notice %></div>
+        <h4>
+          Load checks from file
+        </h4>
+        <p>CIAO_CHECKS_LOAD_FROM_FILE: <code><%= ENV.fetch('CIAO_CHECKS_LOAD_FROM_FILE', 'not configured') %></code></p>
+        <p>
+          <%= link_to '<i class="fe fe-file"></i> Load from file'.html_safe, load_from_file_checks_path, class: 'btn btn-info' %>
+        </p>
+        <p>
+          It can be also accomplished using the REST API endpoint:
+        </p>
+        <p>
+          <code>
+            curl -X GET -H "Content-type: application/json" /checks/load-from-file.json
+          </code>
+        </p>
+        <hr />
         <h4>
           Recreate all scheduled background jobs of active checks
         </h4>
@@ -45,6 +63,7 @@
         <p><strong>HTTP Basic auth username:</strong> <code><%= ENV.fetch('BASIC_AUTH_USERNAME', 'not configured') %></code></p>
         <p><strong>Prometheus enabled:</strong> <code><%= ENV.fetch('PROMETHEUS_ENABLED', 'not configured') %></code></p>
         <p><strong>Prometheus HTTP Basic auth username:</strong> <code><%= ENV.fetch('PROMETHEUS_BASIC_AUTH_USERNAME', 'not configured') %></code></p>
+        <p><strong>Checks load from file:</strong> <code><%= ENV.fetch('CIAO_CHECKS_LOAD_FROM_FILE', 'not configured') %></code></p>
         <p>
           <span class="badge badge-dark %>">
           Database
