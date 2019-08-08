@@ -144,7 +144,7 @@ class ChecksController < ApplicationController
       end
     else
       Rails.logger.info 'load_from_file CIAO_CHECKS_LOAD_FROM_FILE not set'
-      errors << 'CIAO_CHECKS_LOAD_FROM_FILE_not_set'
+      errors << 'not_configured'
     end
 
     Rails.logger.info "load_from_file Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"

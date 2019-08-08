@@ -13,7 +13,7 @@
         <h4>
           Load checks from file
         </h4>
-        <p>CIAO_CHECKS_LOAD_FROM_FILE: <code><%= ENV.fetch('CIAO_CHECKS_LOAD_FROM_FILE', 'not configured') %></code></p>
+        <p>File: <code><%= ENV.fetch('CIAO_CHECKS_LOAD_FROM_FILE', 'not configured') %></code></p>
         <p>
           <%= link_to '<i class="fe fe-file"></i> Load from file'.html_safe, load_from_file_checks_path, class: 'btn btn-info' %>
         </p>
