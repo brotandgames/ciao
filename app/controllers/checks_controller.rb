@@ -124,9 +124,9 @@ class ChecksController < ApplicationController
       file_path = ENV.fetch('CIAO_CHECKS_LOAD_FROM_FILE', '')
       accepted_file_exts = ['.json', '.yaml', '.yml']
       file_ext = File.extname(file_path)
-      if File.exists?(file_path) && accepted_file_exts.include?(file_ext)
+      if File.exist?(file_path) && accepted_file_exts.include?(file_ext)
         if ['.yaml', '.yml'].include?(file_ext)
-          Rails.logger.info "load_from_file Detected y[a]ml file"
+          Rails.logger.info 'load_from_file Detected y[a]ml file'
           input_json = JSON.parse(YAML.load_file(file_path).to_json)
         else
           input_json = JSON.parse(File.read(file_path))
@@ -135,16 +135,16 @@ class ChecksController < ApplicationController
           Check.bulk_load(input_json)
         else
           Rails.logger.info "load_from_file Found no checks in #{file_path}"
-          errors << "found_no_checks"
+          errors << 'found_no_checks'
         end
       else
         Rails.logger.info "load_from_file File #{file_path} doesn't exist or"
         Rails.logger.info "load_from_file has not accepted file extension (#{accepted_file_exts})"
-        errors << "file_not_exists_or_ext_not_accepted"
+        errors << 'file_not_exists_or_ext_not_accepted'
       end
     else
-      Rails.logger.info "load_from_file CIAO_CHECKS_LOAD_FROM_FILE not set"
-      errors << "CIAO_CHECKS_LOAD_FROM_FILE_not_set"
+      Rails.logger.info 'load_from_file CIAO_CHECKS_LOAD_FROM_FILE not set'
+      errors << 'CIAO_CHECKS_LOAD_FROM_FILE_not_set'
     end
 
     Rails.logger.info "load_from_file Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"
@@ -152,7 +152,7 @@ class ChecksController < ApplicationController
       if errors.any?
         format.html do
           redirect_to checks_url,
-                      notice: "Checks not loaded from file: " + errors.join(',')
+                      notice: 'Checks not loaded from file: ' + errors.join(',')
         end
         format.json do
           render json: errors, status: :unprocessable_entity

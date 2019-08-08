@@ -98,6 +98,20 @@ class Check < ApplicationRecord
     end
   end
 
+  def self.bulk_load(json_array)
+    Rails.logger.info "bulk_load Found #{json_array.length} check(s)"
+    json_array.each.with_index(1) do |check, i|
+      Rails.logger.info "bulk_load Check #{i} load: #{check}"
+      c = Check.new(check)
+      if c.save
+        Rails.logger.info "bulk_load Check #{i} loaded"
+      else
+        Rails.logger.info "bulk_load Check #{i} could not be loaded: #{check}"
+        Rails.logger.info "bulk_load Check #{i} errors: #{c.errors.messages}"
+      end
+    end
+  end
+
   private
 
   def update_routine
@@ -113,20 +127,5 @@ class Check < ApplicationRecord
       unschedule_job
       create_job
     end
-  end
-
-  def self.bulk_load(json_array)
-    Rails.logger.info "bulk_load Found #{json_array.length} check(s)"
-    json_array.each.with_index(1) do |check, i|
-      Rails.logger.info "bulk_load Check #{i} load: #{check}"
-      c = Check.new(check)
-      if c.save
-        Rails.logger.info "bulk_load Check #{i} loaded"
-      else
-        Rails.logger.info "bulk_load Check #{i} could not be loaded: #{check}"
-        Rails.logger.info "bulk_load Check #{i} errors: #{c.errors.messages}"
-      end
-    end
-
   end
 end
