@@ -15,7 +15,7 @@
         </h4>
         <p>File: <code><%= ENV.fetch('CIAO_CHECKS_LOAD_FROM_FILE', 'not configured') %></code></p>
         <p>
-          <%= link_to '<i class="fe fe-file"></i> Load from file'.html_safe, load_from_file_checks_path, class: 'btn btn-info' %>
+          <%= link_to '<i class="fe fe-file"></i> Load from file'.html_safe, load_from_file_checks_path, class: 'btn btn-warning', data: { confirm: 'Are you sure?' } %>
         </p>
         <p>
           It can be also accomplished using the REST API endpoint:
