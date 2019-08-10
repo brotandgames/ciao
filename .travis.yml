@@ -12,4 +12,11 @@ script:
   - yarn install --check-files
   - bundle exec rubocop
   - bundle exec rake
-  - cd scripts/chart && ./ci.sh
+  - ./scripts/chart/ci.sh
+deploy:
+  provider: script
+  script: ./scripts/docker/release-image.sh
+  on:
+    tags: true
+    all_branches: true
+
