@@ -126,7 +126,7 @@ GEM
       metaclass (~> 0.0.1)
     msgpack (1.2.10)
     nio4r (2.3.1)
-    nokogiri (1.10.3)
+    nokogiri (1.10.4)
       mini_portile2 (~> 2.4.0)
     parallel (1.17.0)
     parser (2.6.3.0)
