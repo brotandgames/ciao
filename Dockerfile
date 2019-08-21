@@ -18,6 +18,8 @@ RUN set -x \
         libxml2-dev \
         libxslt-dev \
     && gem install bundler \
+    # https://github.com/sass/sassc-ruby/issues/141#issuecomment-522938845
+    && bundle config force_ruby_platform true \
     && bundle install --without development:test --jobs 20 -j"$(nproc)" --retry 3 \
     # Remove unneeded files (cached *.gem, *.o, *.c)
     && rm -rf \
