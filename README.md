@@ -97,16 +97,16 @@ services:
     ports:
       - '8090:3000'
     environment:
-      - SECRET_KEY_BASE="sensitive_secret_key_base"
+      - SECRET_KEY_BASE=sensitive_secret_key_base
       - SMTP_ADDRESS=smtp.yourhost.com
-      - SMTP_EMAIL_FROM="ciao@yourhost.com"
-      - SMTP_EMAIL_TO="you@yourhost.com"
+      - SMTP_EMAIL_FROM=ciao@yourhost.com
+      - SMTP_EMAIL_TO=you@yourhost.com
       - SMTP_PORT=587
       - SMTP_AUTHENTICATION=plain
       - SMTP_DOMAIN=smtp.yourhost.com
       - SMTP_ENABLE_STARTTLS_AUTO=auto
       - SMTP_USERNAME=ciao
-      - SMTP_PASSWORD="sensitive_password"
+      - SMTP_PASSWORD=sensitive_password
     volumes:
       - /opt/ciao/data:/app/db/sqlite/
 ````
@@ -119,6 +119,8 @@ docker-compose up -d
 ````
 
 Open localhost:8090 in the webbrowser.
+
+*Note: if you have problems with environment variables (quoting, spaces etc), take a look at these GitHub issues ([1](https://github.com/brotandgames/ciao/issues/40), [2](https://github.com/docker/compose/issues/2854)) and these Stack Overflow questions ([1](https://stackoverflow.com/questions/53082932/yaml-docker-compose-spaces-quotes), [2](https://stackoverflow.com/questions/41988809/docker-compose-how-to-escape-environment-variables))*.
 
 ### Via Git clone
 
@@ -197,7 +199,7 @@ curl -X DELETE -H "Content-type: application/json" /checks/<:id>.json
 
 State is stored in an internal SQLite database located in `db/sqlite/production.sqlite3`.
 
-*NOTE: Prior to version 1.1.0 the database was located in `db/` (missing sqlite subfolder). From 1.1.0 onwards the location is `db/sqlite/` to enable docker to use a volume.*
+*Note: Prior to version 1.1.0 the database was located in `db/` (missing sqlite subfolder). From 1.1.0 onwards the location is `db/sqlite/` to enable docker to use a volume.*
 
 ### Backup
 

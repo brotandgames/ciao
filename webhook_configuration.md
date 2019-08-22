@@ -31,8 +31,12 @@ There are 5 placeholders which you can use in the payload:
 * `__status_after__`
 * `__check_url__`
 
+ENV variable `CIAO_WEBHOOK_PAYLOAD_$NAME` has to be a valid JSON one-liner wrapped in single quotes like `'{"name":"__name__", "status_before":"__status_before__", "status_after":"__status_after__", "check_url":"__check_url__", "url":"__url__"}'`
 
-`CIAO_WEBHOOK_PAYLOAD_$NAME` ENV variable has to be a valid JSON one-liner wrapped in single quotes like `'{"name":"__name__", "status_before":"__status_before__", "status_after":"__status_after__", "check_url":"__check_url__", "url":"__url__"}'`.
+## Notes
+
+* If you are using `docker-compose`, you have to omit the outer `""` and `''` in `*_ENDPOINT_*` and `*_PAYLOAD_*` - take a look at these GitHub issues ([1](https://github.com/brotandgames/ciao/issues/40), [2](https://github.com/docker/compose/issues/2854)) and these Stack Overflow questions ([1](https://stackoverflow.com/questions/53082932/yaml-docker-compose-spaces-quotes), [2](https://stackoverflow.com/questions/41988809/docker-compose-how-to-escape-environment-variables))
+* You can add an Example configuration for a Service that's missing in the list via PR
 
 ## Example configurations
 
