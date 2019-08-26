@@ -75,7 +75,7 @@ docker run \
   -e SMTP_PORT=587 \
   -e SMTP_DOMAIN=smtp.yourhost.com \
   -e SMTP_AUTHENTICATION=plain \
-  -e SMTP_ENABLE_STARTTLS_AUTO=auto \
+  -e SMTP_ENABLE_STARTTLS_AUTO=true \
   -e SMTP_USERNAME=ciao \
   -e SMTP_PASSWORD="sensitive_password" \
   -v /opt/ciao/data:/app/db/sqlite \
@@ -104,7 +104,7 @@ services:
       - SMTP_PORT=587
       - SMTP_AUTHENTICATION=plain
       - SMTP_DOMAIN=smtp.yourhost.com
-      - SMTP_ENABLE_STARTTLS_AUTO=auto
+      - SMTP_ENABLE_STARTTLS_AUTO=true
       - SMTP_USERNAME=ciao
       - SMTP_PASSWORD=sensitive_password
     volumes:
@@ -141,7 +141,7 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_PORT=587 \
   SMTP_DOMAIN=smtp.yourhost.com \
   SMTP_AUTHENTICATION=plain \
-  SMTP_ENABLE_STARTTLS_AUTO=auto \
+  SMTP_ENABLE_STARTTLS_AUTO=true \
   SMTP_USERNAME=ciao \
   SMTP_PASSWORD="sensitive_password"
 
@@ -268,7 +268,7 @@ helm upgrade --install --namespace your-namespace your-release-name brotandgames
   --set env.SMTP_PORT=587 \
   --set env.SMTP_DOMAIN=smtp.yourhost.com \
   --set env.SMTP_AUTHENTICATION=plain \
-  --set env.SMTP_ENABLE_STARTTLS_AUTO=auto \
+  --set env.SMTP_ENABLE_STARTTLS_AUTO=true \
   --set env.SMTP_USERNAME=ciao \
   --set env.SMTP_PASSWORD="sensitive_password"
 ````
@@ -306,7 +306,7 @@ data:
   SMTP_PORT: 465
   SMTP_DOMAIN: mail.somedomain.com
   SMTP_AUTHENTICATION: plain
-  SMTP_ENABLE_STARTTLS_AUTO: auto
+  SMTP_ENABLE_STARTTLS_AUTO: true
   SMTP_USERNAME: smtp_some_username
   SMTP_PASSWORD: smtp_some_password
   SMTP_SSL: true
@@ -380,7 +380,7 @@ dokku config:set --no-restart ciao \
   SMTP_PORT=587 \
   SMTP_DOMAIN=smtp.yourhost.com \
   SMTP_AUTHENTICATION=plain \
-  SMTP_ENABLE_STARTTLS_AUTO=auto \
+  SMTP_ENABLE_STARTTLS_AUTO=true \
   SMTP_USERNAME=ciao \
   SMTP_PASSWORD="sensitive_password"
 ````
