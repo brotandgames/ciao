@@ -28,7 +28,7 @@ env: {}
   # SMTP_PORT: 587
   # SMTP_AUTHENTICATION: plain
   # SMTP_DOMAIN: smtp.yourhost.com
-  # SMTP_ENABLE_STARTTLS_AUTO: auto
+  # SMTP_ENABLE_STARTTLS_AUTO: true
   # SMTP_USERNAME: ciao
   # SMTP_PASSWORD: "sensitive_password"
   #
