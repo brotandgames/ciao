@@ -13,6 +13,7 @@
 class Check < ApplicationRecord
   after_create :create_job, if: :active?
   after_update :update_routine
+  after_destroy :unschedule_job, if: :active?
 
   validates :name, presence: true
   validates :url, presence: true
