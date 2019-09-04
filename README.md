@@ -9,7 +9,7 @@
 
 **[ciao](https://www.brotandgames.com/ciao/)** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends a notification on status change via E-Mail or Webhooks.
 
-It uses Cron syntax to schedule the checks and comes along with a Web UI and a RESTfull JSON API.
+It uses Cron syntax to schedule the checks and comes along with a Web UI and a RESTful JSON API.
 
 ![ciao Checks overview](https://brotandgames.com/assets/ciao-checks.png "ciao Checks overview")
 *You can find more screenshots on the [Homepage](https://www.brotandgames.com/ciao/).*
@@ -33,7 +33,7 @@ Open localhost:8090 in your webbrowser.
 * Check HTTP/S endpoints in an interval
 * Use Cron syntax like `* * * * *` (every minute), `*/15 * * * *` (every 15 minutes), `@hourly` or `@daily` etc.
 * Web UI
-* [RESTfull JSON API](#rest-api)
+* [RESTful JSON API](#rest-api)
 * Get a notification on status change via [E-Mail](smtp_configuration.md) eg. Gmail, Sendgrid, MailChimp or [Webhooks](webhook_configuration.md) eg. RocketChat, Slack etc. (optional)
 * Configuration via ENVIRONMENT variables (suitable for most runtimes)
 * Expose Prometheus Metrics endpoint `/metrics` with information to digest by tools like Grafana (optional)
