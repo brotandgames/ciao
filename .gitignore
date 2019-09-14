@@ -15,6 +15,7 @@
 # Moved to subfolder to enable docker to use a volume.
 /db/sqlite/*.sqlite3
 /db/sqlite/*.sqlite3-journal
+/db/sqlite/test.sqlite*
 
 # Ignore all logfiles and tempfiles.
 /log/*
