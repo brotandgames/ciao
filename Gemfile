@@ -66,6 +66,9 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'bootstrap', '~> 4.3.1'
 gem 'prometheus-client'
 gem 'rufus-scheduler'
+# sassc 2.2.0 is throwing exception
+# gem 'sassc', '~> 2.2.1'
+gem 'sassc', '~> 2.0.1'
 gem 'simple_form'
 gem 'tabler-rubygem'
 gem 'yabeda-prometheus'
