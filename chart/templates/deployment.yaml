@@ -47,7 +47,7 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
-          {{- if .Values.liveness }}
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: /
@@ -63,7 +63,7 @@ spec:
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
             successThreshold: {{ .Values.livenessProbe.successThreshold }}
           {{- end }}
-          {{- if .Values.readiness }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: /
