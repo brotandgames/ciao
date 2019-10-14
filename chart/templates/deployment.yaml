@@ -37,6 +37,12 @@ spec:
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
+            {{- if .Values.basic_auth.enabled }}
+            - name: BASIC_AUTH_USERNAME
+              value: "{{ .Values.basic_auth.username }}"
+            - name: BASIC_AUTH_PASSWORD
+              value: "{{ .Values.basic_auth.password }}"
+            {{- end }}
           ports:
             - name: http
               containerPort: 3000
@@ -46,6 +52,11 @@ spec:
             httpGet:
               path: /
               port: http
+              {{- if .Values.basic_auth.enabled }}
+              httpHeaders:
+                - name: Authorization
+                  value: Basic {{ template "BasicAuthSecret" . }}
+              {{- end }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -57,6 +68,11 @@ spec:
             httpGet:
               path: /
               port: http
+              {{- if .Values.basic_auth.enabled }}
+              httpHeaders:
+                - name: Authorization
+                  value: Basic {{ template "BasicAuthSecret" . }}
+              {{- end }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}

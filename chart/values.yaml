@@ -18,8 +18,18 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+# You can enable HTTP Basic auth for ciao by defining username and password vars.
+# eg. username="ciao-admin" and password="sensitive_password"
+basic_auth:
+  enabled: false
+  # username: admin
+  # password: mysecreto
+
 # All ciao configuration options are adjustable via ENV vars.
 # Ref: https://github.com/brotandgames/ciao#configuration
+# WARNING! DO NOT set variables BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD here, use section above.
+# If u define them here, you SHOULD disable liveness and readiness probes.
+# Healthcheck config variables are at the bottom of this file.
 env: {}
   # SECRET_KEY_BASE: "sensitive_secret_key_base"
   # SMTP_ADDRESS: smtp.yourhost.com

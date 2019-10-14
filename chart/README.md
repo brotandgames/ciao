@@ -18,6 +18,10 @@ Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.m
 
 ## Releases
 
+### Release 0.4.0
+
+* Fix k8s killing pods when basic auth is enabled.
+
 ### Release 0.3.0
 
 * Add ability to enable/disable and to configure liveness and readiness probes

@@ -43,3 +43,7 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
+
+{{- define "BasicAuthSecret" }}
+{{- printf "%s:%s" .Values.basic_auth.username .Values.basic_auth.password | b64enc }}
+{{- end }}
