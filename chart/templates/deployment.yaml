@@ -41,14 +41,38 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+          {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
               path: /
               port: http
+              {{- if and .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD }}
+              httpHeaders:
+                - name: Authorization
+                  value: Basic {{ template "BasicAuthSecret" . }}
+              {{- end }}
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            successThreshold: {{ .Values.livenessProbe.successThreshold }}
+          {{- end }}
+          {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
               path: /
               port: http
+              {{- if and .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD }}
+              httpHeaders:
+                - name: Authorization
+                  value: Basic {{ template "BasicAuthSecret" . }}
+              {{- end }}
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+            successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
