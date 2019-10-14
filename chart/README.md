@@ -18,6 +18,12 @@ Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.m
 
 ## Releases
 
+### Release 0.3.0
+
+* Add ability to enable/disable and to configure liveness and readiness probes
+Please read documentation for more information about this:
+https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#configure-probes
+
 ### Release 0.2.0
 
 * Add PVC (@brotandgames)
