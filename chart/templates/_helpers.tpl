@@ -45,5 +45,5 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
 
 {{- define "BasicAuthSecret" }}
-{{- printf "%s:%s" .Values.basic_auth.username .Values.basic_auth.password | b64enc }}
+{{- printf "%s:%s" .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD | b64enc }}
 {{- end }}

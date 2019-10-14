@@ -37,12 +37,6 @@ spec:
             - name: "{{ $key }}"
               value: "{{ $value }}"
             {{- end }}
-            {{- if .Values.basic_auth.enabled }}
-            - name: BASIC_AUTH_USERNAME
-              value: "{{ .Values.basic_auth.username }}"
-            - name: BASIC_AUTH_PASSWORD
-              value: "{{ .Values.basic_auth.password }}"
-            {{- end }}
           ports:
             - name: http
               containerPort: 3000
@@ -52,7 +46,7 @@ spec:
             httpGet:
               path: /
               port: http
-              {{- if .Values.basic_auth.enabled }}
+              {{- if and .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD }}
               httpHeaders:
                 - name: Authorization
                   value: Basic {{ template "BasicAuthSecret" . }}
@@ -68,7 +62,7 @@ spec:
             httpGet:
               path: /
               port: http
-              {{- if .Values.basic_auth.enabled }}
+              {{- if and .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD }}
               httpHeaders:
                 - name: Authorization
                   value: Basic {{ template "BasicAuthSecret" . }}
