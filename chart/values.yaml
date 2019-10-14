@@ -21,7 +21,6 @@ fullnameOverride: ""
 # All ciao configuration options are adjustable via ENV vars.
 # Ref: https://github.com/brotandgames/ciao#configuration
 env: {}
-  # BASIC_AUTH_USERNAME: "ciao-admin"
   # SECRET_KEY_BASE: "sensitive_secret_key_base"
   # SMTP_ADDRESS: smtp.yourhost.com
   # SMTP_EMAIL_FROM: "ciao@yourhost.com"
