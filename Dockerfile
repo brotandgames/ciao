@@ -35,7 +35,11 @@ COPY . ./
 
 # The command '/bin/sh -c rake assets:precompile' needs the RAILS_MASTER_KEY to be set!?
 # https://github.com/rails/rails/issues/32947
+#
+# Added xz-libs (should be only build-dep) because nokogiri needs liblzma.so.5
+# during rake tasks (eg. assets-precompile)
 RUN set -x \
+    && apk add --no-cache xz-libs \
     && SECRET_KEY_BASE=foo bundle exec rake assets:precompile \
     # Remove folders not needed in resulting image
     && rm -rf \
