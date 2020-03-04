@@ -1,7 +1,7 @@
 language: ruby
 cache: bundler
 rvm:
-  - 2.6.3
+  - 2.6.5
 before_install:
   - gem install bundler -v 2.0.2
   - curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get > get_helm.sh
