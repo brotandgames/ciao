@@ -138,7 +138,7 @@ GEM
     puma (3.12.6)
     quantile (0.2.1)
     raabro (1.1.6)
-    rack (2.2.2)
+    rack (2.2.3)
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
