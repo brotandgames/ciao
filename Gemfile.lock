@@ -135,7 +135,8 @@ GEM
     prometheus-client (0.9.0)
       quantile (~> 0.2.1)
     public_suffix (4.0.1)
-    puma (3.12.6)
+    puma (4.3.5)
+      nio4r (~> 2.0)
     quantile (0.2.1)
     raabro (1.1.6)
     rack (2.2.3)
@@ -283,7 +284,7 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   mocha
   prometheus-client
-  puma (~> 3.12)
+  puma (~> 4.1)
   rails (= 6.0.3.2)
   rubocop
   rufus-scheduler
