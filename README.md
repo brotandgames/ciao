@@ -144,6 +144,9 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_ENABLE_STARTTLS_AUTO=true \
   SMTP_USERNAME=ciao \
   SMTP_PASSWORD="sensitive_password"
+  
+# Precompile assets
+rails assets:precompile
 
 # Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server
 RAILS_ENV=production ./start.sh
