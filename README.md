@@ -6,6 +6,7 @@
 [![Build Status](https://travis-ci.org/brotandgames/ciao.svg?branch=master)](https://travis-ci.org/brotandgames/ciao)
 [![Gitter chat](https://badges.gitter.im/brotandgames/ciao.svg)](https://gitter.im/brotandgames/ciao)
 [![Website link](https://brotandgames.com/assets/ciao-link-website.svg)](https://brotandgames.com/ciao/)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbrotandgames%2Fciao.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbrotandgames%2Fciao?ref=badge_shield)
 
 **[ciao](https://www.brotandgames.com/ciao/)** checks HTTP(S) URL endpoints for a HTTP status code (or errors on the lower TCP stack) and sends a notification on status change via E-Mail or Webhooks.
 
@@ -414,6 +415,9 @@ In a nutshell:
 ## License
 
 ciao is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbrotandgames%2Fciao.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbrotandgames%2Fciao?ref=badge_large)
 
 ## Guestbook
 
