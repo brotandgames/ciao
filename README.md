@@ -41,6 +41,7 @@ Open localhost:8090 in your webbrowser.
 * Instructions for [installing](#install)/[deploying](#deploy) in/to different Platforms
 * [Docker Image](#via-docker-image)
 * [Helm Chart](#via-helm)
+* [Terraform Provider](https://github.com/autonubil/terraform-provider-ciao) (Maintainer: [@autonubil](https://github.com/autonubil))
 
 
 ## Configuration
