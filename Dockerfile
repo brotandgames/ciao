@@ -23,13 +23,15 @@ RUN set -x \
     && rm -rf \
         /usr/local/bundle/cache/*.gem \
         /usr/local/bundle/gems/**/*.c \
-        /usr/local/bundle/gems/**/*.o \
-    && apk del .build-deps
+        /usr/local/bundle/gems/**/*.o
 
 COPY package.json yarn.lock /app/
+
 RUN set -x \
     && yarn install \
     && rm -rf /tmp/*
+
+RUN apk del .build-deps
 
 COPY . ./
 
