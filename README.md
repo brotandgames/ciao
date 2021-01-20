@@ -396,7 +396,11 @@ dokku config:set --no-restart ciao \
 
 ## Contributing
 
-We encourage you to contribute to ciao in whatever way you like!
+We encourage you to contribute to this project in whatever way you like!
+
+Report bugs/feature requests in the [issues](https://github.com/brotandgames/ciao/issues/new/choose) section.
+
+When contributing to this repository, please first discuss the change you wish to make via issue with the owners of this repository before making a change.
 
 ## Versioning
 
