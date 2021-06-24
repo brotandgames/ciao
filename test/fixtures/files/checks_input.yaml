@@ -1,0 +1,17 @@
+---
+- active: true
+  name: brotandgames.com
+  cron: "* * * * *"
+  url: https://brotandgames.com
+- active: true
+  name: kubernete.sh
+  cron: "*/15 * * * *"
+  url: https://kubernete.sh
+- active: true
+  name: url fail
+  cron: "* * * * *"
+  url: htps://kubernete.sh
+- active: true
+  name: cron fail
+  cron: "*12 * * * *"
+  url: https://kubernete.sh
