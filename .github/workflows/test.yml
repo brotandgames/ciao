@@ -12,4 +12,7 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - run: bundle exec rake
+    - run: |
+        yarn install --check-files
+        bundle exec rubocop
+        bundle exec rake
