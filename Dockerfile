@@ -17,6 +17,8 @@ RUN set -x \
         build-base \
         libxml2-dev \
         libxslt-dev \
+        postgresql-client \
+        postgresql-dev \
     && gem install bundler \
     && bundle install --without development:test --jobs 20 -j"$(nproc)" --retry 3 \
     # Remove unneeded files (cached *.gem, *.o, *.c)
@@ -39,7 +41,7 @@ COPY . ./
 # Added xz-libs (should be only build-dep) because nokogiri needs liblzma.so.5
 # during rake tasks (eg. assets-precompile)
 RUN set -x \
-    && apk add --no-cache xz-libs \
+    && apk add --no-cache xz-libs postgresql-client \
     && SECRET_KEY_BASE=foo bundle exec rake assets:precompile \
     # Remove folders not needed in resulting image
     && rm -rf \
