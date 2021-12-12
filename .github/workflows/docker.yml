@@ -1,0 +1,22 @@
+name: build docker image
+
+on:
+  push:
+    branches: docker-build
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install buildx
+        id: buildx
+        uses: crazy-max/ghaction-docker-buildx@v1
+        with:
+          version: latest
+      - name: build the image
+      run: |
+        docker buildx build \
+          --tag brotandgames/ciao:master \
+          --platform linux/amd64,linux/arm/v7,linux/arm64 .
