@@ -1,8 +1,9 @@
-name: build docker image
+name: build and push docker image
 
 on:
   push:
-    branches: docker-build
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -15,8 +16,10 @@ jobs:
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
-      - name: build the image
+      - name: login to docker hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: build and push the image
         run: |
-          docker buildx build \
-            --tag brotandgames/ciao:master \
+          docker buildx build --push \
+            --tag brotandgames/ciao:$(cat ./public/version) \
             --platform linux/amd64,linux/arm/v7,linux/arm64 .
