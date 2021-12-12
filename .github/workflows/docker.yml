@@ -16,7 +16,7 @@ jobs:
         with:
           version: latest
       - name: build the image
-      run: |
-        docker buildx build \
-          --tag brotandgames/ciao:master \
-          --platform linux/amd64,linux/arm/v7,linux/arm64 .
+        run: |
+          docker buildx build \
+            --tag brotandgames/ciao:master \
+            --platform linux/amd64,linux/arm/v7,linux/arm64 .
