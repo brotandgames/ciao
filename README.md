@@ -26,7 +26,7 @@ Follow [@brotandgames](https://www.twitter.com/brotandgames) on Twitter to get t
 docker run --name ciao -p 8090:3000 brotandgames/ciao
 ````
 
-Open localhost:8090 in your webbrowser.
+Open http://localhost:8090 in your webbrowser.
 
 ## Features
 
