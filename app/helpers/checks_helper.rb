@@ -41,6 +41,6 @@ module ChecksHelper
   # @param percent [Float] the healthy percentage
   # @return [String] the corresponding color (CSS class)
   def class_for_healthy(percent)
-    percent == 100.0 ? 'text-green' : 'text-red'
+    percent == 100 ? 'text-green' : 'text-red'
   end
 end
