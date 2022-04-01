@@ -56,7 +56,7 @@ class Check < ApplicationRecord
           response = Net::HTTP.get_response(url)
           http_code = response.code
         rescue *NET_HTTP_ERRORS => e
-          status = e.to_s
+          status = e.to_s.tr('"', "'")
         end
         status = http_code unless e
         last_contact_at = Time.current
