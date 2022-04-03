@@ -111,7 +111,7 @@ Rails.application.configure do
     logger           = ActiveSupport::Logger.new($stdout)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)
-    config.log_level = ENV.fetch("CIAO_LOG_LEVEL","WARN").downcase.strip.to_sym
+    config.log_level = ENV.fetch('CIAO_LOG_LEVEL', 'WARN').downcase.strip.to_sym
   end
 
   # Do not dump schema after migrations.
