@@ -52,10 +52,9 @@
         </p>
 
         <p>
-          <%= link_to '<i class="fe fe-trash"></i> Delete'.html_safe, @check,
-            method: :delete,
-            data: { confirm: 'Are you sure?' },
-            class: 'btn btn-outline-danger btn-sm' %>
+          <%= button_to @check, class: "btn btn-outline-danger btn-sm", method: :delete do %>
+            <i class="fe fe-trash"></i> Delete
+          <% end %>
         </p>
       </div>
     </div>
