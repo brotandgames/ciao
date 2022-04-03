@@ -39,8 +39,11 @@ COPY . ./
 #
 # Added xz-libs (should be only build-dep) because nokogiri needs liblzma.so.5
 # during rake tasks (eg. assets-precompile)
+#
+# Added gcompat
+# https://nokogiri.org/tutorials/installing_nokogiri.html#linux-musl-error-loading-shared-library
 RUN set -x \
-    && apk add --no-cache xz-libs \
+    && apk add --no-cache xz-libs gcompat \
     && SECRET_KEY_BASE=foo bundle exec rake assets:precompile \
     # Remove folders not needed in resulting image
     && rm -rf \
