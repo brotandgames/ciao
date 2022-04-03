@@ -22,7 +22,4 @@ jobs:
         run: |
           docker buildx build --push \
             --tag brotandgames/ciao:$(cat ./public/version) \
-            # --tag brotandgames/ciao:latest \
-            # --platform linux/amd64 .
-            # linux/arm* currently broken
             --platform linux/amd64,linux/arm/v7,linux/arm64 .
