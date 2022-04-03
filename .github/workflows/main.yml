@@ -15,4 +15,6 @@ jobs:
     - run: |
         yarn install --check-files
         bundle exec rubocop
+        # TODO: The asset "application.js" is not present in the asset pipeline. (GitHub Action)
+        touch ./app/assets/builds/application.js
         bundle exec rake
