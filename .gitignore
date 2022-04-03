@@ -44,3 +44,6 @@ yarn-debug.log*
 # yard generated
 doc
 .yardoc
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

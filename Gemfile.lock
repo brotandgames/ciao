@@ -107,6 +107,8 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
+    jsbundling-rails (1.0.2)
+      railties (>= 6.0.0)
     launchy (2.5.0)
       addressable (~> 2.7)
     letter_opener (1.8.1)
@@ -142,8 +144,6 @@ GEM
     rack (2.2.3)
     rack-mini-profiler (2.3.4)
       rack (>= 1.2.0)
-    rack-proxy (0.7.2)
-      rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
     rails (6.1.5)
@@ -218,7 +218,6 @@ GEM
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2)
-    semantic_range (3.0.0)
     simple_form (5.1.0)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
@@ -254,11 +253,6 @@ GEM
       addressable (>= 2.8.0)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
-    webpacker (5.4.3)
-      activesupport (>= 5.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 5.2)
-      semantic_range (>= 2.3.0)
     webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
@@ -289,6 +283,7 @@ DEPENDENCIES
   byebug
   capybara (>= 3.26)
   jbuilder (~> 2.9)
+  jsbundling-rails
   letter_opener
   listen (~> 3.3)
   mocha
@@ -309,7 +304,6 @@ DEPENDENCIES
   web-console (>= 4.1.0)
   webdrivers
   webmock
-  webpacker (~> 5.0)
   yabeda-prometheus
   yabeda-rails
   yard

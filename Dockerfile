@@ -18,7 +18,8 @@ RUN set -x \
         libxml2-dev \
         libxslt-dev \
     && gem install bundler \
-    && bundle install --without development:test --jobs 20 -j"$(nproc)" --retry 3 \
+		&& bundle config set --local without 'development:test' \
+    && bundle install --jobs 20 -j"$(nproc)" --retry 3 \
     # Remove unneeded files (cached *.gem, *.o, *.c)
     && rm -rf \
         /usr/local/bundle/cache/*.gem \
