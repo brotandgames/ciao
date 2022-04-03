@@ -54,6 +54,7 @@ ciao is configured via ENVIRONMENT variables following the [12-factor app method
 - Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc. (since version 1.4.0)
 - You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` and `BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.3.0)
 - You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLED=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.5.0)
+- Log level is configurable via `CIAO_LOG_LEVEL` variable (default: `WARN`) - levels: DEBUG, INFO, WARN, ERROR, FATAL (since version 1.7.0)
 
 ## Install
 
