@@ -2,7 +2,7 @@
 
 class HttpUrlValidator < ActiveModel::EachValidator
   def self.compliant?(value)
-    escaped_address = URI.escape(value)
+    escaped_address = URI::Parser.new.escape(value)
     uri = URI.parse(escaped_address)
     uri.is_a?(URI::HTTP) && !uri.host.nil?
   rescue URI::InvalidURIError
