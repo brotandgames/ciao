@@ -43,9 +43,8 @@ COPY . ./
 # Added gcompat
 # https://nokogiri.org/tutorials/installing_nokogiri.html#linux-musl-error-loading-shared-library
 RUN set -x \
-    && apk add --no-cache --virtual .precompile-deps xz-libs gcompat \
+    && apk add --no-cache xz-libs gcompat \
     && SECRET_KEY_BASE=foo bundle exec rake assets:precompile \
-    && apk del .precompile-deps \
     # Remove folders not needed in resulting image
     && rm -rf \
         /tmp/* \
