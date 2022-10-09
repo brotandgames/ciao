@@ -18,6 +18,11 @@ Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.m
 
 ## Releases
 
+### Release 0.5.0
+
+* Change initialDelaySeconds to 10 for livenessProbe and readinessProbe
+* Add support for Ingress apiVersion networking.k8s.io/v1 
+
 ### Release 0.4.0
 
 * Fix k8s killing pods when basic auth is enabled (@bykvaadm)
