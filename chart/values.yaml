@@ -70,15 +70,17 @@ service:
 
 ingress:
   enabled: false
+  className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: ciao.local
-      paths: []
-
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
   tls: []
-  #  - secretName: ciao-tls
+  #  - secretName: ciao-ingress-tls
   #    hosts:
   #      - ciao.local
 
