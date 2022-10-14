@@ -239,33 +239,18 @@ IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certif
 
 #### Via Helm
 
-Install ciao via Helm Chart from the official repository.
-
-Source is located in `./chart` and released to https://releases.brotandgames.com/helm-charts.
-
-1. Use `helm repo add` command to add the Helm chart repository that contains charts to install ciao.
-
-````
-helm repo add brotandgames https://releases.brotandgames.com/helm-charts
-
-# helm search brotandgames
-# should output something like this
-# NAME              CHART VERSION APP VERSION DESCRIPTION
-# brotandgames/ciao 0.1.0         latest      Ciao - HTTP checks & tests (private & public) monitoring
-````
-
-2. Install ciao via `helm upgrade --install`
+1. Install ciao via `helm upgrade --install`
 
 Quickstart (without configuring)
 
 ````
-helm upgrade --install --namespace your-namespace your-release-name brotandgames/ciao
+helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/ciao/raw/master/helm-chart/ciao-0.5.0.tgz
 ````
 
 With [configuration](#configuration)
 
 ````
-helm upgrade --install --namespace your-namespace your-release-name brotandgames/ciao \
+helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/ciao/raw/master/helm-chart/ciao-0.5.0.tgz \
   --set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
   --set env.SMTP_ADDRESS=smtp.yourhost.com \
   --set env.SMTP_EMAIL_FROM="ciao@yourhost.com" \

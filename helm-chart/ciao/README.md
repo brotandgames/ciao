@@ -2,15 +2,9 @@
 
 **[ciao](https://www.brotandgames.com/ciao/)** - HTTP checks & tests (private & public) monitoring
 
-## Official Helm repository
-
-https://releases.brotandgames.com/helm-charts
-
-`helm repo add brotandgames https://releases.brotandgames.com/helm-charts`
-
 ## Development
 
-https://github.com/brotandgames/ciao/tree/master/chart
+https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 
 ## Install
 
