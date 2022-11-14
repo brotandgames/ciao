@@ -38,13 +38,28 @@
         </p>
 
         <p>
+          <strong>Next contact:</strong>
+          <span><%= @check.next_contact_at %></span>
+        </p>
+
+        <p>
           <strong>Last contact:</strong>
           <span><%= @check.last_contact_at %></span>
         </p>
 
         <p>
-          <strong>Next contact:</strong>
-          <span><%= @check.next_contact_at %></span>
+          <strong>Status changes: <%= @check.status_changes.count %></strong>
+          <ul>
+          <% @check.status_changes.order(created_at: :desc).each do |status_change| %>
+            <li><%= status_change.created_at %>
+            <% if status_change.status.to_i.between?(100, 599) %>
+              <span class="badge badge-<%= class_for_status(status_change.status) %>"><%= status_change.status %></span>
+            <% else %>
+              <span class="small text-danger"><%= status_change.status %></span>
+            <% end %>
+            </li>
+          <% end %>
+          </ul>
         </p>
 
         <p>
