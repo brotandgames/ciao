@@ -11,6 +11,8 @@
 # @attr [datetime] last_contact_at when the healthcheck was last run
 # @attr [datetime] next_contact_at when the healthcheck will next run
 class Check < ApplicationRecord
+  has_many :status_changes, dependent: :destroy
+
   after_create :create_job, if: :active?
   after_update :update_routine
   after_destroy :unschedule_job, if: :active?
@@ -68,6 +70,9 @@ class Check < ApplicationRecord
           status_after = self.status
         end
         if status_before != status_after
+          ActiveRecord::Base.connection_pool.with_connection do
+            status_changes.create(status: status)
+          end
           Rails.logger.info "ciao-scheduler Check '#{name}': Status changed from '#{status_before}' to '#{status_after}'"
           NOTIFICATIONS.each do |notification|
             notification.notify(
