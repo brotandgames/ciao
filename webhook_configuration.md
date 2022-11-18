@@ -52,7 +52,15 @@ CIAO_WEBHOOK_PAYLOAD_ROCKETCHAT='{"username":"Brot & Games","icon_url":"https://
 
 ### Slack
 
-tbd.
+````
+# Endpoint
+- 'CIAO_WEBHOOK_ENDPOINT_SLACK=https://webhook.slack.com/***/***'
+OR
+- CIAO_WEBHOOK_ENDPOINT_SLACK=https://webhook.slack.com/***/***
+
+# Payload
+- 'CIAO_WEBHOOK_PAYLOAD_SLACK={"text":"[ciao] __name__: Status changed (__status_after__)"}'
+````
 
 ### Office 365 Connector
 
