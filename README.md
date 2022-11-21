@@ -21,9 +21,9 @@ Follow [@brotandgames](https://www.twitter.com/brotandgames) on Twitter to get t
 
 ## Quickstart
 
-````
+```sh
 docker run --name ciao -p 8090:3000 brotandgames/ciao
-````
+```
 
 Open http://localhost:8090 in your webbrowser.
 
@@ -67,7 +67,7 @@ IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certif
 
 ### Via Docker image
 
-````
+```sh
 docker run \
   --name ciao \
   -p 8090:3000 \
@@ -83,7 +83,7 @@ docker run \
   -e SMTP_PASSWORD="sensitive_password" \
   -v /opt/ciao/data:/app/db/sqlite \
   brotandgames/ciao
-````
+```
 
 Open localhost:8090 in your webbrowser.
 
@@ -91,7 +91,7 @@ Open localhost:8090 in your webbrowser.
 
 Create docker-compose.yml file
 
-````
+```yaml
 version: "3"
 services:
   ciao:
@@ -112,14 +112,14 @@ services:
       - SMTP_PASSWORD=sensitive_password
     volumes:
       - /opt/ciao/data:/app/db/sqlite/
-````
+```
 
 Pull and run
 
-````
+```sh
 docker-compose pull
 docker-compose up -d
-````
+```
 
 Open localhost:8090 in the webbrowser.
 
@@ -127,7 +127,7 @@ Open localhost:8090 in the webbrowser.
 
 ### Via Git clone
 
-````
+```sh
 # Clone repo
 git clone https://github.com/brotandgames/ciao
 
@@ -153,7 +153,7 @@ rails assets:precompile
 
 # Run start script - basically this is check SECRET_KEY_BASE, database init/migrate and rails server
 RAILS_ENV=production ./start.sh
-````
+```
 
 Open localhost:3000 in the webbrowser.
 
@@ -163,43 +163,43 @@ Open localhost:3000 in the webbrowser.
 
 Show collection (array) of all checks
 
-````
+```sh
 curl -X GET -H "Content-type: application/json" /checks.json
-````
+```
 
 **GET /checks/<:id>.json**
 
 Show a specific check
 
-````
+```sh
 curl -X GET -H "Content-type: application/json" /checks/<:id>.json
-````
+```
 
 **POST /checks.json**
 
 Create a check
 
-````
+```sh
 curl -X POST -H "Content-type: application/json" /checks.json \
   -d '{ "name": "brotandgames.com", "active": true, "url": "https://brotandgames.com", "cron": "* * * *"}'
-````
+```
 
 **PATCH/PUT /checks/<:id>.json**
 
 Update a check
 
-````
+```sh
 curl -X PUT -H "Content-type: application/json" /checks/<:id>.json \
   -d '{ "name": "brotandgames.com", "active": false, "url": "https://brotandgames.com", "cron": "* * * *"}'
-````
+```
 
 **DELETE /checks/<:id>.json**
 
 Delete a check
 
-````
+```sh
 curl -X DELETE -H "Content-type: application/json" /checks/<:id>.json
-````
+```
 
 ## Backup & Restore
 
@@ -209,16 +209,16 @@ State is stored in an internal SQLite database located in `db/sqlite/production.
 
 ### Backup
 
-````
+```sh
 docker cp ciao:/app/db/sqlite/production.sqlite3 production.sqlite3.backup
-````
+```
 
 ### Restore
 
-````
+```sh
 docker cp production.sqlite3.backup ciao:/app/db/sqlite/production.sqlite3
 docker restart ciao
-````
+```
 *Prior to version 1.2.0: visit `/checks/admin` and recreate the background jobs for active checks.*
 
 
@@ -244,13 +244,13 @@ IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certif
 
 Quickstart (without configuring)
 
-````
+```sh
 helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/ciao/raw/master/helm-chart/ciao-0.5.0.tgz
-````
+```
 
 With [configuration](#configuration)
 
-````
+```sh
 helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/ciao/raw/master/helm-chart/ciao-0.5.0.tgz \
   --set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
   --set env.SMTP_ADDRESS=smtp.yourhost.com \
@@ -262,13 +262,11 @@ helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/cia
   --set env.SMTP_ENABLE_STARTTLS_AUTO=true \
   --set env.SMTP_USERNAME=ciao \
   --set env.SMTP_PASSWORD="sensitive_password"
-````
+```
 
 #### Via kubectl
 
-
-
-The following code snippent will create a Kubernetes
+The following code snippet will create a Kubernetes
 
 * Namespace `ciao`,
 * Secret `ciao`,
@@ -277,7 +275,7 @@ The following code snippent will create a Kubernetes
 
 `kubectl apply -f k8s.yaml`
 
-````
+```yaml
 # k8s.yaml
 apiVersion: v1
 kind: Namespace
@@ -352,19 +350,19 @@ spec:
   type: ClusterIP
   selector:
     app: ciao
-````
+```
 
 ### Dokku
 
 1. Create app
 
-````
+```sh
 dokku apps:create ciao
-````
+```
 
 2. Configure
 
-````
+```sh
 dokku config:set --no-restart ciao \
   SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_ADDRESS=smtp.yourhost.com \
@@ -376,7 +374,7 @@ dokku config:set --no-restart ciao \
   SMTP_ENABLE_STARTTLS_AUTO=true \
   SMTP_USERNAME=ciao \
   SMTP_PASSWORD="sensitive_password"
-````
+```
 
 3. Deploy ciao using your deployment method eg. [Dockerfile Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/dockerfiles/), [Docker Image Deployment](http://dokku.viewdocs.io/dokku/deployment/methods/images/) etc.
 
