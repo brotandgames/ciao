@@ -266,9 +266,11 @@ helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/cia
 
 #### Via kubectl
 
+
+
 The following code snippent will create a Kubernetes
 
-* Namespace `monitoring`,
+* Namespace `ciao`,
 * Secret `ciao`,
 * Deployment `ciao` and
 * Service `ciao`.
@@ -280,13 +282,13 @@ The following code snippent will create a Kubernetes
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: monitoring
+  name: ciao
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: ciao
-  namespace: monitoring
+  namespace: ciao
 data:
   # all values should be base64 encoded
   # so some_secret would be c29tZV9zZWNyZXQ=
@@ -308,7 +310,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: ciao
-  namespace: monitoring
+  namespace: ciao
 spec:
   replicas: 1
   template:
@@ -341,7 +343,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: ciao
-  namespace: monitoring
+  namespace: ciao
 spec:
   ports:
     - port: 80
