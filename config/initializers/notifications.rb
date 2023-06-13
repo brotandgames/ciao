@@ -17,3 +17,13 @@ NOTIFICATIONS = Ciao::Parsers::WebhookParser.webhooks.map do |webhook|
 end
 
 NOTIFICATIONS << Ciao::Notifications::MailNotification.new if ENV['SMTP_ADDRESS'].present?
+
+NOTIFICATIONS_TLS_EXPIRES = Ciao::Parsers::WebhookParser.webhooks.map do |webhook|
+  Ciao::Notifications::WebhookNotification.new(
+    webhook[:endpoint],
+    webhook[:payload_tls_expires],
+    Ciao::Renderers::ReplaceRenderer
+  )
+end
+
+NOTIFICATIONS_TLS_EXPIRES << Ciao::Notifications::MailNotificationTlsExpires.new if ENV['SMTP_ADDRESS'].present?

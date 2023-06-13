@@ -18,9 +18,11 @@ module Ciao
       test 'self.webhooks' do
         ENV['CIAO_WEBHOOK_ENDPOINT_1'] = 'https://foo.bar'
         ENV['CIAO_WEBHOOK_PAYLOAD_1'] = '{"foo":"bar"}'
+        ENV['CIAO_WEBHOOK_PAYLOAD_TLS_EXPIRES_1'] = '{"foo":"bar"}'
         assert_equal [{
           endpoint: 'https://foo.bar',
-          payload: '{"foo":"bar"}'
+          payload: '{"foo":"bar"}',
+          payload_tls_expires: '{"foo":"bar"}'
         }], Ciao::Parsers::WebhookParser.webhooks
       end
     end

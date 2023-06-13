@@ -18,14 +18,10 @@ cd $(dirname $0)/..
 
 rm -rf /tmp/chart
 mkdir -p /tmp/chart/
-cp -Rf ../chart /tmp/chart/$CHART_NAME
+cp -Rf ../helm-chart/ciao /tmp/chart/$CHART_NAME
 
 echo "== $self Chart validate"
 helm lint /tmp/chart/$CHART_NAME
-
-echo "== $self Helm init"
-echo "== $self Check: https://github.com/helm/helm/issues/1732"
-helm init --client-only
 
 echo "== $self Chart package"
 helm package -d /tmp/chart /tmp/chart/$CHART_NAME

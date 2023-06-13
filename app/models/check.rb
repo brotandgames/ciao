@@ -10,7 +10,7 @@
 # @attr [string] job rufus-scheduler's last run job ID
 # @attr [datetime] last_contact_at when the healthcheck was last run
 # @attr [datetime] next_contact_at when the healthcheck will next run
-class Check < ApplicationRecord
+class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :status_changes, dependent: :destroy
 
   after_create :create_job, if: :active?
@@ -101,6 +101,37 @@ class Check < ApplicationRecord
       Rails.logger.info "ciao-scheduler Unscheduled job '#{job.id}'"
     else
       Rails.logger.info "ciao-scheduler Could not unschedule job: '#{self.job}' not found"
+    end
+  end
+
+  def create_tls_job
+    uri = URI.parse(url)
+    return unless uri.scheme == 'https'
+
+    Rufus::Scheduler.singleton.cron '0 12 * * *', job: true do
+      http = Net::HTTP.new(uri.host, uri.port)
+      http.use_ssl = true
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+      tls_expires_at = nil
+      http.start do |h|
+        tls_expires_at = h.peer_cert.not_after
+      end
+      tls_expires_in_days = (tls_expires_at - Time.now).to_i / (24 * 60 * 60)
+      ActiveRecord::Base.connection_pool.with_connection do
+        update_columns(tls_expires_at: tls_expires_at, tls_expires_in_days: tls_expires_in_days)
+      end
+
+      if tls_expires_in_days < 30
+        NOTIFICATIONS_TLS_EXPIRES.each do |notification|
+          notification.notify(
+            name: name,
+            url: url,
+            check_url: Rails.application.routes.url_helpers.check_path(self),
+            tls_expires_at: tls_expires_at,
+            tls_expires_in_days: tls_expires_in_days
+          )
+        end
+      end
     end
   end
 

@@ -7,5 +7,11 @@ module Ciao
         CheckMailer.with(payload_data).change_status_mail.deliver
       end
     end
+
+    class MailNotificationTlsExpires < Base
+      def notify(payload_data = {})
+        CheckMailer.with(payload_data).tls_expires_mail.deliver
+      end
+    end
   end
 end

@@ -47,6 +47,15 @@
           <span><%= @check.last_contact_at %></span>
         </p>
 
+        <% if URI.parse(@check.url).scheme == 'https' && @check.tls_expires_at? %>
+        <p>
+          <strong>TLS expires at:</strong>
+          <span class="<%= class_for_tls_expires_in_days(@check.tls_expires_in_days) %>">
+            <%= @check.tls_expires_at %> (in <%= @check.tls_expires_at %>)
+          </span>
+        </p>
+        <% end %>
+
         <p>
           <strong>Status changes: <%= @check.status_changes.count %></strong>
           <ul>

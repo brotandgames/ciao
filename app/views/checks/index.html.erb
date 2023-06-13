@@ -55,8 +55,16 @@
             <%= truncate(check.status, :length => 37) %>
             </div>
           <% end %>
-          <div class="small text-muted">
-            <%= truncate(check.job, :length => 15, omission: '') %>
+          <div class="small <%= class_for_tls_expires_in_days(check.tls_expires_in_days) %>">
+            <% if URI.parse(check.url).scheme == 'https' %>
+              <% if check.tls_expires_at? %>
+                TLS expires in <%= check.tls_expires_in_days %> days
+              <% else %>
+                Waiting for TLS check
+              <% end %>
+            <% else %>
+              No TLS certificate
+            <% end %>
           </div>
         </td>
         <td>

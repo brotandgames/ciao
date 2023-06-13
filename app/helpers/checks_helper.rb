@@ -20,6 +20,21 @@ module ChecksHelper
     end
   end
 
+  # Converts the tls_expires_in_days to the corresponding CSS class
+  # to control HTML element classes based on tls_expires_in_days
+  # @param tls_expires_in_days [Integer] TLS certificate expiration in days
+  # @return [String] the CSS class for the corresponding tls_expires_in_days
+  def class_for_tls_expires_in_days(tls_expires_in_days)
+    case tls_expires_in_days
+    when 0..7
+      'text-danger'
+    when 8..30
+      'text-warning'
+    when 31..Float::INFINITY
+      'text'
+    end
+  end
+
   # Converts the healthcheck's active flag to CSS class
   # to control HTML element color
   # @param active [Boolean] the healthcheck's active flag, `true` or `false`

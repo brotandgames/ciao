@@ -32,6 +32,7 @@ Open http://localhost:8090 in your webbrowser.
 * Check HTTP/S endpoints in an interval
 * Use Cron syntax like `* * * * *` (every minute), `*/15 * * * *` (every 15 minutes), `@hourly` or `@daily` etc.
 * Keep track of status changes (since version 1.8.0)
+* Check TLS certificate expiration once a day and get a notification if it expires in less than 30 days (since version 1.9.0)
 * Web UI
 * [RESTful JSON API](#rest-api)
 * Get a notification on status change via [E-Mail](smtp_configuration.md) eg. Gmail, Sendgrid, MailChimp etc. (optional)
@@ -147,7 +148,7 @@ export SECRET_KEY_BASE="sensitive_secret_key_base" \
   SMTP_ENABLE_STARTTLS_AUTO=true \
   SMTP_USERNAME=ciao \
   SMTP_PASSWORD="sensitive_password"
-  
+
 # Precompile assets
 rails assets:precompile
 

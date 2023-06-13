@@ -11,8 +11,8 @@ You can configure as many webhooks as you like. Each webhook consists of 2 ENV v
 
 like:
 
-````
-# Webhook for Rocketchat
+```
+# Webhook for Rocket.Chat
 CIAO_WEBHOOK_ENDPOINT_ROCKETCHAT="https://webhook.rocketchat.com/***/***"
 CIAO_WEBHOOK_PAYLOAD_ROCKETCHAT='{"text":"[ciao] __name__: Status changed (__status_after__)"}'
 
@@ -21,7 +21,7 @@ CIAO_WEBHOOK_ENDPOINT_SLACK="https://webhook.slack.com/***/***"
 CIAO_WEBHOOK_PAYLOAD_SLACK='{"text":"[ciao] __name__: Status changed (__status_after__)"}'
 
 etc.
-````
+```
 
 There are 5 placeholders which you can use in the payload:
 
@@ -33,6 +33,33 @@ There are 5 placeholders which you can use in the payload:
 
 ENV variable `CIAO_WEBHOOK_PAYLOAD_$NAME` has to be a valid JSON one-liner wrapped in single quotes like `'{"name":"__name__", "status_before":"__status_before__", "status_after":"__status_after__", "check_url":"__check_url__", "url":"__url__"}'`
 
+> New as of 1.9.0
+
+You can configure webhooks for TLS certificate expiration with one additional ENV variable:
+
+* `CIAO_WEBHOOK_PAYLOAD_TLS_EXPIRES_$NAME`
+
+like:
+
+```
+# Webhook payload for TLS certificate expiration for Rocket.Chat
+CIAO_WEBHOOK_PAYLOAD_TLS_EXPIRES_ROCKETCHAT='{"text": "[ciao] TLS certificate for __name__ expires at __tls_expires_at__ (in __tls_expires_in_days__ days)"}'
+
+
+# Webhook payload for TLS certificate expiration for Slack
+CIAO_WEBHOOK_PAYLOAD_TLS_EXPIRES_SLACK='{"text": "[ciao] TLS certificate for __name__ expires at __tls_expires_at__ (in __tls_expires_in_days__ days)"}'
+
+etc.
+```
+
+There are 5 placeholders which you can use in the payload for TLS certificate expiration:
+
+* `__name__`
+* `__url__`
+* `__tls_expires_at__`
+* `__tls_expires_in_days__`
+* `__check_url__`
+
 ## Notes
 
 * If you are using `docker-compose`, you have to omit the outer `""` and `''` in `*_ENDPOINT_*` and `*_PAYLOAD_*` - take a look at these GitHub issues ([1](https://github.com/brotandgames/ciao/issues/40), [2](https://github.com/docker/compose/issues/2854)) and these Stack Overflow questions ([1](https://stackoverflow.com/questions/53082932/yaml-docker-compose-spaces-quotes), [2](https://stackoverflow.com/questions/41988809/docker-compose-how-to-escape-environment-variables))
@@ -40,7 +67,7 @@ ENV variable `CIAO_WEBHOOK_PAYLOAD_$NAME` has to be a valid JSON one-liner wrapp
 
 ## Example configurations
 
-### RocketChat
+### Rocket.Chat
 
 ````
 # Endpoint
