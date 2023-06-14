@@ -6,5 +6,4 @@
 if defined?(Rails::Server) && ActiveRecord::Base.connection.table_exists?('checks')
   Check.active.each(&:create_job)
   Check.active.each(&:create_tls_job)
-
 end
