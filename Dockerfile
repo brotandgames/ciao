@@ -1,4 +1,4 @@
-FROM ruby:3.1.3-alpine
+FROM ruby:3.2.2-alpine
 
 # for postgres: postgresql-dev
 RUN apk add --no-cache \
