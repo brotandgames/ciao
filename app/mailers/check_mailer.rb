@@ -24,6 +24,6 @@ class CheckMailer < ApplicationMailer
     @name = params[:name]
     @tls_expires_at = params[:tls_expires_at]
     @tls_expires_in_days = params[:tls_expires_in_days]
-    mail(subject: "[ciao] #{@name}: TLS certificate expires in (#{@tls_expires_in_days})")
+    mail(subject: "[ciao] #{@name}: TLS certificate expires in #{@tls_expires_in_days} days")
   end
 end
