@@ -51,7 +51,7 @@
         <p>
           <strong>TLS expires at:</strong>
           <span class="<%= class_for_tls_expires_in_days(@check.tls_expires_in_days) %>">
-            <%= @check.tls_expires_at %> (in <%= @check.tls_expires_at %>)
+            <%= @check.tls_expires_at %> (in <%= @check.tls_expires_in_days %> days)
           </span>
         </p>
         <% end %>
