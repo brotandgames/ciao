@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_230_613_114_013) do
+ActiveRecord::Schema.define(version: 20_230_615_063_542) do
   create_table 'checks', force: :cascade do |t|
     t.string 'name'
     t.string 'cron'
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20_230_613_114_013) do
     t.datetime 'next_contact_at'
     t.datetime 'tls_expires_at'
     t.integer 'tls_expires_in_days'
+    t.string 'tls_job'
     t.index ['tls_expires_at'], name: 'index_checks_on_tls_expires_at'
   end
 

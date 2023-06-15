@@ -13,9 +13,9 @@
 class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
   has_many :status_changes, dependent: :destroy
 
-  after_create :create_job, if: :active?
+  after_create :create_job, :create_tls_job, if: :active?
   after_update :update_routine
-  after_destroy :unschedule_job, if: :active?
+  after_destroy :unschedule_job, :unschedule_tls_job, if: :active?
 
   validates :name, presence: true
   validates :url, presence: true
@@ -96,6 +96,7 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   def unschedule_job
     job = Rufus::Scheduler.singleton.job(self.job)
+
     if job
       job.unschedule
       Rails.logger.info "ciao-scheduler Unscheduled job '#{job.id}'"
@@ -104,34 +105,66 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/AbcSize
   def create_tls_job
     uri = URI.parse(url)
     return unless uri.scheme == 'https'
 
-    Rufus::Scheduler.singleton.cron '0 12 * * *', job: true do
-      http = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-      tls_expires_at = nil
-      http.start do |h|
-        tls_expires_at = h.peer_cert.not_after
-      end
-      tls_expires_in_days = (tls_expires_at - Time.now).to_i / (24 * 60 * 60)
-      ActiveRecord::Base.connection_pool.with_connection do
-        update_columns(tls_expires_at: tls_expires_at, tls_expires_in_days: tls_expires_in_days)
-      end
+    tls_job =
+      Rufus::Scheduler.singleton.cron '0 12 * * *', job: true do
+        http = Net::HTTP.new(uri.host, uri.port)
+        http.use_ssl = true
+        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        tls_expires_at = nil
+        begin
+          http.start do |h|
+            tls_expires_at = h.peer_cert.not_after
+          end
+        rescue *NET_HTTP_ERRORS => e
+          tls_expires_error = e.to_s.tr('"', "'")
+        end
+        if tls_expires_error
+          Rails.logger.info "ciao-scheduler Checked TLS certificate of '#{url}' and got '#{tls_expires_error}'"
+        else
+          Rails.logger.info "ciao-scheduler Checked TLS certificate of '#{url}' and got '#{tls_expires_at}'"
+          tls_expires_in_days = (tls_expires_at - Time.now).to_i / (24 * 60 * 60)
+          ActiveRecord::Base.connection_pool.with_connection do
+            update_columns(tls_expires_at: tls_expires_at, tls_expires_in_days: tls_expires_in_days)
+          end
 
-      if tls_expires_in_days < 30
-        NOTIFICATIONS_TLS_EXPIRES.each do |notification|
-          notification.notify(
-            name: name,
-            url: url,
-            check_url: Rails.application.routes.url_helpers.check_path(self),
-            tls_expires_at: tls_expires_at,
-            tls_expires_in_days: tls_expires_in_days
-          )
+          if tls_expires_in_days < 30
+            NOTIFICATIONS_TLS_EXPIRES.each do |notification|
+              notification.notify(
+                name: name,
+                url: url,
+                check_url: Rails.application.routes.url_helpers.check_path(self),
+                tls_expires_at: tls_expires_at,
+                tls_expires_in_days: tls_expires_in_days
+              )
+            end
+          end
         end
       end
+    if tls_job
+      Rails.logger.info "ciao-scheduler Created tls_job '#{tls_job.id}'"
+      update_columns(tls_job: tls_job.id)
+    else
+      Rails.logger.error 'ciao-scheduler Could not create tls_job'
+    end
+    tls_job
+  end
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/AbcSize
+
+  def unschedule_tls_job
+    tls_job = Rufus::Scheduler.singleton.job(self.tls_job)
+
+    if tls_job
+      tls_job.unschedule
+      Rails.logger.info "ciao-scheduler Unscheduled tls_job '#{tls_job.id}'"
+    else
+      Rails.logger.info "ciao-scheduler Could not unschedule tls_job: '#{self.tls_job}' not found"
     end
   end
 
@@ -141,14 +174,18 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
     if saved_change_to_attribute?(:active)
       if active
         create_job
+        create_tls_job
       else
         unschedule_job
-        update_columns(next_contact_at: nil, job: nil)
+        unschedule_tls_job
+        update_columns(next_contact_at: nil, job: nil, tls_job: nil)
       end
     elsif saved_change_to_attribute?(:cron) || saved_change_to_attribute?(:url)
-      Rails.logger.info "ciao-scheduler Check '#{name}' updates to cron or URL triggered job update"
+      Rails.logger.info "ciao-scheduler Check '#{name}' updates to cron or URL triggered job and tls_job update"
       unschedule_job
-      create_job
+      unschedule_tls_job
+      create_job if active?
+      create_tls_job if active?
     end
   end
 end
