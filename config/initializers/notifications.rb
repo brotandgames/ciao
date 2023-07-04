@@ -26,4 +26,4 @@ NOTIFICATIONS_TLS_EXPIRES = Ciao::Parsers::WebhookParser.webhooks.map do |webhoo
   )
 end
 
-NOTIFICATIONS_TLS_EXPIRES << Ciao::Notifications::MailNotificationTlsExpires.new if ENV['SMTP_ADDRESS'].present?
+NOTIFICATIONS_TLS_EXPIRES << Ciao::Notifications::MailNotificationTlsExpires.new if ENV['SMTP_ADDRESS'].present? && !ENV['SMTP_DISABLE_TLS_EXPIRES_NOTIFICATIONS'].present?

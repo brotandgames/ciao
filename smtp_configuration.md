@@ -15,6 +15,13 @@ SMTP_PASSWORD="sensitive_password"
 SMTP_SSL=true
 ````
 
+> New as of 1.9.3
+
+```
+# Disable TLS expiration notifications via E-Mail for all checks
+SMTP_DISABLE_TLS_EXPIRES_NOTIFICATIONS=true
+```
+
 ## Notes
 
 * When `SMTP_ADDRESS` variable is not set no e-mail notifications are sent
