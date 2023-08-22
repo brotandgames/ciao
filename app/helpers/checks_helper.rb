@@ -26,7 +26,7 @@ module ChecksHelper
   # @return [String] the CSS class for the corresponding tls_expires_in_days
   def class_for_tls_expires_in_days(tls_expires_in_days)
     case tls_expires_in_days
-    when 0..7
+    when -Float::INFINITY..7
       'text-danger'
     when 8..30
       'text-warning'

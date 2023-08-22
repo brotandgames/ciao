@@ -16,6 +16,7 @@
       <th>Cron</th>
       <th>Url</th>
       <th>Status</th>
+      <th>TLS</th>
       <th></th>
     </tr>
   </thead>
@@ -55,13 +56,16 @@
             <%= truncate(check.status, :length => 37) %>
             </div>
           <% end %>
+          <div class="small text-muted"><%= "Changes: " + check.status_changes.count.to_s %></div>
+        </td>
+        <td>
           <div class="small <%= class_for_tls_expires_in_days(check.tls_expires_in_days) %>">
             <% if !check.active %>
               Check not active
             <% else %>
               <% if URI.parse(check.url).scheme == 'https' %>
                 <% if check.tls_expires_at? %>
-                  TLS expires in <%= check.tls_expires_in_days %> days
+                  Expires in <%= check.tls_expires_in_days %> days
                 <% else %>
                   Waiting for TLS check
                 <% end %>
