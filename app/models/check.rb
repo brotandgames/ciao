@@ -10,7 +10,7 @@
 # @attr [string] job rufus-scheduler's last run job ID
 # @attr [datetime] last_contact_at when the healthcheck was last run
 # @attr [datetime] next_contact_at when the healthcheck will next run
-class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
+class Check < ApplicationRecord
   has_many :status_changes, dependent: :destroy
 
   after_create :create_job, :create_tls_job, if: :active?
@@ -25,14 +25,14 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
 
   scope :active, -> { where(active: true) }
   scope :inactive, -> { where(active: false) }
-  scope :healthy, -> { where('status LIKE ? AND active = ?', '2%', true) }
-  scope :unhealthy, -> { where.not('status LIKE ? AND active = ?', '2%', true) }
-  scope :status_1xx, -> { where('status LIKE ? AND active = ?', '1%', true) }
-  scope :status_2xx, -> { where('status LIKE ? AND active = ?', '2%', true) }
-  scope :status_3xx, -> { where('status LIKE ? AND active = ?', '3%', true) }
-  scope :status_4xx, -> { where('status LIKE ? AND active = ?', '4%', true) }
-  scope :status_5xx, -> { where('status LIKE ? AND active = ?', '5%', true) }
-  scope :status_err, -> { where('NOT (status LIKE ? OR status LIKE ? OR status LIKE ? OR status LIKE ? OR status LIKE ?) AND active = ?', '1%', '2%', '3%', '4%', '5%', true) }
+  scope :healthy, -> { where("status LIKE ? AND active = ?", "2%", true) }
+  scope :unhealthy, -> { where.not("status LIKE ? AND active = ?", "2%", true) }
+  scope :status_1xx, -> { where("status LIKE ? AND active = ?", "1%", true) }
+  scope :status_2xx, -> { where("status LIKE ? AND active = ?", "2%", true) }
+  scope :status_3xx, -> { where("status LIKE ? AND active = ?", "3%", true) }
+  scope :status_4xx, -> { where("status LIKE ? AND active = ?", "4%", true) }
+  scope :status_5xx, -> { where("status LIKE ? AND active = ?", "5%", true) }
+  scope :status_err, -> { where("NOT (status LIKE ? OR status LIKE ? OR status LIKE ? OR status LIKE ? OR status LIKE ?) AND active = ?", "1%", "2%", "3%", "4%", "5%", true) }
 
   def self.percentage_active
     if !active.empty?
@@ -63,7 +63,7 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
         status = http_code unless e
         last_contact_at = Time.current
         Rails.logger.info "ciao-scheduler Checked '#{url}' at '#{last_contact_at}' and got '#{status}'"
-        status_before = status_after = ''
+        status_before = status_after = ""
         ActiveRecord::Base.connection_pool.with_connection do
           status_before = self.status
           update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
@@ -89,7 +89,7 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
       Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
       update_columns(job: job.id, next_contact_at: job.next_times(1).first.to_local_time)
     else
-      Rails.logger.error 'ciao-scheduler Could not create job'
+      Rails.logger.error "ciao-scheduler Could not create job"
     end
     job
   end
@@ -109,10 +109,10 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
   # rubocop:disable Metrics/AbcSize
   def create_tls_job
     uri = URI.parse(url)
-    return unless uri.scheme == 'https'
+    return unless uri.scheme == "https"
 
     tls_job =
-      Rufus::Scheduler.singleton.cron '0 12 * * *', job: true do
+      Rufus::Scheduler.singleton.cron "0 12 * * *", job: true do
         http = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
         http.verify_mode = OpenSSL::SSL::VERIFY_NONE
@@ -150,12 +150,10 @@ class Check < ApplicationRecord # rubocop:disable Metrics/ClassLength
       Rails.logger.info "ciao-scheduler Created tls_job '#{tls_job.id}'"
       update_columns(tls_job: tls_job.id)
     else
-      Rails.logger.error 'ciao-scheduler Could not create tls_job'
+      Rails.logger.error "ciao-scheduler Could not create tls_job"
     end
     tls_job
   end
-  # rubocop:enable Metrics/MethodLength
-  # rubocop:enable Metrics/AbcSize
 
   def unschedule_tls_job
     tls_job = Rufus::Scheduler.singleton.job(self.tls_job)

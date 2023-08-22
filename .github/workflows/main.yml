@@ -14,7 +14,7 @@ jobs:
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
     - run: |
         yarn install --check-files
-        bundle exec rubocop
+        bundle exec standardrb
         # TODO: The asset "application.js" is not present in the asset pipeline. (GitHub Action)
         touch ./app/assets/builds/application.js
         bundle exec rake

@@ -11,7 +11,8 @@ class ChecksController < ApplicationController
 
   # GET /checks/1
   # GET /checks/1.json
-  def show; end
+  def show
+  end
 
   # GET /checks/new
   def new
@@ -19,7 +20,8 @@ class ChecksController < ApplicationController
   end
 
   # GET /checks/1/edit
-  def edit; end
+  def edit
+  end
 
   # POST /checks
   # POST /checks.json
@@ -29,7 +31,7 @@ class ChecksController < ApplicationController
     respond_to do |format|
       if @check.save
         format.html do
-          redirect_to @check, notice: 'Check was successfully created.'
+          redirect_to @check, notice: "Check was successfully created."
         end
         format.json { render :show, status: :created, location: @check }
       else
@@ -47,7 +49,7 @@ class ChecksController < ApplicationController
     respond_to do |format|
       if @check.update(check_params)
         format.html do
-          redirect_to @check, notice: 'Check was successfully updated.'
+          redirect_to @check, notice: "Check was successfully updated."
         end
         format.json { render :show, status: :ok, location: @check }
       else
@@ -65,7 +67,7 @@ class ChecksController < ApplicationController
     @check.destroy
     respond_to do |format|
       format.html do
-        redirect_to checks_url, notice: 'Check was successfully destroyed.'
+        redirect_to checks_url, notice: "Check was successfully destroyed."
       end
       format.json { head :no_content }
     end
@@ -88,7 +90,7 @@ class ChecksController < ApplicationController
         format.json { render :job, status: :ok }
       else
         format.html { render :job, status: 404 }
-        format.json { render json: 'Job not found', status: 404 }
+        format.json { render json: "Job not found", status: 404 }
       end
     end
   end
@@ -104,16 +106,17 @@ class ChecksController < ApplicationController
     respond_to do |format|
       format.html do
         redirect_to checks_url,
-                    notice: 'Check jobs were successfully recreated.'
+          notice: "Check jobs were successfully recreated."
       end
       format.json do
-        render json: 'Check jobs were successfully recreated.', status: 200
+        render json: "Check jobs were successfully recreated.", status: 200
       end
     end
   end
 
   # GET /checks/admin
-  def admin; end
+  def admin
+  end
 
   private
 

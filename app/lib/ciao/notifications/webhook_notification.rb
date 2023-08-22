@@ -6,11 +6,11 @@ module Ciao
       def notify(payload_data = {})
         uri = URI.parse(@endpoint)
         http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = uri.scheme == 'https'
+        http.use_ssl = uri.scheme == "https"
 
         request = Net::HTTP::Post.new(
           uri.request_uri,
-          'Content-Type' => 'application/json'
+          "Content-Type" => "application/json"
         )
         request.body = @payload_renderer.render(payload_data)
         http.request(request)

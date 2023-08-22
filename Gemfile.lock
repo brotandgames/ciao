@@ -116,6 +116,7 @@ GEM
       addressable (~> 2.8)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
+    lint_roller (1.1.0)
     listen (3.8.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -204,7 +205,7 @@ GEM
       ffi (~> 1.0)
     regexp_parser (2.8.1)
     rexml (3.2.6)
-    rubocop (1.56.0)
+    rubocop (1.56.1)
       base64 (~> 0.1.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
@@ -218,6 +219,9 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.29.0)
       parser (>= 3.2.1.0)
+    rubocop-performance (1.19.0)
+      rubocop (>= 1.7.0, < 2.0)
+      rubocop-ast (>= 0.4.0)
     ruby-next-core (0.15.3)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
@@ -262,6 +266,20 @@ GEM
       mini_portile2 (~> 2.8.0)
     sqlite3 (1.6.3-arm64-darwin)
     sqlite3 (1.6.3-x86_64-linux)
+    standard (1.31.0)
+      language_server-protocol (~> 3.17.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.56.0)
+      standard-custom (~> 1.0.0)
+      standard-performance (~> 1.2)
+    standard-custom (1.0.2)
+      lint_roller (~> 1.0)
+      rubocop (~> 1.50)
+    standard-performance (1.2.0)
+      lint_roller (~> 1.1)
+      rubocop-performance (~> 1.19.0)
+    standardrb (1.0.1)
+      standard
     tabler-rubygem (0.1.4)
       autoprefixer-rails (>= 6.0.3)
     thor (1.2.2)
@@ -327,13 +345,13 @@ DEPENDENCIES
   puma (~> 5.0)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1)
-  rubocop
   rufus-scheduler
   sass-rails (~> 5)
   selenium-webdriver (>= 4.0.0.rc1)
   simple_form
   spring
   sqlite3 (~> 1.4)
+  standardrb
   tabler-rubygem
   turbolinks (~> 5)
   tzinfo-data

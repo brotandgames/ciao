@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative 'boot'
+require_relative "boot"
 
-require 'rails/all'
+require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -19,7 +19,7 @@ module Ciao
     # the framework and any gems in your application.
 
     # Default time_zone is UTC
-    ENV['TIME_ZONE'] ||= 'UTC'
-    config.time_zone = ENV['TIME_ZONE']
+    ENV["TIME_ZONE"] ||= "UTC"
+    config.time_zone = ENV["TIME_ZONE"]
   end
 end

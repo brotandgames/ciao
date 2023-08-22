@@ -9,7 +9,7 @@ module Ciao
 
       def render(_data)
         raise NotImplementedError,
-              'You can not call Ciao::Renderers::Base#render directly'
+          "You can not call Ciao::Renderers::Base#render directly"
       end
     end
   end

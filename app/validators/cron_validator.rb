@@ -4,7 +4,7 @@ class CronValidator < ActiveModel::EachValidator
   def self.compliant?(value)
     cron = ::Fugit::Cron.parse(value)
     cron.present?
-  rescue StandardError => e
+  rescue => e
     Rails.logger.info "CronValidator Exception: #{e}"
     false
   end
@@ -14,7 +14,7 @@ class CronValidator < ActiveModel::EachValidator
 
     record.errors.add(
       attribute,
-      'is not a valid cron. Check your cron schedule expression here: https://crontab.guru'
+      "is not a valid cron. Check your cron schedule expression here: https://crontab.guru"
     )
   end
 end

@@ -8,15 +8,15 @@ module ChecksHelper
   def class_for_status(status)
     case status.to_i
     when 100..199
-      'secondary'
+      "secondary"
     when 200..299
-      'success'
+      "success"
     when 300..399
-      'info'
+      "info"
     when 400..499
-      'warning'
+      "warning"
     else
-      'danger'
+      "danger"
     end
   end
 
@@ -27,11 +27,11 @@ module ChecksHelper
   def class_for_tls_expires_in_days(tls_expires_in_days)
     case tls_expires_in_days
     when -Float::INFINITY..7
-      'text-danger'
+      "text-danger"
     when 8..30
-      'text-warning'
+      "text-warning"
     when 31..Float::INFINITY
-      'text'
+      "text"
     end
   end
 
@@ -40,7 +40,7 @@ module ChecksHelper
   # @param active [Boolean] the healthcheck's active flag, `true` or `false`
   # @return [String] the corresponding color (CSS class)
   def class_for_active(active)
-    active ? 'text-green' : 'text-red'
+    active ? "text-green" : "text-red"
   end
 
   # Converts the healthcheck's active flag to CSS class
@@ -48,7 +48,7 @@ module ChecksHelper
   # @param active [Boolean] the healthcheck's active flag, `true` or `false`
   # @return [String] the corresponding checkbox icon (CSS class)
   def class_for_active_checkbox(active)
-    active ? 'fe-check' : 'fe-minus'
+    active ? "fe-check" : "fe-minus"
   end
 
   # Converts the healthy percentage to CSS class
@@ -56,6 +56,6 @@ module ChecksHelper
   # @param percent [Float] the healthy percentage
   # @return [String] the corresponding color (CSS class)
   def class_for_healthy(percent)
-    percent == 100 ? 'text-green' : 'text-red'
+    (percent == 100) ? "text-green" : "text-red"
   end
 end
