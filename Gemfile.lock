@@ -146,7 +146,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.9)
+    nio4r (2.7.0)
     nokogiri (1.15.4)
       mini_portile2 (~> 2.8.2)
       racc (~> 1.4)
@@ -161,7 +161,7 @@ GEM
     popper_js (1.16.1)
     prometheus-client (4.2.1)
     public_suffix (5.0.3)
-    puma (5.6.7)
+    puma (5.6.8)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.7.1)
@@ -342,7 +342,7 @@ DEPENDENCIES
   listen (~> 3.3)
   mocha
   prometheus-client
-  puma (~> 5.0)
+  puma (~> 5.6)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1)
   rufus-scheduler
