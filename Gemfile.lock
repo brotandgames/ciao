@@ -362,8 +362,5 @@ DEPENDENCIES
   yabeda-rails
   yard
 
-RUBY VERSION
-   ruby 3.2.2p53
-
 BUNDLED WITH
    2.3.26
