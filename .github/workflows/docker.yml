@@ -26,7 +26,7 @@ jobs:
           docker buildx build \
             --tag brotandgames/ciao:$(cat ./public/version) \
             --platform linux/amd64,linux/arm/v7,linux/arm64 \
-            --load
+            --load .
 
       - name: push the image
         if: "!contains(github.ref, '-rc')"
