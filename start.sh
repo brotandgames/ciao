@@ -15,4 +15,4 @@ rake db:migrate
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /app/tmp/pids/server.pid
 
-exec rails server -b 0.0.0.0 -p 3000
+exec rails server -b 0.0.0.0 -p ${PORT=3000}
