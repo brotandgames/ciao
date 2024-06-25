@@ -209,7 +209,7 @@ GEM
     rb-inotify (0.11.1)
       ffi (~> 1.0)
     regexp_parser (2.9.2)
-    rexml (3.3.3)
+    rexml (3.3.1)
       strscan
     rubocop (1.64.1)
       json (~> 2.3)
@@ -223,7 +223,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.31.3)
-      parser (>= 3.3.3.0)
+      parser (>= 3.3.1.0)
     rubocop-performance (1.21.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
