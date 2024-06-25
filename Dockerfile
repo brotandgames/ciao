@@ -17,6 +17,7 @@ RUN set -x \
         build-base \
         libxml2-dev \
         libxslt-dev \
+        git \
     && gem install bundler \
 		&& bundle config set --local without 'development:test' \
     && bundle install --jobs 20 -j"$(nproc)" --retry 3 \
