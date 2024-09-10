@@ -60,7 +60,7 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 
-gem "bootstrap", "~> 4.3.1"
+gem "bootstrap", "~> 5.0.0"
 # https://stackoverflow.com/questions/78617432/strange-bundle-update-issue-disappearing-net-pop-0-1-2-dependency
 gem "net-pop", github: "ruby/net-pop"
 gem "prometheus-client"
