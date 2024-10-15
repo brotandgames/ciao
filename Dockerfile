@@ -1,32 +1,26 @@
-FROM ruby:3.3.5-alpine3.20
+FROM ruby:3.3.5-slim
 
-# for postgres: postgresql-dev
-RUN apk add --no-cache \
-        sqlite-dev \
-        tzdata \
-        yarn
+RUN apt-get update -qq && apt-get install -yq --no-install-recommends \
+    build-essential \
+    git \
+    sqlite3 \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+ENV LANG=C.UTF-8 \
+  BUNDLE_JOBS=4 \
+  BUNDLE_RETRY=3 \
+  RAILS_ENV=production
+
+RUN gem update --system && gem install bundler
 
 WORKDIR /app
 
-ARG RACK_ENV=production
-ENV RACK_ENV=$RACK_ENV
-
-ADD Gemfile* /app/
-RUN set -x \
-    && apk add --no-cache --virtual .build-deps \
-        build-base \
-        libxml2-dev \
-        libxslt-dev \
-        git \
-    && gem install bundler \
-		&& bundle config set --local without 'development:test' \
-    && bundle install --jobs 20 -j"$(nproc)" --retry 3 \
-    # Remove unneeded files (cached *.gem, *.o, *.c)
-    && rm -rf \
-        /usr/local/bundle/cache/*.gem \
-        /usr/local/bundle/gems/**/*.c \
-        /usr/local/bundle/gems/**/*.o \
-    && apk del .build-deps
+COPY Gemfile* .ruby-version /app/
+RUN bundle config frozen true \
+ && bundle config jobs 4 \
+ && bundle config deployment true \
+ && bundle config without 'development test' \
+ && bundle install
 
 COPY package.json yarn.lock /app/
 RUN set -x \
@@ -35,32 +29,18 @@ RUN set -x \
 
 COPY . ./
 
-# The command '/bin/sh -c rake assets:precompile' needs the RAILS_MASTER_KEY to be set!?
-# https://github.com/rails/rails/issues/32947
-#
-# Added xz-libs because nokogiri needs liblzma.so.5
-# during rake tasks (eg. assets-precompile)
-#
-# Added gcompat
-# https://nokogiri.org/tutorials/installing_nokogiri.html#linux-musl-error-loading-shared-library
-RUN set -x \
-    && apk add --no-cache xz-libs gcompat \
-    && SECRET_KEY_BASE=foo bundle exec rake assets:precompile \
-    # Remove folders not needed in resulting image
-    && rm -rf \
-        /tmp/* \
-        app/assets \
-        lib/assets \
-        node_modules \
-        spec \
-        tmp/cache \
-        vendor/assets
+# Precompile assets
+# SECRET_KEY_BASE or RAILS_MASTER_KEY is required in production, but we don't
+# want real secrets in the image or image history. The real secret is passed in
+# at run time
+ARG SECRET_KEY_BASE=fakekeyforassets
+RUN bin/rails assets:clobber && bundle exec rails assets:precompile
+
+EXPOSE 3000
 
 ENV RAILS_LOG_TO_STDOUT=true
 ENV RAILS_SERVE_STATIC_FILES=true
 ENV EXECJS_RUNTIME=Disabled
-
-EXPOSE 3000
 
 VOLUME /app/db/sqlite
 
