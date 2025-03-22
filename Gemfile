@@ -63,6 +63,8 @@ gem "tzinfo-data", platforms: %i[mingw mswin x64_mingw jruby]
 # tabler-rubygem is only compatible with bootstrap 4
 # The `bg-variant` mixin has been deprecated as of v4.4.0. It will be removed entirely in v5.
 gem "bootstrap", "~> 4"
+gem "drb"
+gem "mutex_m"
 # https://stackoverflow.com/questions/78617432/strange-bundle-update-issue-disappearing-net-pop-0-1-2-dependency
 gem "net-pop", github: "ruby/net-pop"
 gem "prometheus-client"
