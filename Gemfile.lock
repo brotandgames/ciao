@@ -270,7 +270,7 @@ GEM
     simple_form (5.3.1)
       actionpack (>= 5.2)
       activemodel (>= 5.2)
-    spring (4.3.0)
+    spring (4.2.1)
     sprockets (3.7.5)
       base64
       concurrent-ruby (~> 1.0)
@@ -373,7 +373,7 @@ DEPENDENCIES
   sassc-rails (~> 2.1)
   selenium-webdriver (>= 4.0.0.rc1)
   simple_form
-  spring
+  spring (~> 4.2.0)
   sqlite3 (~> 1.4)
   standardrb
   tabler-rubygem

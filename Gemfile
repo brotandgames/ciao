@@ -43,7 +43,8 @@ group :development do
   # Can be configured to work on production as well see: https://github.com/MiniProfiler/rack-mini-profiler/blob/master/README.md
   gem "rack-mini-profiler", "~> 2.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem "spring"
+  # Issue: https://github.com/rails/spring/issues/734
+  gem "spring", "~> 4.2.0"
   gem "yard"
 end
 
