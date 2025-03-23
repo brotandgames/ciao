@@ -8,7 +8,7 @@ gem "rails", "~> 6.1"
 # Use sqlite3 as the database for Active Record
 # That platforms: [:ruby] disables usage of the precompiled native gem
 # and forces native compilation, which is essential on Alpine
-gem 'sqlite3', '~> 1.4', platforms: [:ruby]
+gem "sqlite3", "~> 1.4", platforms: [:ruby]
 # Use Puma as the app server
 gem "puma", "~> 6.4"
 # Use SCSS for stylesheets
