@@ -6,7 +6,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "rails", "~> 6.1"
 # Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+# That platforms: [:ruby] disables usage of the precompiled native gem
+# and forces native compilation, which is essential on Alpine
+gem 'sqlite3', '~> 1.4', platforms: [:ruby]
 # Use Puma as the app server
 gem "puma", "~> 6.4"
 # Use SCSS for stylesheets
