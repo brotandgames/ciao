@@ -11,7 +11,7 @@ replicaCount: 1
 
 image:
   repository: brotandgames/ciao
-  tag: latest
+  tag: 1.9.7
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []

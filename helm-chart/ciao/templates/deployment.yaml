@@ -20,6 +20,17 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+      # Init container to set ownership
+      initContainers:
+        - name: chown-sqlite-dir
+          image: busybox:latest
+          command: ["sh", "-c", "chown -R 1000:1000 /app/db/sqlite"]
+          # Use root to perform chown
+          securityContext:
+            runAsUser: 0
+          volumeMounts:
+            - name: sqlite
+              mountPath: /app/db/sqlite
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
