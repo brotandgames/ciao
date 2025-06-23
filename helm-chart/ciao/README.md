@@ -12,10 +12,14 @@ Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.m
 
 ## Releases
 
+### Release 1.0.0
+
+* Add initContainer and bump ciao Helm Chart from 0.5.0 to 1.0.0
+
 ### Release 0.5.0
 
 * Change initialDelaySeconds to 10 for livenessProbe and readinessProbe
-* Add support for Ingress apiVersion networking.k8s.io/v1 
+* Add support for Ingress apiVersion networking.k8s.io/v1
 
 ### Release 0.4.0
 
