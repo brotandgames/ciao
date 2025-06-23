@@ -70,15 +70,6 @@ FROM ruby:3.3.7-slim
 ARG RACK_ENV=production
 ENV RACK_ENV=$RACK_ENV
 
-# Install runtime dependencies
-RUN set -x \
-    && apt-get update -qq \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
-        libsqlite3-0 \
-        tzdata \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
 # Set the working directory
 WORKDIR /app
 
@@ -86,6 +77,12 @@ WORKDIR /app
 COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
 # Copy the application with precompiled assets from the builder stage
 COPY --from=builder /app /app
+
+# Create non-root user
+RUN groupadd --system --gid 1000 rails && \
+    useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash && \
+    chown -R rails:rails db log storage tmp
+USER rails:rails
 
 # Set environment variables for production
 ENV RAILS_LOG_TO_STDOUT=true
