@@ -51,7 +51,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
   test "should create check" do
     assert_difference("Check.count") do
       post checks_url, params: {
-        check: { cron: @check.cron, url: @check.url, name: @check.name }
+        check: {cron: @check.cron, url: @check.url, name: @check.name}
       }
     end
     assert_redirected_to check_url(Check.last)
@@ -60,7 +60,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
   test "should create check as JSON" do
     assert_difference("Check.count") do
       post checks_url, params: {
-        check: { cron: @check.cron, url: @check.url, name: @check.name }
+        check: {cron: @check.cron, url: @check.url, name: @check.name}
       }, as: :json
     end
     assert_response :created
@@ -68,7 +68,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
 
   test "should not create check with invalid params" do
     assert_no_difference("Check.count") do
-      post checks_url, params: { check: { name: "", url: "not-a-url", cron: "bad" } }
+      post checks_url, params: {check: {name: "", url: "not-a-url", cron: "bad"}}
     end
     assert_response :unprocessable_entity
   end
@@ -76,7 +76,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
   test "should not create check with invalid params as JSON" do
     assert_no_difference("Check.count") do
       post checks_url, params: {
-        check: { name: "", url: "not-a-url", cron: "bad" }
+        check: {name: "", url: "not-a-url", cron: "bad"}
       }, as: :json
     end
     assert_response :unprocessable_entity
@@ -108,14 +108,14 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
 
   test "should update check" do
     patch check_url(@check), params: {
-      check: { cron: @check.cron, url: @check.url, name: @check.name }
+      check: {cron: @check.cron, url: @check.url, name: @check.name}
     }
     assert_redirected_to check_url(@check)
   end
 
   test "should update check as JSON" do
     patch check_url(@check), params: {
-      check: { cron: @check.cron, url: @check.url, name: "Updated Name" }
+      check: {cron: @check.cron, url: @check.url, name: "Updated Name"}
     }, as: :json
     assert_response :ok
     assert_equal "Updated Name", @check.reload.name
@@ -123,14 +123,14 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
 
   test "should not update check with invalid params" do
     patch check_url(@check), params: {
-      check: { name: "", url: "not-a-url", cron: "bad" }
+      check: {name: "", url: "not-a-url", cron: "bad"}
     }
     assert_response :unprocessable_entity
   end
 
   test "should not update check with invalid params as JSON" do
     patch check_url(@check), params: {
-      check: { name: "", url: "not-a-url", cron: "bad" }
+      check: {name: "", url: "not-a-url", cron: "bad"}
     }, as: :json
     assert_response :unprocessable_entity
   end
