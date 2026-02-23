@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
     return true if basic_auth_username.empty?
 
     authenticate_or_request_with_http_basic("Ciao Application") do |username, password|
-      username == basic_auth_username && password == basic_auth_password
+      ActiveSupport::SecurityUtils.secure_compare(username, basic_auth_username) &&
+        ActiveSupport::SecurityUtils.secure_compare(password, basic_auth_password)
     end
   end
 end
