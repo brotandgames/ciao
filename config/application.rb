@@ -18,6 +18,9 @@ module Ciao
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
 
+    # ciao does not use Active Storage image variants
+    config.active_storage.variant_processor = :disabled
+
     # Default time_zone is UTC
     ENV["TIME_ZONE"] ||= "UTC"
     config.time_zone = ENV["TIME_ZONE"]
