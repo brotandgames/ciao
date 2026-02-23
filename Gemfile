@@ -64,4 +64,3 @@ gem "rufus-scheduler"
 gem "simple_form"
 gem "yabeda-prometheus"
 gem "yabeda-rails"
-
