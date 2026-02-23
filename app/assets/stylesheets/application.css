@@ -1,0 +1,66 @@
+/* ciao overrides: tighter table rows and icon sizing to match former styling */
+.table > :not(caption) > * > * {
+  padding: 0.65rem 0.75rem;
+}
+.table thead th {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+.ti {
+  font-size: 1rem;
+}
+.row-cards + .row-cards {
+  margin-top: 1rem;
+}
+
+/* Restore stamp-sm as a compact count badge (Tabler 1.x changed .stamp to a decorative element) */
+.stamp.stamp-sm {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 4px;
+  font-size: .875rem;
+  font-weight: 600;
+  color: #fff;
+  opacity: 1;
+  overflow: visible;
+  pointer-events: auto;
+}
+.stamp.stamp-sm::before {
+  content: none;
+}
+
+/* Bootstrap 5 removed .form-group; simple_form still uses it for field spacing */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+/* Bootstrap 5 bg-* utilities don't auto-set white text like Bootstrap 4 badge-* did */
+.badge {
+  color: #fff;
+}
+
+/* Reduce label-to-input gap in forms */
+.form-control-label,
+.form-group label {
+  margin-bottom: 0.25rem;
+}
+
+/* Space between icon and text inside buttons */
+.btn .ti {
+  margin-right: 0.25rem;
+}
+
+/* Remove right margin from icons with no following text */
+.btn-icon .ti,
+.btn .ti:only-child {
+  margin-right: 0;
+}
+
+/* Restore gap between sibling cards (Bootstrap 5 removed card margin-bottom) */
+.card + .card {
+  margin-top: 1rem;
+}

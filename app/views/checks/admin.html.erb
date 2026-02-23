@@ -13,7 +13,7 @@
         </h4>
         <p>This is useful after a (re)start.</p>
         <p>
-          <%= link_to '<i class="fe fe-refresh-cw"></i> Recreate'.html_safe, jobs_recreate_checks_path, class: 'btn btn-info' %>
+          <%= link_to '<i class="ti ti-refresh"></i> <span>Recreate</span>'.html_safe, jobs_recreate_checks_path, class: 'btn btn-info' %>
         </p>
         <p>
           It can be also accomplished using the REST API endpoint:
@@ -33,7 +33,7 @@
       </div>
       <div class="card-body">
         <p>
-          <span class="badge badge-dark %>">
+          <span class="badge bg-dark %>">
           Configuration
           </span>
         </p>
@@ -46,7 +46,7 @@
         <p><strong>Prometheus enabled:</strong> <code><%= ENV.fetch('PROMETHEUS_ENABLED', 'not configured') %></code></p>
         <p><strong>Prometheus HTTP Basic auth username:</strong> <code><%= ENV.fetch('PROMETHEUS_BASIC_AUTH_USERNAME', 'not configured') %></code></p>
         <p>
-          <span class="badge badge-dark %>">
+          <span class="badge bg-dark %>">
           Database
           </span>
         </p>

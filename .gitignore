@@ -13,7 +13,7 @@
 
 # Ignore the SQLite database (ciao >= 1.1.0).
 # Moved to subfolder to enable docker to use a volume.
-/db/sqlite/*.sqlite3
+/db/sqlite/*.sqlite3*
 /db/sqlite/*.sqlite3-journal
 /db/sqlite/test.sqlite*
 
@@ -33,17 +33,8 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-/public/packs
-/public/packs-test
-/node_modules
-/yarn-error.log
-yarn-debug.log*
-.yarn-integrity
 .DS_Store
 
 # yard generated
 doc
 .yardoc
-
-/app/assets/builds/*
-!/app/assets/builds/.keep
