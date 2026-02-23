@@ -10,7 +10,7 @@
       </div>
       <div class="card-body">
         <p>
-          <%= link_to '<i class="fe fe-edit"></i> Edit'.html_safe, edit_check_path(@check), class: 'btn btn-outline-info btn-sm' %>
+          <%= link_to '<i class="ti ti-edit"></i> <span>Edit</span>'.html_safe, edit_check_path(@check), class: 'btn btn-outline-info btn-sm' %>
           <div id="notice"><%= notice %></div>
         </p>
 
@@ -22,7 +22,7 @@
         <p>
           <strong>Cron:</strong>
           <code><%= @check.cron %></code>
-          <%= link_to '<i class="fe fe-external-link"></i> crontab.guru'.html_safe, "https://crontab.guru/##{@check.cron.split(' ').join('_')}", target: :_blank %>
+          <%= link_to '<i class="ti ti-external-link"></i> crontab.guru'.html_safe, "https://crontab.guru/##{@check.cron.split(' ').join('_')}", target: :_blank %>
         </p>
 
         <p>
@@ -62,7 +62,7 @@
           <% @check.status_changes.order(created_at: :desc).each do |status_change| %>
             <li><%= status_change.created_at %>
             <% if status_change.status.to_i.between?(100, 599) %>
-              <span class="badge badge-<%= class_for_status(status_change.status) %>"><%= status_change.status %></span>
+              <span class="badge bg-<%= class_for_status(status_change.status) %>"><%= status_change.status %></span>
             <% else %>
               <span class="small text-danger"><%= status_change.status %></span>
             <% end %>
@@ -77,7 +77,7 @@
 
         <p>
           <%= button_to @check, class: "btn btn-outline-danger btn-sm", method: :delete do %>
-            <i class="fe fe-trash"></i> Delete
+            <i class="ti ti-trash"></i> <span>Delete</span>
           <% end %>
         </p>
       </div>

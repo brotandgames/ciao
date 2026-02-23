@@ -10,11 +10,12 @@
     />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+    <%= stylesheet_link_tag 'tabler.min', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+    <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+  <body class="antialiased">
     <div class="container">
       <p></p>
       <div class="row">
@@ -22,9 +23,9 @@
           <p>
             <%= link_to 'ciao', root_path, class: 'btn btn-success' %>
             <%= link_to 'Checks', checks_path, class: 'btn btn-outline-info' %>
-            <%= link_to '<i class="fe fe-plus"></i> Check'.html_safe,
+            <%= link_to '<i class="ti ti-plus"></i> <span>Check</span>'.html_safe,
               new_check_path, class: 'btn btn-outline-success'%>
-            <%= link_to '<i class="fe fe-settings"></i>'.html_safe,
+            <%= link_to '<i class="ti ti-settings"></i>'.html_safe,
               admin_checks_path, class: 'btn btn-icon btn-outline-secondary'%>
           </p>
         </div>
@@ -32,7 +33,7 @@
       <div class="row">
         <div class="col-12">
           <%= yield %>
-          <div class="small text-muted">
+          <div class="mt-3 small text-muted">
             <%= link_to 'ciao', 'https://brotandgames.com/ciao/' %>
             <%= File.read(File.join(Rails.public_path, 'version')) %>
           </div>

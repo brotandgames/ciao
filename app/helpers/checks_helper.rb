@@ -48,7 +48,7 @@ module ChecksHelper
   # @param active [Boolean] the healthcheck's active flag, `true` or `false`
   # @return [String] the corresponding checkbox icon (CSS class)
   def class_for_active_checkbox(active)
-    active ? "fe-check" : "fe-minus"
+    active ? "ti-check" : "ti-minus"
   end
 
   # Converts the healthy percentage to CSS class

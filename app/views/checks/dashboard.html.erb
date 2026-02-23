@@ -3,7 +3,7 @@
   <div class="col-6 col-sm-4 col-lg-2">
     <div class="card">
       <div class="card-body p-3 text-center">
-        <div class="text-right">
+        <div class="text-end">
           100% valid
         </div>
         <div class="h1 m-0"><%= @checks.count %></div>
@@ -15,7 +15,7 @@
   <div class="col-6 col-sm-4 col-lg-2">
     <div class="card">
       <div class="card-body p-3 text-center">
-        <div class="text-right <%= class_for_healthy(@checks.percentage_active) %>">
+        <div class="text-end <%= class_for_healthy(@checks.percentage_active) %>">
           <%= @checks.percentage_active %>% active
         </div>
         <div class="h1 m-0  <%= class_for_healthy(@checks.percentage_active) %>"><%= @checks.active.count %></div>
@@ -27,7 +27,7 @@
   <div class="col-6 col-sm-4 col-lg-2">
     <div class="card">
       <div class="card-body p-3 text-center">
-        <div class="text-right <%= class_for_healthy(@checks.percentage_healthy) %>">
+        <div class="text-end <%= class_for_healthy(@checks.percentage_healthy) %>">
           <%= @checks.percentage_healthy %>% healthy
         </div>
         <div class="h1 m-0 <%= class_for_healthy(@checks.percentage_healthy) %>"><%= @checks.healthy.count %></div>
@@ -48,37 +48,37 @@
         <tbody>
           <tr>
             <td class="text-<%= class_for_status('100') %>">Status 1xx</td>
-            <td class="text-right">
+            <td class="text-end">
                <span class="stamp stamp-sm bg-<%= class_for_status('100') %>"><%= @checks.status_1xx.count %></span>
             </td>
           </tr>
           <tr>
             <td class="text-<%= class_for_status('200') %>"><strong>Status 2xx</strong></td>
-            <td class="text-right">
+            <td class="text-end">
               <span class="stamp stamp-sm bg-<%= class_for_status('200') %>"><%= @checks.status_2xx.count %></span>
             </td>
           </tr>
           <tr>
             <td class="text-<%= class_for_status('300') %>"><strong>Status 3xx</strong></td>
-            <td class="text-right">
+            <td class="text-end">
               <span class="stamp stamp-sm bg-<%= class_for_status('300') %>"><%= @checks.status_3xx.count %></span>
             </td>
           </tr>
           <tr>
             <td class="text-<%= class_for_status('400') %>"><strong>Status 4xx</strong></td>
-            <td class="text-right">
+            <td class="text-end">
               <span class="stamp stamp-sm bg-<%= class_for_status('400') %>"><%= @checks.status_4xx.count %></span>
             </td>
           </tr>
           <tr>
             <td class="text-<%= class_for_status('500') %>"><strong>Status 5xx</strong></td>
-            <td class="text-right">
+            <td class="text-end">
               <span class="stamp stamp-sm bg-<%= class_for_status('500') %>"><%= @checks.status_5xx.count %></span>
             </td>
           </tr>
           <tr>
             <td class="text-<%= class_for_status('err') %>">Status error</td>
-            <td class="text-right">
+            <td class="text-end">
               <span class="stamp stamp-sm bg-<%= class_for_status('err') %>"><%= @checks.status_err.count %></span>
             </td>
           </tr>

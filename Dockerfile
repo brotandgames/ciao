@@ -17,10 +17,8 @@ RUN set -x \
         libsqlite3-dev \
         libxml2-dev \
         libxslt-dev \
-        nodejs \
-        npm \
+        libyaml-dev \
         tzdata \
-    && npm install -g yarn \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -33,19 +31,11 @@ COPY Gemfile Gemfile.lock ./
 # Install Ruby gems
 RUN set -x \
     && bundle config set --local without 'development test' \
-    && bundle install --jobs 20 --retry 3 \
+    && bundle install --jobs $(nproc) --retry 3 \
     # Remove unneeded files (cached *.gem, *.o, *.c)
     && rm -rf /usr/local/bundle/cache/*.gem \
     && find /usr/local/bundle/gems/ -name "*.c" -delete \
     && find /usr/local/bundle/gems/ -name "*.o" -delete
-
-# Copy package.json and yarn.lock
-COPY package.json yarn.lock ./
-
-# Install JavaScript dependencies
-RUN set -x \
-    && yarn install \
-    && rm -rf /tmp/*
 
 # Copy the rest of the application
 COPY . ./
@@ -58,7 +48,6 @@ RUN set -x \
         /tmp/* \
         app/assets \
         lib/assets \
-        node_modules \
         spec \
         tmp/cache \
         vendor/assets

@@ -35,7 +35,7 @@ class ChecksController < ApplicationController
         end
         format.json { render :show, status: :created, location: @check }
       else
-        format.html { render :new }
+        format.html { render :new, status: :unprocessable_entity }
         format.json do
           render json: @check.errors, status: :unprocessable_entity
         end
@@ -53,7 +53,7 @@ class ChecksController < ApplicationController
         end
         format.json { render :show, status: :ok, location: @check }
       else
-        format.html { render :edit }
+        format.html { render :edit, status: :unprocessable_entity }
         format.json do
           render json: @check.errors, status: :unprocessable_entity
         end

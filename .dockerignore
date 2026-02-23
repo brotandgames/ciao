@@ -1,16 +1,12 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
-/public/packs/*
 !/log/.keep
 !/tmp/.keep
 .DS_Store
 .idea
 .env.development
 .env.staging
-
-# Ignore node_modules
-/node_modules
 
 # Ignore bundler config.
 /.bundle
@@ -30,3 +26,12 @@ tags
 
 # Ignore Dockerfile
 /Dockerfile
+
+# Not needed in Docker build
+test/
+spec/
+.github/
+helm-chart/
+scripts/
+doc/
+*.md
