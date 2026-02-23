@@ -75,16 +75,23 @@ Rails.application.configure do
   if ENV["SMTP_ADDRESS"].present?
     config.action_mailer.delivery_method = :smtp
     config.action_mailer.default_options = {from: ENV["SMTP_EMAIL_FROM"], to: ENV["SMTP_EMAIL_TO"]}
-    config.action_mailer.smtp_settings = {
+    smtp_settings = {
       address: ENV["SMTP_ADDRESS"],
       port: ENV["SMTP_PORT"],
       domain: ENV["SMTP_DOMAIN"],
       authentication: ENV["SMTP_AUTHENTICATION"],
-      enable_starttls_auto: ActiveModel::Type::Boolean.new.cast(ENV["SMTP_ENABLE_STARTTLS_AUTO"]),
       user_name: ENV["SMTP_USERNAME"],
-      password: ENV["SMTP_PASSWORD"],
-      ssl: ActiveModel::Type::Boolean.new.cast(ENV["SMTP_SSL"])
+      password: ENV["SMTP_PASSWORD"]
     }
+    # :ssl/:tls and :enable_starttls/:enable_starttls_auto are mutually exclusive.
+    # Only set the one that is explicitly enabled.
+    bool = ActiveModel::Type::Boolean.new
+    if bool.cast(ENV["SMTP_SSL"])
+      smtp_settings[:ssl] = true
+    elsif bool.cast(ENV["SMTP_ENABLE_STARTTLS_AUTO"])
+      smtp_settings[:enable_starttls_auto] = true
+    end
+    config.action_mailer.smtp_settings = smtp_settings
   end
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to

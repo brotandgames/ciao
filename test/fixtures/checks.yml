@@ -4,8 +4,19 @@ one:
   name: Brot and Games
   url: https://brotandgames.com
   cron: "* * * * *"
+  active: true
+  status: "200"
 
 two:
   name: kubernete.sh
   url: https://kubernete.ch
   cron: "*/15 * * * *"
+  active: true
+  status: "500"
+
+three:
+  name: Inactive Check
+  url: http://example.com
+  cron: "* * * * *"
+  active: false
+  status: "200"

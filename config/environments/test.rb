@@ -41,6 +41,10 @@ Rails.application.configure do
   # The :test delivery method accumulates sent emails in the
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
+  config.action_mailer.default_options = {
+    from: "ciao@example.com",
+    to: "recipient@example.com"
+  }
 
   # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
