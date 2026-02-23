@@ -8,13 +8,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - uses: ruby/setup-ruby@v1
       with:
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+        ruby-version: .ruby-version
+        bundler-cache: true
     - run: |
-        yarn install --check-files
         bundle exec standardrb
-        # TODO: The asset "application.js" is not present in the asset pipeline. (GitHub Action)
-        touch ./app/assets/builds/application.js
         bundle exec rake
