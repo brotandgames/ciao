@@ -5,7 +5,7 @@ set -euo pipefail
 self="$(basename "$0")"
 
 if [ -z "${SECRET_KEY_BASE:-}" ]; then
-  echo "== $self WARNING: SECRET_KEY_BASE not set"
+  echo "== $self INFO: SECRET_KEY_BASE not set"
   echo "== $self It will be set to a random value using \`rake secret\`"
   export SECRET_KEY_BASE="$(bundle exec rails secret)"
 fi
