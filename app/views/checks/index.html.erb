@@ -76,7 +76,8 @@
           </div>
         </td>
         <td>
-          <%= button_to check, class: "btn btn-outline-danger btn-sm", method: :delete do %>
+          <%= button_to check, class: "btn btn-outline-danger btn-sm", method: :delete,
+                data: { turbo_confirm: "Delete #{check.name}?" } do %>
             <i class="ti ti-trash"></i>
           <% end %>
         </td>
