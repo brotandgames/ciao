@@ -30,6 +30,18 @@
           </p>
         </div>
       </div>
+      <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
+        <% { notice: "success", alert: "danger" }.each do |key, type| %>
+          <% if flash[key].present? %>
+            <div class="toast show align-items-center text-white bg-<%= type %> border-0" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="d-flex">
+                <div class="toast-body"><%= flash[key] %></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="this.closest('.toast').remove()" aria-label="Close"></button>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
       <div class="row">
         <div class="col-12">
           <%= yield %>
