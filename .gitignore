@@ -38,3 +38,6 @@
 # yard generated
 doc
 .yardoc
+
+# simplecov generated
+/coverage

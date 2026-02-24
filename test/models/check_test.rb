@@ -124,4 +124,140 @@ class CheckTest < ActiveSupport::TestCase
     Check.update_all(active: false)
     assert_equal 0.0, Check.percentage_healthy
   end
+
+  # -- Callbacks -------------------------------------------------------------
+
+  test "after_create calls create_job and create_tls_job when active" do
+    Check.any_instance.expects(:create_job).once
+    Check.any_instance.expects(:create_tls_job).once
+    Check.create!(name: "New", url: "https://example.com", cron: "* * * * *", active: true)
+  end
+
+  test "after_create does not call create_job or create_tls_job when inactive" do
+    Check.any_instance.expects(:create_job).never
+    Check.any_instance.expects(:create_tls_job).never
+    Check.create!(name: "New", url: "https://example.com", cron: "* * * * *", active: false)
+  end
+
+  test "after_destroy calls unschedule_job and unschedule_tls_job when active" do
+    Check.any_instance.stubs(:create_job)
+    Check.any_instance.stubs(:create_tls_job)
+    check = Check.create!(name: "New", url: "https://example.com", cron: "* * * * *", active: true)
+    check.expects(:unschedule_job).once
+    check.expects(:unschedule_tls_job).once
+    check.destroy
+  end
+
+  test "after_destroy does not call unschedule when inactive" do
+    check = Check.create!(name: "New", url: "https://example.com", cron: "* * * * *", active: false)
+    check.expects(:unschedule_job).never
+    check.expects(:unschedule_tls_job).never
+    check.destroy
+  end
+
+  # -- #create_job -----------------------------------------------------------
+
+  test "#create_job schedules a cron job and stores the job id" do
+    check = checks(:one)
+    job = stub_everything
+    job.stubs(:id).returns("job-abc")
+    job.stubs(:next_times).returns([stub(to_local_time: 1.minute.from_now)])
+    Rufus::Scheduler.singleton.stubs(:cron).returns(job)
+    check.create_job
+    assert_equal "job-abc", check.reload.job
+  end
+
+  # -- #unschedule_job -------------------------------------------------------
+
+  test "#unschedule_job unschedules an existing job" do
+    check = checks(:one)
+    job = stub_everything
+    Rufus::Scheduler.singleton.stubs(:job).returns(job)
+    job.expects(:unschedule).once
+    check.unschedule_job
+  end
+
+  test "#unschedule_job does nothing when job is not found" do
+    check = checks(:one)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    assert_nothing_raised { check.unschedule_job }
+  end
+
+  # -- #create_tls_job -------------------------------------------------------
+
+  test "#create_tls_job skips scheduling for http urls" do
+    check = checks(:three) # http://example.com
+    Rufus::Scheduler.singleton.expects(:cron).never
+    check.create_tls_job
+  end
+
+  test "#create_tls_job schedules a daily job for https urls and stores the tls_job id" do
+    check = checks(:one) # https://brotandgames.com
+    tls_job = stub_everything
+    tls_job.stubs(:id).returns("tls-job-abc")
+    Rufus::Scheduler.singleton.stubs(:cron).returns(tls_job)
+    check.create_tls_job
+    assert_equal "tls-job-abc", check.reload.tls_job
+  end
+
+  # -- #unschedule_tls_job ---------------------------------------------------
+
+  test "#unschedule_tls_job unschedules an existing tls job" do
+    check = checks(:one)
+    tls_job = stub_everything
+    Rufus::Scheduler.singleton.stubs(:job).returns(tls_job)
+    tls_job.expects(:unschedule).once
+    check.unschedule_tls_job
+  end
+
+  test "#unschedule_tls_job does nothing when tls job is not found" do
+    check = checks(:one)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    assert_nothing_raised { check.unschedule_tls_job }
+  end
+
+  # -- #update_routine -------------------------------------------------------
+
+  test "update_routine creates jobs when check is activated" do
+    check = checks(:three) # inactive
+    check.expects(:create_job).once
+    check.expects(:create_tls_job).once
+    check.update!(active: true)
+  end
+
+  test "update_routine unschedules jobs and clears columns when check is deactivated" do
+    check = checks(:one) # active
+    check.expects(:unschedule_job).once
+    check.expects(:unschedule_tls_job).once
+    check.update!(active: false)
+    assert_nil check.reload.job
+    assert_nil check.reload.next_contact_at
+  end
+
+  test "update_routine reschedules when cron changes" do
+    check = checks(:one)
+    check.expects(:unschedule_job).once
+    check.expects(:unschedule_tls_job).once
+    check.expects(:create_job).once
+    check.expects(:create_tls_job).once
+    check.update!(cron: "*/5 * * * *")
+  end
+
+  test "update_routine reschedules when url changes" do
+    check = checks(:one)
+    check.expects(:unschedule_job).once
+    check.expects(:unschedule_tls_job).once
+    check.expects(:create_job).once
+    check.expects(:create_tls_job).once
+    check.update!(url: "https://updated.example.com")
+  end
+
+  test "update_routine does nothing when other attributes change" do
+    check = checks(:one)
+    check.expects(:create_job).never
+    check.expects(:create_tls_job).never
+    check.expects(:unschedule_job).never
+    check.expects(:unschedule_tls_job).never
+    check.update!(name: "Updated Name")
+  end
 end

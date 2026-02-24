@@ -4,6 +4,13 @@ require "test_helper"
 
 module Ciao
   module Notifications
+    class BaseTest < ActiveSupport::TestCase
+      test "#notify raises NotImplementedError" do
+        base = Ciao::Notifications::Base.new
+        assert_raises(NotImplementedError) { base.notify }
+      end
+    end
+
     class MailNotificationTest < ActiveSupport::TestCase
       test "#notify delivers change_status_mail" do
         notification = Ciao::Notifications::MailNotification.new

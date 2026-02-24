@@ -113,6 +113,7 @@ GEM
       rexml
     crass (1.0.6)
     date (3.5.1)
+    docile (1.4.1)
     drb (2.2.3)
     dry-initializer (3.2.0)
     erb (6.0.1)
@@ -298,6 +299,12 @@ GEM
     simple_form (5.4.1)
       actionpack (>= 7.0)
       activemodel (>= 7.0)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.2)
+    simplecov_json_formatter (0.1.4)
     sqlite3 (2.9.0-aarch64-linux-gnu)
     sqlite3 (2.9.0-aarch64-linux-musl)
     sqlite3 (2.9.0-arm-linux-gnu)
@@ -398,6 +405,7 @@ DEPENDENCIES
   rufus-scheduler
   selenium-webdriver (>= 4.0.0.rc1)
   simple_form
+  simplecov
   sqlite3 (>= 2.1)
   standardrb
   turbo-rails

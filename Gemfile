@@ -49,6 +49,7 @@ group :test do
   gem "capybara", ">= 3.26"
   gem "mocha"
   gem "selenium-webdriver", ">= 4.0.0.rc1"
+  gem "simplecov", require: false
   gem "webmock"
 end
 
