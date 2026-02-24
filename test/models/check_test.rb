@@ -183,6 +183,36 @@ class CheckTest < ActiveSupport::TestCase
     assert_nothing_raised { check.unschedule_job }
   end
 
+  # -- #perform_tls_check ----------------------------------------------------
+
+  test "#perform_tls_check skips http urls" do
+    check = checks(:three) # http://example.com
+    check.expects(:update_columns).never
+    check.perform_tls_check
+  end
+
+  test "#perform_tls_check updates tls columns for https url" do
+    check = checks(:one) # https://brotandgames.com
+    expires_at = Time.now + 90.days
+    cert = stub(not_after: expires_at)
+    http = stub_everything
+    http.stubs(:start).yields(stub(peer_cert: cert))
+    Net::HTTP.stubs(:new).returns(http)
+    check.perform_tls_check
+    check.reload
+    assert_not_nil check.tls_expires_at
+    assert check.tls_expires_in_days > 0
+  end
+
+  test "#perform_tls_check handles connection errors gracefully" do
+    check = checks(:one)
+    http = stub_everything
+    http.stubs(:start).raises(Errno::ECONNREFUSED)
+    Net::HTTP.stubs(:new).returns(http)
+    check.expects(:update_columns).never
+    assert_nothing_raised { check.perform_tls_check }
+  end
+
   # -- #create_tls_job -------------------------------------------------------
 
   test "#create_tls_job skips scheduling for http urls" do

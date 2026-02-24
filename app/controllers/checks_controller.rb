@@ -114,6 +114,21 @@ class ChecksController < ApplicationController
     end
   end
 
+  # GET /checks/tls/check
+  # GET /checks/tls/check.json
+  def tls_check_all
+    Check.active.each(&:perform_tls_check)
+    respond_to do |format|
+      format.html do
+        redirect_to admin_checks_url,
+          notice: "TLS checks were successfully performed"
+      end
+      format.json do
+        render json: "TLS checks were successfully performed", status: 200
+      end
+    end
+  end
+
   # GET /checks/admin
   def admin
   end

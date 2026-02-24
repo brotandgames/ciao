@@ -192,4 +192,19 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     get jobs_recreate_checks_url, as: :json
     assert_response :ok
   end
+
+  # -- tls_check_all ---------------------------------------------------------
+
+  test "should perform tls checks and redirect to admin" do
+    Check.any_instance.stubs(:perform_tls_check)
+    get tls_check_checks_url
+    assert_redirected_to admin_checks_url
+    assert_match "TLS", flash[:notice]
+  end
+
+  test "should perform tls checks as JSON" do
+    Check.any_instance.stubs(:perform_tls_check)
+    get tls_check_checks_url, as: :json
+    assert_response :ok
+  end
 end

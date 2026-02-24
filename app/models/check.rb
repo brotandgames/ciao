@@ -105,6 +105,42 @@ class Check < ApplicationRecord
     end
   end
 
+  def perform_tls_check
+    uri = URI.parse(url)
+    return unless uri.scheme == "https"
+
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    tls_expires_at = nil
+    begin
+      http.start do |h|
+        tls_expires_at = h.peer_cert.not_after
+      end
+    rescue *NET_HTTP_ERRORS => e
+      tls_expires_error = e.to_s.tr('"', "'")
+    end
+    if tls_expires_error
+      Rails.logger.info "ciao-scheduler Checked TLS certificate of '#{url}' and got '#{tls_expires_error}'"
+    else
+      Rails.logger.info "ciao-scheduler Checked TLS certificate of '#{url}' and got '#{tls_expires_at}'"
+      tls_expires_in_days = (tls_expires_at - Time.now).to_i / (24 * 60 * 60)
+      update_columns(tls_expires_at: tls_expires_at, tls_expires_in_days: tls_expires_in_days)
+
+      if tls_expires_in_days < 30
+        NOTIFICATIONS_TLS_EXPIRES.each do |notification|
+          notification.notify(
+            name: name,
+            url: url,
+            check_url: Rails.application.routes.url_helpers.check_path(self),
+            tls_expires_at: tls_expires_at,
+            tls_expires_in_days: tls_expires_in_days
+          )
+        end
+      end
+    end
+  end
+
   # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def create_tls_job
@@ -113,37 +149,8 @@ class Check < ApplicationRecord
 
     tls_job =
       Rufus::Scheduler.singleton.cron "0 12 * * *", job: true do
-        http = Net::HTTP.new(uri.host, uri.port)
-        http.use_ssl = true
-        http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-        tls_expires_at = nil
-        begin
-          http.start do |h|
-            tls_expires_at = h.peer_cert.not_after
-          end
-        rescue *NET_HTTP_ERRORS => e
-          tls_expires_error = e.to_s.tr('"', "'")
-        end
-        if tls_expires_error
-          Rails.logger.info "ciao-scheduler Checked TLS certificate of '#{url}' and got '#{tls_expires_error}'"
-        else
-          Rails.logger.info "ciao-scheduler Checked TLS certificate of '#{url}' and got '#{tls_expires_at}'"
-          tls_expires_in_days = (tls_expires_at - Time.now).to_i / (24 * 60 * 60)
-          ActiveRecord::Base.connection_pool.with_connection do
-            update_columns(tls_expires_at: tls_expires_at, tls_expires_in_days: tls_expires_in_days)
-          end
-
-          if tls_expires_in_days < 30
-            NOTIFICATIONS_TLS_EXPIRES.each do |notification|
-              notification.notify(
-                name: name,
-                url: url,
-                check_url: Rails.application.routes.url_helpers.check_path(self),
-                tls_expires_at: tls_expires_at,
-                tls_expires_in_days: tls_expires_in_days
-              )
-            end
-          end
+        ActiveRecord::Base.connection_pool.with_connection do
+          perform_tls_check
         end
       end
     if tls_job

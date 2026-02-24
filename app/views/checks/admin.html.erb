@@ -14,13 +14,19 @@
         <p>
           <%= link_to '<i class="ti ti-refresh"></i> <span>Recreate</span>'.html_safe, jobs_recreate_checks_path, class: 'btn btn-info' %>
         </p>
-        <p>
-          It can be also accomplished using the REST API endpoint:
+        <p class="text-muted small">
+          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/jobs/recreate.json</code>
         </p>
+
+        <h4>
+          Check TLS certificates now
+        </h4>
+        <p>Trigger an immediate TLS certificate check for all active HTTPS checks. Normally runs once a day.</p>
         <p>
-          <code>
-            curl -X GET -H "Content-type: application/json" /checks/jobs/recreate.json
-          </code>
+          <%= link_to '<i class="ti ti-lock"></i> <span>Check TLS</span>'.html_safe, tls_check_checks_path, class: 'btn btn-info' %>
+        </p>
+        <p class="text-muted small">
+          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/tls/check.json</code>
         </p>
       </div>
     </div>
