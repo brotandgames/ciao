@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM ruby:3.3.7-slim AS builder
+FROM ruby:4.0.6-slim AS builder
 
 # Set environment variables
 ARG RACK_ENV=production
@@ -53,7 +53,7 @@ RUN set -x \
         vendor/assets
 
 # Stage 2: Final stage
-FROM ruby:3.3.7-slim
+FROM ruby:4.0.6-slim
 
 # Set environment variables
 ARG RACK_ENV=production
