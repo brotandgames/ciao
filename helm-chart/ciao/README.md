@@ -9,12 +9,16 @@ https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 ## Install
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.1.0
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.1.1
 ```
 
 Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md) for configuration and [values.yaml](values.yaml) for all options.
 
 ## Releases
+
+### Release 2.1.1
+
+* Bump ciao from 1.11.0 to 1.11.1 (admin actions are POST, so hovering over their buttons no longer triggers them)
 
 ### Release 2.1.0
 
