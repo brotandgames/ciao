@@ -5,9 +5,9 @@ metadata:
   labels:
     {{- include "ciao.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
   # Never run two pods at once: each would run its own in-memory scheduler
   # (duplicate checks and notifications) and they would share the SQLite volume
+  replicas: 1
   strategy:
     type: Recreate
     # Removes the RollingUpdate defaults left on Deployments created by chart < 2.0.0,
@@ -19,14 +19,20 @@ spec:
   template:
     metadata:
       annotations:
-        # Restart the pod when the env Secret changes
-        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        # Restart the pod when the env Secret changes (computed from the values, as
+        # rendering secret.yaml again would generate a different SECRET_KEY_BASE)
+        checksum/secret: {{ list .Values.env .Values.serviceMonitor.enabled | toJson | sha256sum }}
         {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
       labels:
         {{- include "ciao.selectorLabels" . | nindent 8 }}
     spec:
+      # ciao does not use the Kubernetes API
+      automountServiceAccountToken: false
+      # ciao finds services via DNS; don't inject legacy <SERVICE>_PORT etc.
+      # variables for every Service in the namespace
+      enableServiceLinks: false
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

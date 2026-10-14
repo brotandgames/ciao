@@ -41,6 +41,34 @@ jobs:
               -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json'
           done
 
+      - name: create kind cluster
+        uses: helm/kind-action@v1
+
+      - name: install chart with default values and run helm test
+        run: |
+          helm install ciao-fresh "$CHART_DIR" --namespace ciao-fresh --create-namespace --wait --timeout 5m
+          helm test ciao-fresh --namespace ciao-fresh
+
+      - name: upgrade from the latest published chart and run helm test
+        run: |
+          values="--set persistence.enabled=true --set env.BASIC_AUTH_USERNAME=ciao --set env.BASIC_AUTH_PASSWORD=secret"
+          helm install ciao "$CHART_REGISTRY/ciao" --namespace ciao-upgrade --create-namespace --wait --timeout 5m $values
+          helm upgrade ciao "$CHART_DIR" --namespace ciao-upgrade --wait --timeout 5m $values
+          helm test ciao --namespace ciao-upgrade
+          # SECRET_KEY_BASE must survive upgrades
+          key() { kubectl get secret ciao --namespace ciao-upgrade -o jsonpath='{.data.SECRET_KEY_BASE}'; }
+          before=$(key)
+          helm upgrade ciao "$CHART_DIR" --namespace ciao-upgrade --wait --timeout 5m $values
+          test -n "$before" && test "$before" = "$(key)"
+
+      - name: show cluster state
+        if: failure()
+        run: |
+          kubectl get all,pvc,secret --all-namespaces
+          kubectl describe pods --namespace ciao-fresh
+          kubectl describe pods --namespace ciao-upgrade
+          kubectl logs --namespace ciao-upgrade deployment/ciao --tail 100 || true
+
       - name: publish chart if version is new
         if: github.event_name == 'push'
         run: |

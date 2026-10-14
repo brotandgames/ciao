@@ -9,12 +9,28 @@ https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 ## Install
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.2
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.1.0
 ```
 
 Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md) for configuration and [values.yaml](values.yaml) for all options.
 
 ## Releases
+
+### Release 2.1.0
+
+* Generate `SECRET_KEY_BASE` on install and keep it on upgrades (unless set in `env`)
+* Add `values.schema.json`: unknown keys and wrong types now fail instead of being ignored (eg. `backend:` under `ingress.hosts[].paths`)
+* Remove `replicaCount`: ciao always runs as a single pod (only `replicaCount: 1` is still accepted)
+* Disable `automountServiceAccountToken` and `enableServiceLinks`
+* Simplify port-forward in NOTES.txt and clean up `values.yaml` comments
+* Install, upgrade and `helm test` the chart in a kind cluster in CI before publishing
+
+Upgrading from chart < 2.0.0 that was installed with Helm 4 fails with `may not be specified when strategy type is 'Recreate'`.
+Patch the Deployment once, then upgrade:
+
+```sh
+kubectl patch deployment <release>-ciao --type merge -p '{"spec":{"strategy":{"type":"Recreate","rollingUpdate":null}}}'
+```
 
 ### Release 2.0.2
 

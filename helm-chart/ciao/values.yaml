@@ -1,13 +1,7 @@
 # Default values for ciao.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# Ciao is not designed to be horizontally scalable
-# due to architecture decisions (no external dependencies):
-# * in-memory (background) job scheduler: rufus-scheduler
-# * internal database: sqlite
-# replicaCount must be 1
-replicaCount: 1
+#
+# ciao always runs as a single pod (no replicaCount): it schedules checks
+# in-memory (rufus-scheduler) and stores its data in SQLite.
 
 image:
   repository: brotandgames/ciao
@@ -19,55 +13,42 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-# All ciao configuration options are adjustable via ENV vars.
-# Ref: https://github.com/brotandgames/ciao#configuration
+# ciao is configured via ENV vars, see
+# https://github.com/brotandgames/ciao#configuration
 # They are stored in a Secret and loaded into the container via envFrom.
+# SECRET_KEY_BASE (signs the session cookie: CSRF tokens and flash messages) is
+# generated on install and kept on upgrades unless set here.
 env: {}
-  # SECRET_KEY_BASE: "sensitive_secret_key_base"
+  # TIME_ZONE: "Europe/Vienna"
+  # BASIC_AUTH_USERNAME: "ciao"
+  # BASIC_AUTH_PASSWORD: "sensitive_password"
   # SMTP_ADDRESS: smtp.yourhost.com
-  # SMTP_EMAIL_FROM: "ciao@yourhost.com"
-  # SMTP_EMAIL_TO: "you@yourhost.com"
   # SMTP_PORT: 587
-  # SMTP_AUTHENTICATION: plain
   # SMTP_DOMAIN: smtp.yourhost.com
-  # SMTP_ENABLE_STARTTLS_AUTO: true
+  # SMTP_AUTHENTICATION: plain
+  # SMTP_ENABLE_STARTTLS_AUTO: true  # or SMTP_SSL: true (eg. port 465)
   # SMTP_USERNAME: ciao
   # SMTP_PASSWORD: "sensitive_password"
-  #
-  # Check Reference for a full list of configuration variables.
-  # Mind the ': ' instead of '=' when setting a variable and
-  # don't forget to remove '{}'.
+  # SMTP_EMAIL_FROM: "ciao@yourhost.com"
+  # SMTP_EMAIL_TO: "you@yourhost.com"
 
 # Name of an existing Secret with additional ENV vars (eg. managed by
 # sealed-secrets or external-secrets). Its keys take precedence over env.
 existingSecret: ""
 
-# Enable persistence using Persistent Volume Claims
-# Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
+# Persist the SQLite database. Without it, all checks are lost when the pod restarts.
 persistence:
   enabled: false
-
-  # A manually managed Persistent Volume and Claim
-  # Requires persistence.enabled: true
-  # If defined, PVC must be created manually before volume will be bound
-  # existingClaim:
-
-  # ciao data Persistent Volume Storage Class
-  # If defined, storageClassName: <storageClass>
-  # If set to "-", storageClassName: "", which disables dynamic provisioning
-  # If undefined (the default) or set to null, no storageClassName spec is
-  #   set, choosing the default provisioner.  (gp2 on AWS, standard on
-  #   GKE, AWS & OpenStack)
-  #
-  # Storage class of PV to bind. By default it looks for standard storage class.
-  # If the PV uses a different storage class, specify that here.
-  # storageClass: standard
-  # volumeName: ""
+  # Use an existing PersistentVolumeClaim instead of creating one
+  existingClaim: ""
+  # Unset: use the cluster's default StorageClass. "-": storageClassName: ""
+  # (disables dynamic provisioning, eg. together with volumeName)
+  storageClass: ""
+  # Bind to a specific PersistentVolume
+  volumeName: ""
   accessMode: ReadWriteOnce
   size: 100Mi
-
-  # If subPath is set mount a sub folder of a volume instead of the root of the volume.
-  # This is especially handy for volume plugins that don't natively support sub mounting (like glusterfs).
+  # Mount a sub folder of the volume instead of its root
   subPath: ""
 
 service:
@@ -95,7 +76,6 @@ ingress:
   className: ""
   annotations: {}
     # cert-manager.io/cluster-issuer: letsencrypt
-    # kubernetes.io/tls-acme: "true"
   hosts:
     - host: ciao.local
       paths:
@@ -123,16 +103,11 @@ serviceMonitor:
   scrapeTimeout: 10s
 
 resources: {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
   # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  #   cpu: 50m
+  #   memory: 256Mi
+  # limits:
+  #   memory: 512Mi
 
 nodeSelector: {}
 
