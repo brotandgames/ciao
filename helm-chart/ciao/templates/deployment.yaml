@@ -3,50 +3,50 @@ kind: Deployment
 metadata:
   name: {{ include "ciao.fullname" . }}
   labels:
-{{ include "ciao.labels" . | indent 4 }}
+    {{- include "ciao.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
+  # Never run two pods at once: each would run its own in-memory scheduler
+  # (duplicate checks and notifications) and they would share the SQLite volume
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "ciao.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "ciao.selectorLabels" . | nindent 6 }}
   template:
     metadata:
+      annotations:
+        # Restart the pod when the env Secret changes
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+        {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
       labels:
-        app.kubernetes.io/name: {{ include "ciao.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "ciao.selectorLabels" . | nindent 8 }}
     spec:
-    {{- with .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-      # Init container to set ownership
-      initContainers:
-        - name: chown-sqlite-dir
-          image: busybox:latest
-          command: ["sh", "-c", "chown -R 1000:1000 /app/db/sqlite"]
-          # Use root to perform chown
-          securityContext:
-            runAsUser: 0
-          volumeMounts:
-            - name: sqlite
-              mountPath: /app/db/sqlite
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.persistence.enabled }}
-          volumeMounts:
-            - name: sqlite
-              mountPath: "/app/db/sqlite"
-              {{- if .Values.persistence.subPath }}
-              subPath: "{{ .Values.persistence.subPath }}"
-              {{- end }}
+          {{- with .Values.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
           {{- end }}
-          env:
-            {{- range $key, $value := .Values.env }}
-            - name: "{{ $key }}"
-              value: "{{ $value }}"
+          envFrom:
+            - secretRef:
+                name: {{ include "ciao.fullname" . }}
+            {{- if .Values.existingSecret }}
+            # Listed last, so its keys take precedence over env
+            - secretRef:
+                name: {{ .Values.existingSecret }}
             {{- end }}
           ports:
             - name: http
@@ -55,13 +55,8 @@ spec:
           {{- if .Values.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: /
+              path: /version
               port: http
-              {{- if and .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD }}
-              httpHeaders:
-                - name: Authorization
-                  value: Basic {{ template "BasicAuthSecret" . }}
-              {{- end }}
             initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
@@ -71,18 +66,21 @@ spec:
           {{- if .Values.readinessProbe.enabled }}
           readinessProbe:
             httpGet:
-              path: /
+              path: /version
               port: http
-              {{- if and .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD }}
-              httpHeaders:
-                - name: Authorization
-                  value: Basic {{ template "BasicAuthSecret" . }}
-              {{- end }}
             initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
             timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
             periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
             successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          {{- end }}
+          {{- if .Values.persistence.enabled }}
+          volumeMounts:
+            - name: sqlite
+              mountPath: /app/db/sqlite
+              {{- with .Values.persistence.subPath }}
+              subPath: {{ . | quote }}
+              {{- end }}
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

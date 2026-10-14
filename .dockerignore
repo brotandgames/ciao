@@ -32,6 +32,5 @@ test/
 spec/
 .github/
 helm-chart/
-scripts/
 doc/
 *.md

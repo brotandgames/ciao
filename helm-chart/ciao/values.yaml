@@ -11,7 +11,8 @@ replicaCount: 1
 
 image:
   repository: brotandgames/ciao
-  tag: 1.9.7
+  # Defaults to the chart's appVersion
+  tag: ""
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -20,6 +21,7 @@ fullnameOverride: ""
 
 # All ciao configuration options are adjustable via ENV vars.
 # Ref: https://github.com/brotandgames/ciao#configuration
+# They are stored in a Secret and loaded into the container via envFrom.
 env: {}
   # SECRET_KEY_BASE: "sensitive_secret_key_base"
   # SMTP_ADDRESS: smtp.yourhost.com
@@ -35,6 +37,10 @@ env: {}
   # Check Reference for a full list of configuration variables.
   # Mind the ': ' instead of '=' when setting a variable and
   # don't forget to remove '{}'.
+
+# Name of an existing Secret with additional ENV vars (eg. managed by
+# sealed-secrets or external-secrets). Its keys take precedence over env.
+existingSecret: ""
 
 # Enable persistence using Persistent Volume Claims
 # Ref: http://kubernetes.io/docs/user-guide/persistent-volumes/
@@ -56,7 +62,7 @@ persistence:
   # Storage class of PV to bind. By default it looks for standard storage class.
   # If the PV uses a different storage class, specify that here.
   # storageClass: standard
-  # VolumeName: ""
+  # volumeName: ""
   accessMode: ReadWriteOnce
   size: 1Gi
 
@@ -67,12 +73,28 @@ persistence:
 service:
   type: ClusterIP
   port: 80
+  annotations: {}
+
+podAnnotations: {}
+
+# The image runs as user/group 1000; fsGroup makes the volume writable for it
+podSecurityContext:
+  fsGroup: 1000
+
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
 
 ingress:
   enabled: false
   className: ""
   annotations: {}
-    # kubernetes.io/ingress.class: nginx
+    # cert-manager.io/cluster-issuer: letsencrypt
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: ciao.local
@@ -83,6 +105,22 @@ ingress:
   #  - secretName: ciao-ingress-tls
   #    hosts:
   #      - ciao.local
+
+# Prometheus Operator ServiceMonitor scraping ciao's /metrics endpoint
+# Requires the monitoring.coreos.com/v1 CRDs (eg. kube-prometheus-stack).
+# Sets env PROMETHEUS_ENABLED=true unless env.PROMETHEUS_ENABLED is set.
+# If env.PROMETHEUS_BASIC_AUTH_USERNAME and env.PROMETHEUS_BASIC_AUTH_PASSWORD
+# are set, they are used for scraping.
+serviceMonitor:
+  enabled: false
+  # Set to true if PROMETHEUS_BASIC_AUTH_USERNAME and PROMETHEUS_BASIC_AUTH_PASSWORD
+  # are in existingSecret instead of env
+  basicAuthFromExistingSecret: false
+  # Additional labels, eg. to match the serviceMonitorSelector of your Prometheus
+  labels: {}
+    # release: kube-prometheus-stack
+  interval: 30s
+  scrapeTimeout: 10s
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

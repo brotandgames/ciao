@@ -1,10 +1,12 @@
-apiVersion: v1
+apiVersion: v2
 name: ciao
 description: "Ciao - HTTP checks & tests (private & public) monitoring"
-version: 1.0.0
-appVersion: 1.9.7
+type: application
+version: 2.0.0
+appVersion: 1.11.0
+kubeVersion: ">=1.19.0-0"
 home: https://brotandgames.com/ciao/
-icon:
+icon: https://raw.githubusercontent.com/brotandgames/ciao/master/public/android-chrome-512x512.png
 keywords:
   - ciao
   - http
@@ -14,4 +16,4 @@ sources:
   - https://github.com/brotandgames/ciao
 maintainers:
   - name: "Brot & Games"
-    email: github_username@gmail.com
+    url: https://github.com/brotandgames

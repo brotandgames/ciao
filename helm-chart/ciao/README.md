@@ -8,9 +8,34 @@ https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 
 ## Install
 
-Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md).
+```sh
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.0
+```
+
+Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md) for configuration and [values.yaml](values.yaml) for all options.
 
 ## Releases
+
+### Release 2.0.0
+
+Breaking changes:
+
+* Require Helm 3 (chart `apiVersion: v2`) and Kubernetes >= 1.19
+* Store `env` in a Secret and load it via `envFrom` instead of plain env values in the Deployment
+* Probe `/version` (a static file, not behind HTTP Basic auth) instead of `/`, without HTTP Basic auth credentials
+* Rename `persistence.VolumeName` to `persistence.volumeName` (old name still works)
+* Publish chart to `oci://ghcr.io/brotandgames/charts/ciao` instead of `.tgz` files in this repository
+
+Changes:
+
+* Fix default install (persistence disabled) failing because of the init container's volume mount
+* Replace root init container with `podSecurityContext.fsGroup` and run as non-root
+* Use `Recreate` deployment strategy so two ciao pods never run at the same time
+* Add optional Prometheus Operator ServiceMonitor (`serviceMonitor.enabled`)
+* Add `existingSecret`, `podAnnotations`, `podSecurityContext`, `securityContext` and `service.annotations`
+* Default `image.tag` to the chart's `appVersion` and bump ciao from 1.9.7 to 1.11.0
+* Fix ingress URL in NOTES.txt
+* Fix `helm test` when HTTP Basic auth is enabled
 
 ### Release 1.0.0
 

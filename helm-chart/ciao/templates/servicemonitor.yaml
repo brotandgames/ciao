@@ -1,0 +1,35 @@
+{{- if .Values.serviceMonitor.enabled -}}
+{{- $basicAuthSecret := "" -}}
+{{- if .Values.env.PROMETHEUS_BASIC_AUTH_USERNAME -}}
+{{- $basicAuthSecret = include "ciao.fullname" . -}}
+{{- else if and .Values.existingSecret .Values.serviceMonitor.basicAuthFromExistingSecret -}}
+{{- $basicAuthSecret = .Values.existingSecret -}}
+{{- end -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "ciao.fullname" . }}
+  labels:
+    {{- include "ciao.labels" . | nindent 4 }}
+    {{- with .Values.serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "ciao.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: {{ .Values.serviceMonitor.interval }}
+      scrapeTimeout: {{ .Values.serviceMonitor.scrapeTimeout }}
+      {{- if $basicAuthSecret }}
+      basicAuth:
+        username:
+          name: {{ $basicAuthSecret }}
+          key: PROMETHEUS_BASIC_AUTH_USERNAME
+        password:
+          name: {{ $basicAuthSecret }}
+          key: PROMETHEUS_BASIC_AUTH_PASSWORD
+      {{- end }}
+{{- end }}

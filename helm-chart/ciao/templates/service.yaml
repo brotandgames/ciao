@@ -3,7 +3,11 @@ kind: Service
 metadata:
   name: {{ include "ciao.fullname" . }}
   labels:
-{{ include "ciao.labels" . | indent 4 }}
+    {{- include "ciao.labels" . | nindent 4 }}
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,5 +16,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/name: {{ include "ciao.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- include "ciao.selectorLabels" . | nindent 4 }}

@@ -41,3 +41,6 @@ doc
 
 # simplecov generated
 /coverage
+
+# helm chart packages (published to ghcr.io by .github/workflows/helm.yml)
+/helm-chart/*.tgz

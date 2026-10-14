@@ -32,18 +32,21 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{/*
+Selector labels
+*/}}
+{{- define "ciao.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "ciao.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
+{{/*
 Common labels
 */}}
 {{- define "ciao.labels" -}}
-app.kubernetes.io/name: {{ include "ciao.name" . }}
+{{ include "ciao.selectorLabels" . }}
 helm.sh/chart: {{ include "ciao.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end -}}
-
-{{- define "BasicAuthSecret" }}
-{{- printf "%s:%s" .Values.env.BASIC_AUTH_USERNAME .Values.env.BASIC_AUTH_PASSWORD | b64enc }}
-{{- end }}

@@ -246,13 +246,13 @@ IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certif
 Quickstart (without configuring)
 
 ```sh
-helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/ciao/raw/master/helm-chart/ciao-0.5.0.tgz
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.0
 ```
 
 With [configuration](#configuration)
 
 ```sh
-helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/ciao/raw/master/helm-chart/ciao-0.5.0.tgz \
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.0 \
   --set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
   --set env.SMTP_ADDRESS=smtp.yourhost.com \
   --set env.SMTP_EMAIL_FROM="ciao@yourhost.com" \
@@ -264,6 +264,10 @@ helm upgrade --install --namespace ciao ciao https://github.com/brotandgames/cia
   --set env.SMTP_USERNAME=ciao \
   --set env.SMTP_PASSWORD="sensitive_password"
 ```
+
+With [Prometheus Operator](https://prometheus-operator.dev/) (eg. kube-prometheus-stack): `--set serviceMonitor.enabled=true` creates a ServiceMonitor and enables ciao's `/metrics` endpoint. Add `--set serviceMonitor.labels.release=<your-prometheus-release>` if your Prometheus only selects labelled ServiceMonitors.
+
+All `env` values are stored in a Kubernetes Secret. To keep credentials out of Helm values, create a Secret with the ENV variables yourself and pass `--set existingSecret=<secret-name>`. See [values.yaml](helm-chart/ciao/values.yaml) for all options.
 
 #### Via kubectl
 
