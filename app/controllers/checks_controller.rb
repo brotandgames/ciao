@@ -95,13 +95,13 @@ class ChecksController < ApplicationController
     end
   end
 
-  # GET /checks/check
-  # GET /checks/check.json
+  # POST /checks/check
+  # POST /checks/check.json
   def check_all
     Check.active.each(&:perform_check)
     respond_to do |format|
       format.html do
-        redirect_to admin_checks_url,
+        redirect_to admin_checks_url, status: :see_other,
           notice: "Checks were successfully performed"
       end
       format.json do
@@ -110,13 +110,13 @@ class ChecksController < ApplicationController
     end
   end
 
-  # GET /checks/tls/check
-  # GET /checks/tls/check.json
+  # POST /checks/tls/check
+  # POST /checks/tls/check.json
   def tls_check_all
     Check.active.each(&:perform_tls_check)
     respond_to do |format|
       format.html do
-        redirect_to admin_checks_url,
+        redirect_to admin_checks_url, status: :see_other,
           notice: "TLS checks were successfully performed"
       end
       format.json do
@@ -125,8 +125,8 @@ class ChecksController < ApplicationController
     end
   end
 
-  # GET /checks/notifications/test
-  # GET /checks/notifications/test.json
+  # POST /checks/notifications/test
+  # POST /checks/notifications/test.json
   def notifications_test
     payload_data = {name: "ciao test notification", url: request.base_url, check_url: checks_path}
     count = NOTIFICATIONS.length + NOTIFICATIONS_TLS_EXPIRES.length
@@ -142,7 +142,8 @@ class ChecksController < ApplicationController
       end
     respond_to do |format|
       format.html do
-        redirect_to admin_checks_url, (errors.empty? ? :notice : :alert) => message
+        redirect_to admin_checks_url, status: :see_other,
+          flash: {(errors.empty? ? :notice : :alert) => message}
       end
       format.json do
         render json: message, status: errors.empty? ? 200 : 500

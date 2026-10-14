@@ -39,6 +39,14 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "admin actions are POST forms, not links Turbo could prefetch on hover" do
+    get admin_checks_url
+    [check_checks_path, tls_check_checks_path, notifications_test_checks_path].each do |path|
+      assert_select "form[method=post][action='#{path}'] button"
+      assert_select "a[href='#{path}']", count: 0
+    end
+  end
+
   # -- new -------------------------------------------------------------------
 
   test "should get new" do
@@ -184,14 +192,14 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
 
   test "should perform checks and redirect to admin" do
     Check.any_instance.stubs(:perform_check)
-    get check_checks_url
+    post check_checks_url
     assert_redirected_to admin_checks_url
     assert_match "Checks", flash[:notice]
   end
 
   test "should perform checks as JSON" do
     Check.any_instance.stubs(:perform_check)
-    get check_checks_url, as: :json
+    post check_checks_url, as: :json
     assert_response :ok
   end
 
@@ -204,7 +212,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     tls_notification.expects(:notify!).with(has_entries(tls_expires_in_days: 7)).once
     stub_const(:NOTIFICATIONS, [notification])
     stub_const(:NOTIFICATIONS_TLS_EXPIRES, [tls_notification])
-    get notifications_test_checks_url
+    post notifications_test_checks_url
     assert_redirected_to admin_checks_url
     assert_match "2 test notifications", flash[:notice]
   end
@@ -214,7 +222,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     notification.stubs(:notify!).raises(Net::SMTPAuthenticationError, "535 auth failed")
     stub_const(:NOTIFICATIONS, [notification])
     stub_const(:NOTIFICATIONS_TLS_EXPIRES, [])
-    get notifications_test_checks_url
+    post notifications_test_checks_url
     assert_redirected_to admin_checks_url
     assert_match "535 auth failed", flash[:alert]
   end
@@ -222,7 +230,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
   test "should report when no notifications are configured" do
     stub_const(:NOTIFICATIONS, [])
     stub_const(:NOTIFICATIONS_TLS_EXPIRES, [])
-    get notifications_test_checks_url, as: :json
+    post notifications_test_checks_url, as: :json
     assert_response :ok
     assert_match "No notifications", response.body
   end
@@ -231,14 +239,14 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
 
   test "should perform tls checks and redirect to admin" do
     Check.any_instance.stubs(:perform_tls_check)
-    get tls_check_checks_url
+    post tls_check_checks_url
     assert_redirected_to admin_checks_url
     assert_match "TLS", flash[:notice]
   end
 
   test "should perform tls checks as JSON" do
     Check.any_instance.stubs(:perform_tls_check)
-    get tls_check_checks_url, as: :json
+    post tls_check_checks_url, as: :json
     assert_response :ok
   end
 

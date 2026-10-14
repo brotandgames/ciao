@@ -11,33 +11,39 @@
           Check all checks now
         </h4>
         <p>Trigger an immediate check for all active checks. Normally runs on each check's cron schedule.</p>
-        <p>
-          <%= link_to '<i class="ti ti-refresh"></i> <span>Check now</span>'.html_safe, check_checks_path, class: 'btn btn-info' %>
-        </p>
+        <div class="mb-3">
+          <%= button_to check_checks_path, class: 'btn btn-info' do %>
+            <i class="ti ti-refresh"></i> <span>Check now</span>
+          <% end %>
+        </div>
         <p class="text-muted small">
-          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/check.json</code>
+          REST API: <code>curl -X POST -H "Content-type: application/json" <%= request.base_url %>/checks/check.json</code>
         </p>
 
         <h4>
           Check TLS certificates now
         </h4>
         <p>Trigger an immediate TLS certificate check for all active HTTPS checks. Normally runs once a day.</p>
-        <p>
-          <%= link_to '<i class="ti ti-lock"></i> <span>Check TLS</span>'.html_safe, tls_check_checks_path, class: 'btn btn-info' %>
-        </p>
+        <div class="mb-3">
+          <%= button_to tls_check_checks_path, class: 'btn btn-info' do %>
+            <i class="ti ti-lock"></i> <span>Check TLS</span>
+          <% end %>
+        </div>
         <p class="text-muted small">
-          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/tls/check.json</code>
+          REST API: <code>curl -X POST -H "Content-type: application/json" <%= request.base_url %>/checks/tls/check.json</code>
         </p>
 
         <h4>
           Send test notifications
         </h4>
         <p>Send a test status change and a test TLS expiry notification to all configured webhooks and e-mail.</p>
-        <p>
-          <%= link_to '<i class="ti ti-bell"></i> <span>Send test</span>'.html_safe, notifications_test_checks_path, class: 'btn btn-info' %>
-        </p>
+        <div class="mb-3">
+          <%= button_to notifications_test_checks_path, class: 'btn btn-info' do %>
+            <i class="ti ti-bell"></i> <span>Send test</span>
+          <% end %>
+        </div>
         <p class="text-muted small">
-          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/notifications/test.json</code>
+          REST API: <code>curl -X POST -H "Content-type: application/json" <%= request.base_url %>/checks/notifications/test.json</code>
         </p>
       </div>
     </div>
