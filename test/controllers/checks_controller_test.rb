@@ -195,6 +195,38 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
+  # -- notifications_test ----------------------------------------------------
+
+  test "should send test notifications and redirect to admin" do
+    notification = mock
+    notification.expects(:notify!).with(has_entries(status_before: "200", status_after: "500")).once
+    tls_notification = mock
+    tls_notification.expects(:notify!).with(has_entries(tls_expires_in_days: 7)).once
+    stub_const(:NOTIFICATIONS, [notification])
+    stub_const(:NOTIFICATIONS_TLS_EXPIRES, [tls_notification])
+    get notifications_test_checks_url
+    assert_redirected_to admin_checks_url
+    assert_match "2 test notifications", flash[:notice]
+  end
+
+  test "should report failing test notifications" do
+    notification = mock
+    notification.stubs(:notify!).raises(Net::SMTPAuthenticationError, "535 auth failed")
+    stub_const(:NOTIFICATIONS, [notification])
+    stub_const(:NOTIFICATIONS_TLS_EXPIRES, [])
+    get notifications_test_checks_url
+    assert_redirected_to admin_checks_url
+    assert_match "535 auth failed", flash[:alert]
+  end
+
+  test "should report when no notifications are configured" do
+    stub_const(:NOTIFICATIONS, [])
+    stub_const(:NOTIFICATIONS_TLS_EXPIRES, [])
+    get notifications_test_checks_url, as: :json
+    assert_response :ok
+    assert_match "No notifications", response.body
+  end
+
   # -- tls_check_all ---------------------------------------------------------
 
   test "should perform tls checks and redirect to admin" do
@@ -208,5 +240,22 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     Check.any_instance.stubs(:perform_tls_check)
     get tls_check_checks_url, as: :json
     assert_response :ok
+  end
+
+  private
+
+  # Swap a global constant (e.g. NOTIFICATIONS) for the duration of a test
+  def stub_const(name, value)
+    @original_consts ||= {}
+    @original_consts[name] = Object.const_get(name) unless @original_consts.key?(name)
+    Object.send(:remove_const, name)
+    Object.const_set(name, value)
+  end
+
+  teardown do
+    @original_consts&.each do |name, value|
+      Object.send(:remove_const, name)
+      Object.const_set(name, value)
+    end
   end
 end

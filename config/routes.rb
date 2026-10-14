@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     get "job", to: "checks#job"
     get "check", to: "checks#check_all", on: :collection
     get "tls/check", to: "checks#tls_check_all", on: :collection
+    get "notifications/test", to: "checks#notifications_test", on: :collection
     get "admin", to: "checks#admin", on: :collection
   end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -37,6 +37,39 @@ module Ciao
         assert_equal '{"status":"success"}', response.body
         assert_equal "200", response.code
       end
+
+      test "#notify logs and does not raise on non-2xx responses" do
+        stub_request(:post, "https://foo.bar/").to_return(status: 404)
+        notification = Ciao::Notifications::WebhookNotification.new("https://foo.bar", "{}")
+        Rails.logger.expects(:error).with(includes("HTTP 404")).once
+        assert_nothing_raised { notification.notify(name: "bar") }
+      end
+
+      test "#notify logs and does not raise on connection errors" do
+        stub_request(:post, "https://foo.bar/").to_raise(Errno::ECONNREFUSED)
+        notification = Ciao::Notifications::WebhookNotification.new("https://foo.bar", "{}")
+        Rails.logger.expects(:error).once
+        assert_nothing_raised { notification.notify(name: "bar") }
+      end
+
+      test "#notify! returns the response on 2xx" do
+        stub_request(:post, "https://foo.bar/").to_return(status: 204)
+        notification = Ciao::Notifications::WebhookNotification.new("https://foo.bar", "{}")
+        assert_equal "204", notification.notify!(name: "bar").code
+      end
+
+      test "#notify! raises on non-2xx responses" do
+        stub_request(:post, "https://foo.bar/").to_return(status: 500)
+        notification = Ciao::Notifications::WebhookNotification.new("https://foo.bar", "{}")
+        error = assert_raises(Ciao::Notifications::WebhookError) { notification.notify!(name: "bar") }
+        assert_equal "HTTP 500", error.message
+      end
+
+      test "#notify! raises on connection errors" do
+        stub_request(:post, "https://foo.bar/").to_raise(Errno::ECONNREFUSED)
+        notification = Ciao::Notifications::WebhookNotification.new("https://foo.bar", "{}")
+        assert_raises(Errno::ECONNREFUSED) { notification.notify!(name: "bar") }
+      end
     end
   end
 end

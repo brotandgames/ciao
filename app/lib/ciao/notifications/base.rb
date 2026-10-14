@@ -14,6 +14,12 @@ module Ciao
         raise NotImplementedError,
           "You can not call Ciao::Notifications::Base#notify directly"
       end
+
+      # Sends the notification and raises on failure (used by test notifications).
+      # Subclasses whose #notify swallows errors should override this.
+      def notify!(payload_data = {})
+        notify(payload_data)
+      end
     end
   end
 end

@@ -125,11 +125,45 @@ class ChecksController < ApplicationController
     end
   end
 
+  # GET /checks/notifications/test
+  # GET /checks/notifications/test.json
+  def notifications_test
+    payload_data = {name: "ciao test notification", url: request.base_url, check_url: checks_path}
+    count = NOTIFICATIONS.length + NOTIFICATIONS_TLS_EXPIRES.length
+    errors = send_test_notifications(NOTIFICATIONS, payload_data.merge(status_before: "200", status_after: "500")) +
+      send_test_notifications(NOTIFICATIONS_TLS_EXPIRES, payload_data.merge(tls_expires_at: 7.days.from_now, tls_expires_in_days: 7))
+    message =
+      if count.zero?
+        "No notifications are configured"
+      elsif errors.empty?
+        "#{count} test notifications were successfully sent"
+      else
+        "Test notifications failed: #{errors.join(", ")}"
+      end
+    respond_to do |format|
+      format.html do
+        redirect_to admin_checks_url, (errors.empty? ? :notice : :alert) => message
+      end
+      format.json do
+        render json: message, status: errors.empty? ? 200 : 500
+      end
+    end
+  end
+
   # GET /checks/admin
   def admin
   end
 
   private
+
+  def send_test_notifications(notifications, payload_data)
+    notifications.filter_map do |notification|
+      notification.notify!(payload_data)
+      nil
+    rescue => e
+      "#{notification.class.name.demodulize}: #{e.message}"
+    end
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_check

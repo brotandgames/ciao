@@ -28,6 +28,17 @@
         <p class="text-muted small">
           REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/tls/check.json</code>
         </p>
+
+        <h4>
+          Send test notifications
+        </h4>
+        <p>Send a test status change and a test TLS expiry notification to all configured webhooks and e-mail.</p>
+        <p>
+          <%= link_to '<i class="ti ti-bell"></i> <span>Send test</span>'.html_safe, notifications_test_checks_path, class: 'btn btn-info' %>
+        </p>
+        <p class="text-muted small">
+          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/notifications/test.json</code>
+        </p>
       </div>
     </div>
     <div class="card">
