@@ -10,6 +10,9 @@ spec:
   # (duplicate checks and notifications) and they would share the SQLite volume
   strategy:
     type: Recreate
+    # Removes the RollingUpdate defaults left on Deployments created by chart < 2.0.0,
+    # otherwise upgrading fails with "may not be specified when strategy type is 'Recreate'"
+    rollingUpdate: null
   selector:
     matchLabels:
       {{- include "ciao.selectorLabels" . | nindent 6 }}

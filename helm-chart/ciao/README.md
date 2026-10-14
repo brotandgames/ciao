@@ -9,12 +9,16 @@ https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 ## Install
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.0
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.1
 ```
 
 Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md) for configuration and [values.yaml](values.yaml) for all options.
 
 ## Releases
+
+### Release 2.0.1
+
+* Fix upgrade from chart < 2.0.0 failing because of leftover `rollingUpdate` defaults with `Recreate` strategy
 
 ### Release 2.0.0
 
