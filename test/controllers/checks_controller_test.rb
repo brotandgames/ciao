@@ -180,16 +180,18 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
-  # -- jobs_recreate ---------------------------------------------------------
+  # -- check_all -------------------------------------------------------------
 
-  test "should recreate jobs and redirect" do
-    get jobs_recreate_checks_url
-    assert_redirected_to checks_url
-    assert_match "recreated", flash[:notice]
+  test "should perform checks and redirect to admin" do
+    Check.any_instance.stubs(:perform_check)
+    get check_checks_url
+    assert_redirected_to admin_checks_url
+    assert_match "Checks", flash[:notice]
   end
 
-  test "should recreate jobs as JSON" do
-    get jobs_recreate_checks_url, as: :json
+  test "should perform checks as JSON" do
+    Check.any_instance.stubs(:perform_check)
+    get check_checks_url, as: :json
     assert_response :ok
   end
 

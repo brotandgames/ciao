@@ -8,14 +8,14 @@
       </div>
       <div class="card-body">
         <h4>
-          Recreate all scheduled background jobs of active checks
+          Check all checks now
         </h4>
-        <p>This is useful after a (re)start.</p>
+        <p>Trigger an immediate check for all active checks. Normally runs on each check's cron schedule.</p>
         <p>
-          <%= link_to '<i class="ti ti-refresh"></i> <span>Recreate</span>'.html_safe, jobs_recreate_checks_path, class: 'btn btn-info' %>
+          <%= link_to '<i class="ti ti-refresh"></i> <span>Check now</span>'.html_safe, check_checks_path, class: 'btn btn-info' %>
         </p>
         <p class="text-muted small">
-          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/jobs/recreate.json</code>
+          REST API: <code>curl -X GET -H "Content-type: application/json" <%= request.base_url %>/checks/check.json</code>
         </p>
 
         <h4>

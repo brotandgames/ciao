@@ -50,40 +50,46 @@ class Check < ApplicationRecord
     end
   end
 
+  def perform_check
+    scheduler_job = Rufus::Scheduler.singleton.job(job)
+    url = URI.parse(self.url)
+    begin
+      response = Net::HTTP.get_response(url)
+      http_code = response.code
+    rescue *NET_HTTP_ERRORS => e
+      status = e.to_s.tr('"', "'")
+    end
+    status = http_code unless e
+    last_contact_at = Time.current
+    next_contact_at = scheduler_job ? scheduler_job.next_times(1).first.to_local_time : self.next_contact_at
+    Rails.logger.info "ciao-scheduler Checked '#{url}' at '#{last_contact_at}' and got '#{status}'"
+    status_before = status_after = ""
+    ActiveRecord::Base.connection_pool.with_connection do
+      status_before = self.status
+      update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: next_contact_at)
+      status_after = self.status
+    end
+    if status_before != status_after
+      ActiveRecord::Base.connection_pool.with_connection do
+        status_changes.create(status: status)
+      end
+      Rails.logger.info "ciao-scheduler Check '#{name}': Status changed from '#{status_before}' to '#{status_after}'"
+      NOTIFICATIONS.each do |notification|
+        notification.notify(
+          name: name,
+          status_before: status_before,
+          status_after: status_after,
+          url: url,
+          check_url: Rails.application.routes.url_helpers.check_path(self)
+        )
+      end
+    end
+  end
+
   def create_job
     job =
       Rufus::Scheduler.singleton.cron cron, job: true do
-        url = URI.parse(self.url)
-        begin
-          response = Net::HTTP.get_response(url)
-          http_code = response.code
-        rescue *NET_HTTP_ERRORS => e
-          status = e.to_s.tr('"', "'")
-        end
-        status = http_code unless e
-        last_contact_at = Time.current
-        Rails.logger.info "ciao-scheduler Checked '#{url}' at '#{last_contact_at}' and got '#{status}'"
-        status_before = status_after = ""
-        ActiveRecord::Base.connection_pool.with_connection do
-          status_before = self.status
-          update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: job.next_times(1).first.to_local_time)
-          status_after = self.status
-        end
-        if status_before != status_after
-          ActiveRecord::Base.connection_pool.with_connection do
-            status_changes.create(status: status)
-          end
-          Rails.logger.info "ciao-scheduler Check '#{name}': Status changed from '#{status_before}' to '#{status_after}'"
-          NOTIFICATIONS.each do |notification|
-            notification.notify(
-              name: name,
-              status_before: status_before,
-              status_after: status_after,
-              url: url,
-              check_url: Rails.application.routes.url_helpers.check_path(self)
-            )
-          end
-        end
+        perform_check
       end
     if job
       Rails.logger.info "ciao-scheduler Created job '#{job.id}'"

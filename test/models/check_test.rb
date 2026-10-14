@@ -183,6 +183,51 @@ class CheckTest < ActiveSupport::TestCase
     assert_nothing_raised { check.unschedule_job }
   end
 
+  # -- #perform_check --------------------------------------------------------
+
+  test "#perform_check updates status without status change" do
+    check = checks(:one)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    stub_request(:get, "https://brotandgames.com").to_return(status: 200)
+    assert_no_difference "StatusChange.count" do
+      check.perform_check
+    end
+    assert_equal "200", check.reload.status
+    assert_not_nil check.last_contact_at
+  end
+
+  test "#perform_check records status change and notifies" do
+    check = checks(:one)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    stub_request(:get, "https://brotandgames.com").to_return(status: 503)
+    notification = mock
+    notification.expects(:notify).once
+    NOTIFICATIONS.stubs(:each).yields(notification)
+    assert_difference "StatusChange.count", 1 do
+      check.perform_check
+    end
+    assert_equal "503", check.reload.status
+  end
+
+  test "#perform_check stores error message on connection errors" do
+    check = checks(:one)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    stub_request(:get, "https://brotandgames.com").to_raise(Errno::ECONNREFUSED)
+    check.perform_check
+    assert_match "Connection refused", check.reload.status
+  end
+
+  test "#perform_check sets next_contact_at from the scheduled job" do
+    check = checks(:one)
+    next_time = 1.minute.from_now.change(usec: 0)
+    job = stub_everything
+    job.stubs(:next_times).returns([stub(to_local_time: next_time)])
+    Rufus::Scheduler.singleton.stubs(:job).returns(job)
+    stub_request(:get, "https://brotandgames.com").to_return(status: 200)
+    check.perform_check
+    assert_equal next_time, check.reload.next_contact_at
+  end
+
   # -- #perform_tls_check ----------------------------------------------------
 
   test "#perform_tls_check skips http urls" do

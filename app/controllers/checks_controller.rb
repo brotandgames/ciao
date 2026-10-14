@@ -95,21 +95,17 @@ class ChecksController < ApplicationController
     end
   end
 
-  # GET /checks/jobs/recreate
-  # GET /checks/jobs/recreate.json
-  def jobs_recreate
-    Check.active.each do |check|
-      check.unschedule_job if check.job
-      check.create_job
-    end
-    Rails.logger.info "ciao-scheduler Database conn. pool stat: #{ActiveRecord::Base.connection_pool.stat}"
+  # GET /checks/check
+  # GET /checks/check.json
+  def check_all
+    Check.active.each(&:perform_check)
     respond_to do |format|
       format.html do
-        redirect_to checks_url,
-          notice: "Check jobs were successfully recreated"
+        redirect_to admin_checks_url,
+          notice: "Checks were successfully performed"
       end
       format.json do
-        render json: "Check jobs were successfully recreated", status: 200
+        render json: "Checks were successfully performed", status: 200
       end
     end
   end

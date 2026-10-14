@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   root to: "checks#dashboard"
   resources :checks do
     get "job", to: "checks#job"
-    get "jobs/recreate", to: "checks#jobs_recreate", on: :collection
+    get "check", to: "checks#check_all", on: :collection
     get "tls/check", to: "checks#tls_check_all", on: :collection
     get "admin", to: "checks#admin", on: :collection
   end
