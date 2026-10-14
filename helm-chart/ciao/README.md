@@ -9,12 +9,16 @@ https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 ## Install
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.1
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.0.2
 ```
 
 Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md) for configuration and [values.yaml](values.yaml) for all options.
 
 ## Releases
+
+### Release 2.0.2
+
+* Change default `persistence.size` from 1Gi to 100Mi (existing installs using the default: set `persistence.size: 1Gi`, PVCs can not shrink)
 
 ### Release 2.0.1
 
