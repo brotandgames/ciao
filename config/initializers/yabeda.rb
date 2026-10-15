@@ -13,6 +13,7 @@ if prometheus_enabled == "true"
       gauge :checks_active_status_4xx, comment: "Number of active checks with status 4xx"
       gauge :checks_active_status_5xx, comment: "Number of active checks with status 5xx"
       gauge :checks_active_status_err, comment: "Number of active checks with status err"
+      gauge :check_response_time_seconds, comment: "Response time of the last check in seconds", tags: %i[id name]
     end
     # This block will be executed periodically few times in a minute
     # (by timer or external request depending on adapter you're using)
@@ -27,6 +28,10 @@ if prometheus_enabled == "true"
       ciao.checks_active_status_4xx.set({}, Check.status_4xx.count)
       ciao.checks_active_status_5xx.set({}, Check.status_5xx.count)
       ciao.checks_active_status_err.set({}, Check.status_err.count)
+      # NaN on errors, so the gauge does not keep the last successful response time
+      Check.active.each do |check|
+        ciao.check_response_time_seconds.set({id: check.id, name: check.name}, check.response_time || Float::NAN)
+      end
     end
   end
 end

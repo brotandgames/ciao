@@ -94,6 +94,13 @@ class ChecksHelperTest < ActionView::TestCase
     assert_equal "danger", class_for_uptime(98.9)
   end
 
+  # -- format_response_time --------------------------------------------------
+
+  test "format_response_time formats the response time in ms" do
+    assert_equal "n/a", format_response_time(nil)
+    assert_equal "123 ms", format_response_time(0.1234)
+  end
+
   # -- format_uptime ---------------------------------------------------------
 
   test "format_uptime formats the uptime in percent" do

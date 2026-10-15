@@ -75,6 +75,13 @@ module ChecksHelper
     end
   end
 
+  # Formats the response time for display
+  # @param response_time [Float, nil] the response time in seconds, nil on errors
+  # @return [String] eg. `123 ms` or `n/a`
+  def format_response_time(response_time)
+    response_time.nil? ? "n/a" : "#{(response_time * 1000).round} ms"
+  end
+
   # Formats the uptime for display
   # @param uptime [Float, nil] the uptime in percent, nil if there is no data
   # @return [String] eg. `99.5%` or `n/a`

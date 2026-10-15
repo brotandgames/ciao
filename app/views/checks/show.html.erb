@@ -37,6 +37,11 @@
         </p>
 
         <p>
+          <strong>Response time:</strong>
+          <span><%= format_response_time(@check.response_time) %></span>
+        </p>
+
+        <p>
           <strong>Uptime:</strong>
           <% @check.uptimes.each do |period, uptime| %>
             <span class="me-2"><%= period %>: <span class="text-<%= class_for_uptime(uptime) %>"><%= format_uptime(uptime) %></span></span>

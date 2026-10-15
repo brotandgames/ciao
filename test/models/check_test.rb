@@ -307,6 +307,15 @@ class CheckTest < ActiveSupport::TestCase
     stub_request(:get, "https://brotandgames.com").to_raise(Errno::ECONNREFUSED)
     check.perform_check
     assert_match "Connection refused", check.reload.status
+    assert_nil check.response_time
+  end
+
+  test "#perform_check stores the response time" do
+    check = checks(:one)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    stub_request(:get, "https://brotandgames.com").to_return(status: 200)
+    check.perform_check
+    assert check.reload.response_time >= 0
   end
 
   test "#perform_check sets next_contact_at from the scheduled job" do

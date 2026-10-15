@@ -93,8 +93,11 @@ class Check < ApplicationRecord
   def perform_check
     scheduler_job = Rufus::Scheduler.singleton.job(job)
     url = URI.parse(self.url)
+    response_time = nil
     begin
+      started_at = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       response = Net::HTTP.get_response(url)
+      response_time = Process.clock_gettime(Process::CLOCK_MONOTONIC) - started_at
       http_code = response.code
     rescue *NET_HTTP_ERRORS => e
       status = e.to_s.tr('"', "'")
@@ -106,7 +109,7 @@ class Check < ApplicationRecord
     status_before = status_after = ""
     ActiveRecord::Base.connection_pool.with_connection do
       status_before = self.status
-      update_columns(status: status, last_contact_at: last_contact_at, next_contact_at: next_contact_at)
+      update_columns(status: status, response_time: response_time, last_contact_at: last_contact_at, next_contact_at: next_contact_at)
       status_after = self.status
     end
     if status_before != status_after

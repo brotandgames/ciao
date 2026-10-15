@@ -55,7 +55,7 @@ ciao is configured via ENVIRONMENT variables following the [12-factor app method
 - Check [SMTP Configuration](smtp_configuration.md) for all possible configuration variables, notes and example configurations for Gmail, Sendgrid etc.
 - Check [Webhook Configuration](webhook_configuration.md) for instructions how to send (webhook) notifications to RocketChat, Slack etc. (since version 1.4.0)
 - You can enable HTTP Basic auth for ciao by defining `BASIC_AUTH_USERNAME` and `BASIC_AUTH_PASSWORD` eg. `BASIC_AUTH_USERNAME="ciao-admin"` and `BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.3.0)
-- You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLED=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.5.0)
+- You can enable a Prometheus Metrics endpoint served under `/metrics` by setting `PROMETHEUS_ENABLED=true` - furthermore you can enable HTTP Basic auth for this endpoint by defining `PROMETHEUS_BASIC_AUTH_USERNAME="ciao-metrics"` and `PROMETHEUS_BASIC_AUTH_PASSWORD="sensitive_password"` (since version 1.5.0) - besides the number of checks per status it exposes the response time of the last check per active check as `ciao_check_response_time_seconds{id, name}`
 - Log level is configurable via `CIAO_LOG_LEVEL` variable (default: `WARN`) - levels: DEBUG, INFO, WARN, ERROR, FATAL (since version 1.7.0)
 - The public URL of ciao is configurable via `CIAO_BASE_URL` variable eg. `CIAO_BASE_URL="https://ciao.example.com"` - it is used for the `__check_absolute_url__` webhook placeholder to link to the check in notifications
 
@@ -177,7 +177,7 @@ Show a specific check
 curl -X GET -H "Content-type: application/json" /checks/<:id>.json
 ```
 
-Checks include their `uptime` (share of time with status 2xx in percent) for the last 24 hours, 7 and 30 days, eg. `"uptime": {"24h": 100.0, "7d": 99.5, "30d": null}`. It is calculated from the status changes, `null` means there is no data for the period.
+Checks include the `response_time` of the last check in seconds (`null` on errors like timeouts) and their `uptime` (share of time with status 2xx in percent) for the last 24 hours, 7 and 30 days, eg. `"uptime": {"24h": 100.0, "7d": 99.5, "30d": null}`. It is calculated from the status changes, `null` means there is no data for the period.
 
 **POST /checks.json**
 
