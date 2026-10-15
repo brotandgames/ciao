@@ -53,6 +53,12 @@ module Ciao
         assert_equal "Path: /checks/1", renderer.render(check_url: "/checks/1")
       end
 
+      test "#render replaces __check_absolute_url__ placeholder" do
+        renderer = ReplaceRenderer.new("Link: __check_absolute_url__")
+        assert_equal "Link: https://ciao.example.com/checks/1",
+          renderer.render(check_absolute_url: "https://ciao.example.com/checks/1")
+      end
+
       test "#render replaces __tls_expires_at__ placeholder" do
         time = Time.new(2026, 6, 1, 12, 0, 0)
         renderer = ReplaceRenderer.new("Expires: __tls_expires_at__")

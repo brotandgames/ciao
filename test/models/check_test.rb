@@ -183,6 +183,21 @@ class CheckTest < ActiveSupport::TestCase
     assert_nothing_raised { check.unschedule_job }
   end
 
+  # -- #check_absolute_url ---------------------------------------------------
+
+  test "#check_absolute_url prefixes the check path with CIAO_BASE_URL" do
+    check = checks(:one)
+    ENV["CIAO_BASE_URL"] = "https://ciao.example.com/"
+    assert_equal "https://ciao.example.com/checks/#{check.id}", check.check_absolute_url
+  ensure
+    ENV.delete("CIAO_BASE_URL")
+  end
+
+  test "#check_absolute_url returns the relative path without CIAO_BASE_URL" do
+    check = checks(:one)
+    assert_equal "/checks/#{check.id}", check.check_absolute_url
+  end
+
   # -- #perform_check --------------------------------------------------------
 
   test "#perform_check updates status without status change" do

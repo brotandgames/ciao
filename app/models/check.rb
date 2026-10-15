@@ -50,6 +50,13 @@ class Check < ApplicationRecord
     end
   end
 
+  # URL of the check in the Web UI, prefixed with CIAO_BASE_URL
+  # Falls back to the relative path when CIAO_BASE_URL is not set
+  def check_absolute_url
+    base_url = ENV.fetch("CIAO_BASE_URL", "").chomp("/")
+    "#{base_url}#{Rails.application.routes.url_helpers.check_path(self)}"
+  end
+
   def perform_check
     scheduler_job = Rufus::Scheduler.singleton.job(job)
     url = URI.parse(self.url)
@@ -80,7 +87,8 @@ class Check < ApplicationRecord
           status_before: status_before,
           status_after: status_after,
           url: url,
-          check_url: Rails.application.routes.url_helpers.check_path(self)
+          check_url: Rails.application.routes.url_helpers.check_path(self),
+          check_absolute_url: check_absolute_url
         )
       end
     end
@@ -139,6 +147,7 @@ class Check < ApplicationRecord
             name: name,
             url: url,
             check_url: Rails.application.routes.url_helpers.check_path(self),
+            check_absolute_url: check_absolute_url,
             tls_expires_at: tls_expires_at,
             tls_expires_in_days: tls_expires_in_days
           )

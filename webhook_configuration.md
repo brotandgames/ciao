@@ -23,13 +23,14 @@ CIAO_WEBHOOK_PAYLOAD_SLACK='{"text":"[ciao] __name__: Status changed (__status_a
 etc.
 ```
 
-There are 5 placeholders which you can use in the payload:
+There are 6 placeholders which you can use in the payload:
 
 * `__name__`
 * `__url__`
 * `__status_before__`
 * `__status_after__`
-* `__check_url__`
+* `__check_url__` (relative path of the check, eg. `/checks/1`)
+* `__check_absolute_url__` (`__check_url__` prefixed with `CIAO_BASE_URL`, eg. `https://ciao.example.com/checks/1` - falls back to the relative path if `CIAO_BASE_URL` is not set)
 
 ENV variable `CIAO_WEBHOOK_PAYLOAD_$NAME` has to be a valid JSON one-liner wrapped in single quotes like `'{"name":"__name__", "status_before":"__status_before__", "status_after":"__status_after__", "check_url":"__check_url__", "url":"__url__"}'`
 
@@ -52,13 +53,14 @@ CIAO_WEBHOOK_PAYLOAD_TLS_EXPIRES_SLACK='{"text": "[ciao] TLS certificate for __n
 etc.
 ```
 
-There are 5 placeholders which you can use in the payload for TLS certificate expiration:
+There are 6 placeholders which you can use in the payload for TLS certificate expiration:
 
 * `__name__`
 * `__url__`
 * `__tls_expires_at__`
 * `__tls_expires_in_days__`
 * `__check_url__`
+* `__check_absolute_url__`
 
 ## Notes
 
@@ -98,7 +100,7 @@ OR
 CIAO_WEBHOOK_ENDPOINT_OFFICE_365="https://outlook.office.com/webhook/****/IncomingWebhook/****/****"
 
 # Payload
-CIAO_WEBHOOK_PAYLOAD_OFFICE_365='{ "@context": "https://schema.org/extensions", "@type": "MessageCard", "themeColor": "0072C6", "title": "MySystem (__name__) status change", "text": "Status changed from (__status_before__) to (__status_after__)", "potentialAction": [ { "@type": "OpenUri", "name": "Learn More", "targets": [ { "os": "default", "uri": "__check_url__" } ] } ] }'
+CIAO_WEBHOOK_PAYLOAD_OFFICE_365='{ "@context": "https://schema.org/extensions", "@type": "MessageCard", "themeColor": "0072C6", "title": "MySystem (__name__) status change", "text": "Status changed from (__status_before__) to (__status_after__)", "potentialAction": [ { "@type": "OpenUri", "name": "Learn More", "targets": [ { "os": "default", "uri": "__check_absolute_url__" } ] } ] }'
 ```
 
 ### Telegram
