@@ -37,6 +37,23 @@
         </p>
 
         <p>
+          <strong>Uptime:</strong>
+          <% @check.uptimes.each do |period, uptime| %>
+            <span class="me-2"><%= period %>: <span class="text-<%= class_for_uptime(uptime) %>"><%= format_uptime(uptime) %></span></span>
+          <% end %>
+        </p>
+
+        <div class="d-flex gap-1 mb-1" style="height: 1.5rem">
+          <% @check.daily_uptimes.each do |date, uptime| %>
+            <div class="flex-fill rounded bg-<%= class_for_uptime(uptime) %>" title="<%= date %>: <%= format_uptime(uptime) %>"></div>
+          <% end %>
+        </div>
+        <p class="d-flex justify-content-between small text-secondary">
+          <span>30 days ago</span>
+          <span>Today</span>
+        </p>
+
+        <p>
           <strong>Next contact:</strong>
           <span><%= @check.next_contact_at %></span>
         </p>

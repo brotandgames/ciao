@@ -103,6 +103,7 @@ class ChecksControllerTest < ActionDispatch::IntegrationTest
     json = response.parsed_body
     assert_equal @check.name, json["name"]
     assert_equal @check.url, json["url"]
+    assert_equal %w[24h 7d 30d], json["uptime"].keys
   end
 
   # -- edit ------------------------------------------------------------------

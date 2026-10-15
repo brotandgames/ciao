@@ -50,6 +50,39 @@ class Check < ApplicationRecord
     end
   end
 
+  UPTIME_PERIODS = {"24h" => 1.day, "7d" => 7.days, "30d" => 30.days}.freeze
+
+  # Uptime (share of time with status 2xx) between from and to in percent,
+  # calculated from status changes. Time before the first status change is unknown
+  # and not counted
+  # @return [Float, nil] uptime in percent or nil if there is no data
+  def uptime(from, to = Time.current, periods: status_periods(to))
+    healthy = known = 0.0
+    periods.each do |starts_at, ends_at, status|
+      duration = [ends_at, to].min - [starts_at, from].max
+      next unless duration.positive?
+
+      known += duration
+      healthy += duration if status.to_s.start_with?("2")
+    end
+    (healthy / known * 100).round(2) if known.positive?
+  end
+
+  # Uptime for each of UPTIME_PERIODS, eg. {"24h" => 100.0, "7d" => 99.5, "30d" => nil}
+  def uptimes(now = Time.current)
+    periods = status_periods(now)
+    UPTIME_PERIODS.transform_values { |period| uptime(now - period, now, periods: periods) }
+  end
+
+  # Uptime per day for the last days, oldest first, eg. [[Date, 100.0], [Date, nil], ...]
+  def daily_uptimes(days = 30, now = Time.current)
+    periods = status_periods(now)
+    (days - 1).downto(0).map do |ago|
+      date = now.to_date - ago
+      [date, uptime(date.in_time_zone, [(date + 1).in_time_zone, now].min, periods: periods)]
+    end
+  end
+
   # URL of the check in the Web UI, prefixed with CIAO_BASE_URL
   # Falls back to the relative path when CIAO_BASE_URL is not set
   def check_absolute_url
@@ -189,6 +222,14 @@ class Check < ApplicationRecord
   end
 
   private
+
+  # Status changes as [starts_at, ends_at, status], each lasting until the next one
+  def status_periods(now)
+    changes = status_changes.where(created_at: ..now).order(:created_at).pluck(:created_at, :status)
+    changes.each_with_index.map do |(starts_at, status), i|
+      [starts_at, changes.dig(i + 1, 0) || now, status]
+    end
+  end
 
   def update_routine
     if saved_change_to_attribute?(:active)

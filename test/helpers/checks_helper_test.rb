@@ -84,4 +84,21 @@ class ChecksHelperTest < ActionView::TestCase
     assert_equal "text-red", class_for_healthy(99)
     assert_equal "text-red", class_for_healthy(0)
   end
+
+  # -- class_for_uptime ------------------------------------------------------
+
+  test "class_for_uptime returns the color for the uptime" do
+    assert_equal "secondary-lt", class_for_uptime(nil)
+    assert_equal "success", class_for_uptime(100.0)
+    assert_equal "warning", class_for_uptime(99.5)
+    assert_equal "danger", class_for_uptime(98.9)
+  end
+
+  # -- format_uptime ---------------------------------------------------------
+
+  test "format_uptime formats the uptime in percent" do
+    assert_equal "n/a", format_uptime(nil)
+    assert_equal "100%", format_uptime(100.0)
+    assert_equal "99.5%", format_uptime(99.5)
+  end
 end

@@ -183,6 +183,59 @@ class CheckTest < ActiveSupport::TestCase
     assert_nothing_raised { check.unschedule_job }
   end
 
+  # -- #uptime ---------------------------------------------------------------
+
+  def create_status_changes(check, now)
+    check.status_changes.delete_all
+    check.status_changes.create!(status: "200", created_at: now - 10.hours)
+    check.status_changes.create!(status: "500", created_at: now - 2.hours)
+    check.status_changes.create!(status: "200", created_at: now - 1.hour)
+  end
+
+  test "#uptime returns the percentage of time with 2xx status" do
+    check = checks(:one)
+    now = Time.current.change(usec: 0)
+    create_status_changes(check, now)
+    assert_equal 90.0, check.uptime(now - 10.hours, now)
+  end
+
+  test "#uptime uses the status before the window start" do
+    check = checks(:one)
+    now = Time.current.change(usec: 0)
+    create_status_changes(check, now)
+    assert_equal 80.0, check.uptime(now - 5.hours, now)
+  end
+
+  test "#uptime does not count the time before the first status change" do
+    check = checks(:one)
+    now = Time.current.change(usec: 0)
+    create_status_changes(check, now)
+    assert_equal 90.0, check.uptime(now - 24.hours, now)
+  end
+
+  test "#uptime returns nil without status changes" do
+    check = checks(:one)
+    check.status_changes.delete_all
+    assert_nil check.uptime(1.day.ago)
+  end
+
+  test "#uptimes returns uptime for 24h, 7d and 30d" do
+    check = checks(:one)
+    now = Time.current.change(usec: 0)
+    create_status_changes(check, now)
+    assert_equal({"24h" => 90.0, "7d" => 90.0, "30d" => 90.0}, check.uptimes(now))
+  end
+
+  test "#daily_uptimes returns one uptime per day ending today" do
+    check = checks(:one)
+    now = Time.current.change(usec: 0)
+    create_status_changes(check, now)
+    daily_uptimes = check.daily_uptimes(30, now)
+    assert_equal 30, daily_uptimes.size
+    assert_equal now.to_date, daily_uptimes.last.first
+    assert_nil daily_uptimes.first.last
+  end
+
   # -- #check_absolute_url ---------------------------------------------------
 
   test "#check_absolute_url prefixes the check path with CIAO_BASE_URL" do

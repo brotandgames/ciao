@@ -58,4 +58,27 @@ module ChecksHelper
   def class_for_healthy(percent)
     (percent == 100) ? "text-green" : "text-red"
   end
+
+  # Converts the uptime to CSS class
+  # to control the color of the uptime history bars
+  # @param uptime [Float, nil] the uptime in percent, nil if there is no data
+  # @return [String] the corresponding color (CSS class)
+  def class_for_uptime(uptime)
+    if uptime.nil?
+      "secondary-lt"
+    elsif uptime == 100
+      "success"
+    elsif uptime >= 99
+      "warning"
+    else
+      "danger"
+    end
+  end
+
+  # Formats the uptime for display
+  # @param uptime [Float, nil] the uptime in percent, nil if there is no data
+  # @return [String] eg. `99.5%` or `n/a`
+  def format_uptime(uptime)
+    uptime.nil? ? "n/a" : number_to_percentage(uptime, precision: 2, strip_insignificant_zeros: true)
+  end
 end

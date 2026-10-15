@@ -177,6 +177,8 @@ Show a specific check
 curl -X GET -H "Content-type: application/json" /checks/<:id>.json
 ```
 
+Checks include their `uptime` (share of time with status 2xx in percent) for the last 24 hours, 7 and 30 days, eg. `"uptime": {"24h": 100.0, "7d": 99.5, "30d": null}`. It is calculated from the status changes, `null` means there is no data for the period.
+
 **POST /checks.json**
 
 Create a check
