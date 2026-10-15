@@ -169,6 +169,30 @@ class CheckTest < ActiveSupport::TestCase
 
   # -- #unschedule_job -------------------------------------------------------
 
+  test "#create_job runs the check on the current check from the database" do
+    check = checks(:one) # status "200"
+    # Status changed since the job was created, eg. by "Check now" in admin
+    Check.where(id: check.id).update_all(status: "500")
+    job = stub_everything
+    job.stubs(:next_times).returns([stub(to_local_time: 1.minute.from_now)])
+    Rufus::Scheduler.singleton.stubs(:cron).yields.returns(job)
+    Rufus::Scheduler.singleton.stubs(:job).returns(nil)
+    stub_request(:get, "https://brotandgames.com").to_return(status: 500)
+    NOTIFICATIONS.expects(:each).never
+    assert_no_difference "StatusChange.count" do
+      check.create_job
+    end
+  end
+
+  test "#create_job does nothing when the check was deleted" do
+    check = checks(:three)
+    check.status_changes.delete_all
+    check.delete
+    Rufus::Scheduler.singleton.stubs(:cron).yields.returns(nil)
+    Check.any_instance.expects(:perform_check).never
+    assert_nothing_raised { check.create_job }
+  end
+
   test "#unschedule_job unschedules an existing job" do
     check = checks(:one)
     job = stub_everything
@@ -341,6 +365,20 @@ class CheckTest < ActiveSupport::TestCase
     Rufus::Scheduler.singleton.stubs(:cron).returns(tls_job)
     check.create_tls_job
     assert_equal "tls-job-abc", check.reload.tls_job
+  end
+
+  test "#create_tls_job runs the TLS check on the current check from the database" do
+    check = checks(:one) # https://brotandgames.com
+    Check.where(id: check.id).update_all(name: "Renamed")
+    tls_job = stub_everything
+    Rufus::Scheduler.singleton.stubs(:cron).yields.returns(tls_job)
+    http = stub_everything
+    http.stubs(:start).yields(stub(peer_cert: stub(not_after: Time.now + 10.days)))
+    Net::HTTP.stubs(:new).returns(http)
+    notification = mock
+    notification.expects(:notify).with(has_entry(:name, "Renamed")).once
+    NOTIFICATIONS_TLS_EXPIRES.stubs(:each).yields(notification)
+    check.create_tls_job
   end
 
   # -- #unschedule_tls_job ---------------------------------------------------

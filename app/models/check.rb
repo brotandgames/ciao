@@ -128,9 +128,13 @@ class Check < ApplicationRecord
   end
 
   def create_job
+    check_id = id
     job =
       Rufus::Scheduler.singleton.cron cron, job: true do
-        perform_check
+        # Load the check on every run, so the job does not use the
+        # name and status from the time the job was created
+        check = ActiveRecord::Base.connection_pool.with_connection { Check.find_by(id: check_id) }
+        check&.perform_check
       end
     if job
       Rails.logger.info "ciao-scheduler Created job '#{job.id}'"
@@ -195,10 +199,11 @@ class Check < ApplicationRecord
     uri = URI.parse(url)
     return unless uri.scheme == "https"
 
+    check_id = id
     tls_job =
       Rufus::Scheduler.singleton.cron "0 12 * * *", job: true do
         ActiveRecord::Base.connection_pool.with_connection do
-          perform_tls_check
+          Check.find_by(id: check_id)&.perform_tls_check
         end
       end
     if tls_job
