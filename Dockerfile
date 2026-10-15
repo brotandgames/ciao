@@ -10,10 +10,8 @@ RUN set -x \
     && apt-get update -qq \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
         build-essential \
-        curl \
         git \
         libffi-dev \
-        libpq-dev \
         libsqlite3-dev \
         libxml2-dev \
         libxslt-dev \

@@ -27,6 +27,9 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm/v7,linux/arm64
           push: ${{ !contains(github.ref, '-rc') }}
+          # Reuse layers (eg. bundle install) from previous builds
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             brotandgames/ciao:${{ github.ref_name }}
             brotandgames/ciao:latest
