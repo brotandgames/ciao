@@ -31,6 +31,12 @@ jobs:
         run: |
           platform=${{ matrix.platform }}
           echo "PLATFORM_PAIR=${platform//\//-}" >> $GITHUB_ENV
+          # Release candidates (-rc) are pushed to GHCR only
+          if [[ "$GITHUB_REF_NAME" == *-rc* ]]; then
+            echo "IMAGES=$GHCR_IMAGE" >> $GITHUB_ENV
+          else
+            echo "IMAGES=$DOCKERHUB_IMAGE,$GHCR_IMAGE" >> $GITHUB_ENV
+          fi
 
       - name: checkout code
         uses: actions/checkout@v4
@@ -57,20 +63,18 @@ jobs:
         with:
           context: .
           platforms: ${{ matrix.platform }}
-          outputs: type=image,"name=${{ env.DOCKERHUB_IMAGE }},${{ env.GHCR_IMAGE }}",push-by-digest=true,name-canonical=true,push=${{ !contains(github.ref, '-rc') }}
+          outputs: type=image,"name=${{ env.IMAGES }}",push-by-digest=true,name-canonical=true,push=true
           # Reuse layers (eg. bundle install) from previous builds of this platform
           cache-from: type=gha,scope=${{ env.PLATFORM_PAIR }}
           cache-to: type=gha,mode=max,scope=${{ env.PLATFORM_PAIR }}
 
       - name: export digest
-        if: ${{ !contains(github.ref, '-rc') }}
         run: |
           mkdir -p ${{ runner.temp }}/digests
           digest="${{ steps.build.outputs.digest }}"
           touch "${{ runner.temp }}/digests/${digest#sha256:}"
 
       - name: upload digest
-        if: ${{ !contains(github.ref, '-rc') }}
         uses: actions/upload-artifact@v4
         with:
           name: digests-${{ env.PLATFORM_PAIR }}
@@ -79,8 +83,6 @@ jobs:
           retention-days: 1
 
   merge:
-    # Tags containing -rc are built but not pushed
-    if: ${{ !contains(github.ref, '-rc') }}
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -110,14 +112,17 @@ jobs:
       - name: create and push multi-arch image
         working-directory: ${{ runner.temp }}/digests
         run: |
-          docker buildx imagetools create \
-            -t ${{ env.DOCKERHUB_IMAGE }}:${{ github.ref_name }} \
-            -t ${{ env.DOCKERHUB_IMAGE }}:latest \
-            -t ${{ env.GHCR_IMAGE }}:${{ github.ref_name }} \
-            -t ${{ env.GHCR_IMAGE }}:latest \
-            $(printf '${{ env.DOCKERHUB_IMAGE }}@sha256:%s ' *)
+          # Release candidates (-rc) get only <tag> on GHCR,
+          # releases get <tag> and latest on GHCR and Docker Hub
+          tags="-t $GHCR_IMAGE:$GITHUB_REF_NAME"
+          if [[ "$GITHUB_REF_NAME" != *-rc* ]]; then
+            tags="$tags -t $GHCR_IMAGE:latest -t $DOCKERHUB_IMAGE:$GITHUB_REF_NAME -t $DOCKERHUB_IMAGE:latest"
+          fi
+          docker buildx imagetools create $tags $(printf "$GHCR_IMAGE@sha256:%s " *)
 
       - name: inspect images
         run: |
-          docker buildx imagetools inspect ${{ env.DOCKERHUB_IMAGE }}:${{ github.ref_name }}
-          docker buildx imagetools inspect ${{ env.GHCR_IMAGE }}:${{ github.ref_name }}
+          docker buildx imagetools inspect $GHCR_IMAGE:$GITHUB_REF_NAME
+          if [[ "$GITHUB_REF_NAME" != *-rc* ]]; then
+            docker buildx imagetools inspect $DOCKERHUB_IMAGE:$GITHUB_REF_NAME
+          fi
