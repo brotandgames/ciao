@@ -11,11 +11,7 @@ RUN set -x \
     && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
         build-essential \
         git \
-        libffi-dev \
         libsqlite3-dev \
-        libxml2-dev \
-        libxslt-dev \
-        libyaml-dev \
         tzdata \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -52,6 +48,9 @@ RUN set -x \
 
 # Stage 2: Final stage
 FROM ruby:4.0.6-slim
+
+# Link the image on ghcr.io to the GitHub repository
+LABEL org.opencontainers.image.source="https://github.com/brotandgames/ciao"
 
 # Set environment variables
 ARG RACK_ENV=production

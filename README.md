@@ -61,7 +61,7 @@ ciao is configured via ENVIRONMENT variables following the [12-factor app method
 
 ## Install
 
-You can install ciao via the official Docker image `brotandgames/ciao` or using Git and installing the dependencies manually.
+You can install ciao via the official Docker image `brotandgames/ciao` (also available as `ghcr.io/brotandgames/ciao`, for `linux/amd64` and `linux/arm64`) or using Git and installing the dependencies manually.
 
 By mounting a Docker volume you can avoid loosing data on restart or upgrade.
 
