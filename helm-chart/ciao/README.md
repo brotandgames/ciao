@@ -9,12 +9,17 @@ https://github.com/brotandgames/ciao/tree/master/helm-chart/ciao
 ## Install
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.1.1
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.2.0
 ```
 
 Check main [README.md](https://github.com/brotandgames/ciao/tree/master/README.md) for configuration and [values.yaml](values.yaml) for all options.
 
 ## Releases
+
+### Release 2.2.0
+
+* Bump ciao from 1.11.1 to 1.12.0 (uptime and 30-day history, response times, `CIAO_BASE_URL` for absolute check URLs in webhooks)
+* The ciao image is no longer built for `linux/arm/v7`, only `linux/amd64` and `linux/arm64`
 
 ### Release 2.1.1
 

@@ -249,13 +249,13 @@ IMPORTANT: Be sure to enable authentication (eg. HTTP Basic auth) and TLS certif
 Quickstart (without configuring)
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.1.1
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.2.0
 ```
 
 With [configuration](#configuration)
 
 ```sh
-helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.1.1 \
+helm upgrade --install --namespace ciao --create-namespace ciao oci://ghcr.io/brotandgames/charts/ciao --version 2.2.0 \
   --set env.SECRET_KEY_BASE="sensitive_secret_key_base" \
   --set env.SMTP_ADDRESS=smtp.yourhost.com \
   --set env.SMTP_EMAIL_FROM="ciao@yourhost.com" \

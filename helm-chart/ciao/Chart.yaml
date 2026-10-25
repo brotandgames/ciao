@@ -2,8 +2,8 @@ apiVersion: v2
 name: ciao
 description: "Ciao - HTTP checks & tests (private & public) monitoring"
 type: application
-version: 2.1.1
-appVersion: 1.11.1
+version: 2.2.0
+appVersion: 1.12.0
 kubeVersion: ">=1.19.0-0"
 home: https://brotandgames.com/ciao/
 icon: https://raw.githubusercontent.com/brotandgames/ciao/master/public/android-chrome-512x512.png
