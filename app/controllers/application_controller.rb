@@ -2,7 +2,10 @@
 
 class ApplicationController < ActionController::Base
   before_action :authenticate
-  protect_from_forgery unless: -> { request.format.json? }
+  # Skip CSRF protection only for requests whose body is sent as JSON (REST API).
+  # A cross-site HTML form cannot set this Content-Type without a CORS preflight,
+  # unlike the format (`.json` extension), which any form can choose.
+  protect_from_forgery with: :exception, unless: -> { request.media_type == "application/json" }
 
   def authenticate
     basic_auth_username = ENV.fetch("BASIC_AUTH_USERNAME", "")
